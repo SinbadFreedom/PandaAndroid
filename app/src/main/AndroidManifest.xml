@@ -16,7 +16,7 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.android.architecture.blueprints.todoapp">
+    package="com.dashidan">
 
     <application
         android:allowBackup="false"
@@ -25,17 +25,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.example.android.architecture.blueprints.todoapp.tasks.TasksActivity"
+            android:name="com.dashidan.tasks.TasksActivity"
             android:theme="@style/AppTheme.OverlapSystemBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.android.architecture.blueprints.todoapp.taskdetail.TaskDetailActivity" />
-        <activity android:name="com.example.android.architecture.blueprints.todoapp.addedittask.AddEditTaskActivity" />
+        <activity android:name="com.dashidan.taskdetail.TaskDetailActivity" />
+        <activity android:name="com.dashidan.addedittask.AddEditTaskActivity" />
         <activity
-            android:name="com.example.android.architecture.blueprints.todoapp.statistics.StatisticsActivity"
+            android:name="com.dashidan.statistics.StatisticsActivity"
             android:parentActivityName=".tasks.TasksActivity"
             tools:ignore="UnusedAttribute">
             <!-- Parent activity meta-data to support 4.0 and lower -->
