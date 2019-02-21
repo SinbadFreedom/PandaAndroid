@@ -16,8 +16,8 @@
 
 <resources>
     <string name="app_name">Python文档</string>
-    <string name="add_task">New TO-DO</string>
-    <string name="edit_task">Edit TO-DO</string>
+    <string name="add_task">新建 TO-DO</string>
+    <string name="edit_task">编辑 TO-DO</string>
     <string name="task_marked_complete">Task marked complete</string>
     <string name="task_marked_active">Task marked active</string>
     <string name="loading_tasks_error">Error while loading tasks</string>
@@ -30,7 +30,7 @@
     <string name="description_hint">Enter your TO-DO here.</string>
     <string name="empty_task_message">TO DOs cannot be empty</string>
     <string name="successfully_saved_task_message">TO-DO saved</string>
-    <string name="list_title">TO-DO List</string>
+    <string name="list_title">TO-DO 列表</string>
     <string name="statistics_title">Statistics</string>
     <string name="statistics_no_tasks">You have no tasks.</string>
     <string name="statistics_active_tasks">Active tasks:</string>
