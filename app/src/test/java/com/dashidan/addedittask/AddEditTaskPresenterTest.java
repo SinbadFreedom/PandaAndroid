@@ -17,7 +17,6 @@
 package com.dashidan.addedittask;
 
 import com.dashidan.data.Task;
-import com.dashidan.data.source.TasksDataSource;
 import com.dashidan.data.source.TasksRepository;
 
 import org.junit.Before;
@@ -65,7 +64,7 @@ public class AddEditTaskPresenterTest {
     }
 
     @Test
-    public void createPresenter_setsThePresenterToView(){
+    public void createPresenter_setsThePresenterToView() {
         // Get a reference to the class under test
         mAddEditTaskPresenter = new AddEditTaskPresenter(
                 null, mTasksRepository, mAddEditTaskView, true);

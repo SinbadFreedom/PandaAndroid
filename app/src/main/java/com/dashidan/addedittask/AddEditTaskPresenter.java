@@ -16,8 +16,9 @@
 
 package com.dashidan.addedittask;
 
+import com.dashidan.GetTaskCallback;
 import com.dashidan.data.Task;
-import com.dashidan.data.source.TasksDataSource;
+import com.dashidan.data.source.TasksRepository;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,14 +29,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Listens to user actions from the UI ({@link AddEditTaskFragment}), retrieves the data and updates
  * the UI as required.
  */
-public class AddEditTaskPresenter implements AddEditTaskContract.Presenter,
-        TasksDataSource.GetTaskCallback {
+public class AddEditTaskPresenter implements GetTaskCallback {
 
     @NonNull
-    private final TasksDataSource mTasksRepository;
+    private final TasksRepository mTasksRepository;
 
     @NonNull
-    private final AddEditTaskContract.View mAddTaskView;
+    private final AddEditTaskFragment mAddTaskView;
 
     @Nullable
     private String mTaskId;
@@ -45,13 +45,13 @@ public class AddEditTaskPresenter implements AddEditTaskContract.Presenter,
     /**
      * Creates a presenter for the add/edit view.
      *
-     * @param taskId ID of the task to edit or null for a new task
-     * @param tasksRepository a repository of data for tasks
-     * @param addTaskView the add/edit view
+     * @param taskId                 ID of the task to edit or null for a new task
+     * @param tasksRepository        a repository of data for tasks
+     * @param addTaskView            the add/edit view
      * @param shouldLoadDataFromRepo whether data needs to be loaded or not (for config changes)
      */
-    public AddEditTaskPresenter(@Nullable String taskId, @NonNull TasksDataSource tasksRepository,
-            @NonNull AddEditTaskContract.View addTaskView, boolean shouldLoadDataFromRepo) {
+    public AddEditTaskPresenter(@Nullable String taskId, @NonNull TasksRepository tasksRepository,
+                                @NonNull AddEditTaskFragment addTaskView, boolean shouldLoadDataFromRepo) {
         mTaskId = taskId;
         mTasksRepository = checkNotNull(tasksRepository);
         mAddTaskView = checkNotNull(addTaskView);
@@ -60,14 +60,12 @@ public class AddEditTaskPresenter implements AddEditTaskContract.Presenter,
         mAddTaskView.setPresenter(this);
     }
 
-    @Override
     public void start() {
         if (!isNewTask() && mIsDataMissing) {
             populateTask();
         }
     }
 
-    @Override
     public void saveTask(String title, String description) {
         if (isNewTask()) {
             createTask(title, description);
@@ -76,7 +74,6 @@ public class AddEditTaskPresenter implements AddEditTaskContract.Presenter,
         }
     }
 
-    @Override
     public void populateTask() {
         if (isNewTask()) {
             throw new RuntimeException("populateTask() was called but task is new.");
@@ -84,7 +81,6 @@ public class AddEditTaskPresenter implements AddEditTaskContract.Presenter,
         mTasksRepository.getTask(mTaskId, this);
     }
 
-    @Override
     public void onTaskLoaded(Task task) {
         // The view may not be able to handle UI updates anymore
         if (mAddTaskView.isActive()) {
@@ -94,7 +90,6 @@ public class AddEditTaskPresenter implements AddEditTaskContract.Presenter,
         mIsDataMissing = false;
     }
 
-    @Override
     public void onDataNotAvailable() {
         // The view may not be able to handle UI updates anymore
         if (mAddTaskView.isActive()) {
@@ -102,7 +97,6 @@ public class AddEditTaskPresenter implements AddEditTaskContract.Presenter,
         }
     }
 
-    @Override
     public boolean isDataMissing() {
         return mIsDataMissing;
     }

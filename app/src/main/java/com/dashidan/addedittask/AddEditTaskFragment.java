@@ -36,11 +36,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Main UI for the add task screen. Users can enter a task title and description.
  */
-public class AddEditTaskFragment extends Fragment implements AddEditTaskContract.View {
+public class AddEditTaskFragment extends Fragment {
 
     public static final String ARGUMENT_EDIT_TASK_ID = "EDIT_TASK_ID";
 
-    private AddEditTaskContract.Presenter mPresenter;
+    private AddEditTaskPresenter mPresenter;
 
     private TextView mTitle;
 
@@ -60,8 +60,7 @@ public class AddEditTaskFragment extends Fragment implements AddEditTaskContract
         mPresenter.start();
     }
 
-    @Override
-    public void setPresenter(@NonNull AddEditTaskContract.Presenter presenter) {
+    public void setPresenter(@NonNull AddEditTaskPresenter presenter) {
         mPresenter = checkNotNull(presenter);
     }
 
@@ -91,28 +90,23 @@ public class AddEditTaskFragment extends Fragment implements AddEditTaskContract
         return root;
     }
 
-    @Override
     public void showEmptyTaskError() {
         Snackbar.make(mTitle, getString(R.string.empty_task_message), Snackbar.LENGTH_LONG).show();
     }
 
-    @Override
     public void showTasksList() {
         getActivity().setResult(Activity.RESULT_OK);
         getActivity().finish();
     }
 
-    @Override
     public void setTitle(String title) {
         mTitle.setText(title);
     }
 
-    @Override
     public void setDescription(String description) {
         mDescription.setText(description);
     }
 
-    @Override
     public boolean isActive() {
         return isAdded();
     }

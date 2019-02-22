@@ -16,8 +16,8 @@
 
 package com.dashidan.taskdetail;
 
+import com.dashidan.GetTaskCallback;
 import com.dashidan.data.Task;
-import com.dashidan.data.source.TasksDataSource;
 import com.dashidan.data.source.TasksRepository;
 import com.google.common.base.Strings;
 
@@ -30,18 +30,18 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Listens to user actions from the UI ({@link TaskDetailFragment}), retrieves the data and updates
  * the UI as required.
  */
-public class TaskDetailPresenter implements TaskDetailContract.Presenter {
+public class TaskDetailPresenter {
 
     private final TasksRepository mTasksRepository;
 
-    private final TaskDetailContract.View mTaskDetailView;
+    private final TaskDetailFragment mTaskDetailView;
 
     @Nullable
     private String mTaskId;
 
     public TaskDetailPresenter(@Nullable String taskId,
                                @NonNull TasksRepository tasksRepository,
-                               @NonNull TaskDetailContract.View taskDetailView) {
+                               @NonNull TaskDetailFragment taskDetailView) {
         mTaskId = taskId;
         mTasksRepository = checkNotNull(tasksRepository, "tasksRepository cannot be null!");
         mTaskDetailView = checkNotNull(taskDetailView, "taskDetailView cannot be null!");
@@ -49,7 +49,6 @@ public class TaskDetailPresenter implements TaskDetailContract.Presenter {
         mTaskDetailView.setPresenter(this);
     }
 
-    @Override
     public void start() {
         openTask();
     }
@@ -61,7 +60,7 @@ public class TaskDetailPresenter implements TaskDetailContract.Presenter {
         }
 
         mTaskDetailView.setLoadingIndicator(true);
-        mTasksRepository.getTask(mTaskId, new TasksDataSource.GetTaskCallback() {
+        mTasksRepository.getTask(mTaskId, new GetTaskCallback() {
             @Override
             public void onTaskLoaded(Task task) {
                 // The view may not be able to handle UI updates anymore
@@ -87,7 +86,6 @@ public class TaskDetailPresenter implements TaskDetailContract.Presenter {
         });
     }
 
-    @Override
     public void editTask() {
         if (Strings.isNullOrEmpty(mTaskId)) {
             mTaskDetailView.showMissingTask();
@@ -96,7 +94,6 @@ public class TaskDetailPresenter implements TaskDetailContract.Presenter {
         mTaskDetailView.showEditTask(mTaskId);
     }
 
-    @Override
     public void deleteTask() {
         if (Strings.isNullOrEmpty(mTaskId)) {
             mTaskDetailView.showMissingTask();
@@ -106,7 +103,6 @@ public class TaskDetailPresenter implements TaskDetailContract.Presenter {
         mTaskDetailView.showTaskDeleted();
     }
 
-    @Override
     public void completeTask() {
         if (Strings.isNullOrEmpty(mTaskId)) {
             mTaskDetailView.showMissingTask();
@@ -116,7 +112,6 @@ public class TaskDetailPresenter implements TaskDetailContract.Presenter {
         mTaskDetailView.showTaskMarkedComplete();
     }
 
-    @Override
     public void activateTask() {
         if (Strings.isNullOrEmpty(mTaskId)) {
             mTaskDetailView.showMissingTask();

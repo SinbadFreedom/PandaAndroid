@@ -33,18 +33,17 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Main UI for the statistics screen.
  */
-public class StatisticsFragment extends Fragment implements StatisticsContract.View {
+public class StatisticsFragment extends Fragment {
 
     private TextView mStatisticsTV;
 
-    private StatisticsContract.Presenter mPresenter;
+    private StatisticsPresenter mPresenter;
 
     public static StatisticsFragment newInstance() {
         return new StatisticsFragment();
     }
 
-    @Override
-    public void setPresenter(@NonNull StatisticsContract.Presenter presenter) {
+    public void setPresenter(@NonNull StatisticsPresenter presenter) {
         mPresenter = checkNotNull(presenter);
     }
 
@@ -63,7 +62,6 @@ public class StatisticsFragment extends Fragment implements StatisticsContract.V
         mPresenter.start();
     }
 
-    @Override
     public void setProgressIndicator(boolean active) {
         if (active) {
             mStatisticsTV.setText(getString(R.string.loading));
@@ -72,7 +70,6 @@ public class StatisticsFragment extends Fragment implements StatisticsContract.V
         }
     }
 
-    @Override
     public void showStatistics(int numberOfIncompleteTasks, int numberOfCompletedTasks) {
         if (numberOfCompletedTasks == 0 && numberOfIncompleteTasks == 0) {
             mStatisticsTV.setText(getResources().getString(R.string.statistics_no_tasks));
@@ -84,12 +81,10 @@ public class StatisticsFragment extends Fragment implements StatisticsContract.V
         }
     }
 
-    @Override
     public void showLoadingStatisticsError() {
         mStatisticsTV.setText(getResources().getString(R.string.statistics_error));
     }
 
-    @Override
     public boolean isActive() {
         return isAdded();
     }

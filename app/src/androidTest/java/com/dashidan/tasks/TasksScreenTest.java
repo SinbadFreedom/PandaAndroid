@@ -23,7 +23,6 @@ import android.widget.ListView;
 import com.dashidan.Injection;
 import com.dashidan.R;
 import com.dashidan.TestUtils;
-import com.dashidan.data.source.TasksDataSource;
 import com.dashidan.util.EspressoIdlingResource;
 
 import org.hamcrest.Description;
@@ -95,7 +94,7 @@ public class TasksScreenTest {
                     super.beforeActivityLaunched();
                     // Doing this in @Before generates a race condition.
                     Injection.provideTasksRepository(ApplicationProvider.getApplicationContext())
-                        .deleteAllTasks();
+                            .deleteAllTasks();
                 }
             };
 

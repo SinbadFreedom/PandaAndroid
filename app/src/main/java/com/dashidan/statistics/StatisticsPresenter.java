@@ -16,8 +16,8 @@
 
 package com.dashidan.statistics;
 
+import com.dashidan.LoadTasksCallback;
 import com.dashidan.data.Task;
-import com.dashidan.data.source.TasksDataSource;
 import com.dashidan.data.source.TasksRepository;
 import com.dashidan.util.EspressoIdlingResource;
 
@@ -31,21 +31,20 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Listens to user actions from the UI ({@link StatisticsFragment}), retrieves the data and updates
  * the UI as required.
  */
-public class StatisticsPresenter implements StatisticsContract.Presenter {
+public class StatisticsPresenter {
 
     private final TasksRepository mTasksRepository;
 
-    private final StatisticsContract.View mStatisticsView;
+    private final StatisticsFragment mStatisticsView;
 
     public StatisticsPresenter(@NonNull TasksRepository tasksRepository,
-                               @NonNull StatisticsContract.View statisticsView) {
+                               @NonNull StatisticsFragment statisticsView) {
         mTasksRepository = checkNotNull(tasksRepository, "tasksRepository cannot be null");
         mStatisticsView = checkNotNull(statisticsView, "StatisticsView cannot be null!");
 
         mStatisticsView.setPresenter(this);
     }
 
-    @Override
     public void start() {
         loadStatistics();
     }
@@ -57,8 +56,8 @@ public class StatisticsPresenter implements StatisticsContract.Presenter {
         // that the app is busy until the response is handled.
         EspressoIdlingResource.increment(); // App is busy until further notice
 
-        mTasksRepository.getTasks(new TasksDataSource.LoadTasksCallback() {
-            @Override
+        mTasksRepository.getTasks(new LoadTasksCallback() {
+
             public void onTasksLoaded(List<Task> tasks) {
                 int activeTasks = 0;
                 int completedTasks = 0;
@@ -87,7 +86,6 @@ public class StatisticsPresenter implements StatisticsContract.Presenter {
                 mStatisticsView.showStatistics(activeTasks, completedTasks);
             }
 
-            @Override
             public void onDataNotAvailable() {
                 // The view may not be able to handle UI updates anymore
                 if (!mStatisticsView.isActive()) {

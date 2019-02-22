@@ -17,7 +17,6 @@
 package com.dashidan.data.source.local;
 
 import com.dashidan.data.Task;
-import com.dashidan.data.source.TasksDataSource;
 import com.dashidan.util.SingleExecutors;
 
 import org.junit.After;

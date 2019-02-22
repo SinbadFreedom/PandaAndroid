@@ -137,7 +137,7 @@ public final class Task {
 
     public boolean isEmpty() {
         return Strings.isNullOrEmpty(mTitle) &&
-               Strings.isNullOrEmpty(mDescription);
+                Strings.isNullOrEmpty(mDescription);
     }
 
     @Override
@@ -146,8 +146,8 @@ public final class Task {
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
         return Objects.equal(mId, task.mId) &&
-               Objects.equal(mTitle, task.mTitle) &&
-               Objects.equal(mDescription, task.mDescription);
+                Objects.equal(mTitle, task.mTitle) &&
+                Objects.equal(mDescription, task.mDescription);
     }
 
     @Override

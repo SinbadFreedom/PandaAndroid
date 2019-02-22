@@ -17,7 +17,6 @@
 package com.dashidan.tasks;
 
 import com.dashidan.data.Task;
-import com.dashidan.data.source.TasksDataSource;
 import com.dashidan.data.source.TasksRepository;
 import com.google.common.collect.Lists;
 

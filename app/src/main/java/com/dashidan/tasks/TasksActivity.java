@@ -78,8 +78,7 @@ public class TasksActivity extends AppCompatActivity {
 
         // Load previously saved state, if available.
         if (savedInstanceState != null) {
-            TasksFilterType currentFiltering =
-                    (TasksFilterType) savedInstanceState.getSerializable(CURRENT_FILTERING_KEY);
+            int currentFiltering = (int) savedInstanceState.getSerializable(CURRENT_FILTERING_KEY);
             mTasksPresenter.setFiltering(currentFiltering);
         }
     }

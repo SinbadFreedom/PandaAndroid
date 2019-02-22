@@ -18,9 +18,10 @@ package com.dashidan.tasks;
 
 import android.app.Activity;
 
+import com.dashidan.ConstValue;
+import com.dashidan.LoadTasksCallback;
 import com.dashidan.addedittask.AddEditTaskActivity;
 import com.dashidan.data.Task;
-import com.dashidan.data.source.TasksDataSource;
 import com.dashidan.data.source.TasksRepository;
 import com.dashidan.util.EspressoIdlingResource;
 
@@ -35,29 +36,28 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Listens to user actions from the UI ({@link TasksFragment}), retrieves the data and updates the
  * UI as required.
  */
-public class TasksPresenter implements TasksContract.Presenter {
+public class TasksPresenter {
 
     private final TasksRepository mTasksRepository;
 
-    private final TasksContract.View mTasksView;
+    private final TasksFragment mTasksView;
 
-    private TasksFilterType mCurrentFiltering = TasksFilterType.ALL_TASKS;
+    //    private TasksFilterType mCurrentFiltering = TasksFilterType.ALL_TASKS;
+    private static int mCurrentFiltering = ConstValue.ALL_TASKS;
 
     private boolean mFirstLoad = true;
 
-    public TasksPresenter(@NonNull TasksRepository tasksRepository, @NonNull TasksContract.View tasksView) {
+    public TasksPresenter(@NonNull TasksRepository tasksRepository, @NonNull TasksFragment tasksView) {
         mTasksRepository = checkNotNull(tasksRepository, "tasksRepository cannot be null");
         mTasksView = checkNotNull(tasksView, "tasksView cannot be null!");
 
         mTasksView.setPresenter(this);
     }
 
-    @Override
     public void start() {
         loadTasks(false);
     }
 
-    @Override
     public void result(int requestCode, int resultCode) {
         // If a task was successfully added, show snackbar
         if (AddEditTaskActivity.REQUEST_ADD_TASK == requestCode && Activity.RESULT_OK == resultCode) {
@@ -65,7 +65,6 @@ public class TasksPresenter implements TasksContract.Presenter {
         }
     }
 
-    @Override
     public void loadTasks(boolean forceUpdate) {
         // Simplification for sample: a network reload will be forced on first load.
         loadTasks(forceUpdate || mFirstLoad, true);
@@ -73,7 +72,7 @@ public class TasksPresenter implements TasksContract.Presenter {
     }
 
     /**
-     * @param forceUpdate   Pass in true to refresh the data in the {@link TasksDataSource}
+     * @param forceUpdate   Pass in true to refresh the data in the TasksDataSource
      * @param showLoadingUI Pass in true to display a loading icon in the UI
      */
     private void loadTasks(boolean forceUpdate, final boolean showLoadingUI) {
@@ -88,7 +87,7 @@ public class TasksPresenter implements TasksContract.Presenter {
         // that the app is busy until the response is handled.
         EspressoIdlingResource.increment(); // App is busy until further notice
 
-        mTasksRepository.getTasks(new TasksDataSource.LoadTasksCallback() {
+        mTasksRepository.getTasks(new LoadTasksCallback() {
             @Override
             public void onTasksLoaded(List<Task> tasks) {
                 List<Task> tasksToShow = new ArrayList<Task>();
@@ -103,15 +102,15 @@ public class TasksPresenter implements TasksContract.Presenter {
                 // We filter the tasks based on the requestType
                 for (Task task : tasks) {
                     switch (mCurrentFiltering) {
-                        case ALL_TASKS:
+                        case ConstValue.ALL_TASKS:
                             tasksToShow.add(task);
                             break;
-                        case ACTIVE_TASKS:
+                        case ConstValue.ACTIVE_TASKS:
                             if (task.isActive()) {
                                 tasksToShow.add(task);
                             }
                             break;
-                        case COMPLETED_TASKS:
+                        case ConstValue.COMPLETED_TASKS:
                             if (task.isCompleted()) {
                                 tasksToShow.add(task);
                             }
@@ -157,10 +156,10 @@ public class TasksPresenter implements TasksContract.Presenter {
 
     private void showFilterLabel() {
         switch (mCurrentFiltering) {
-            case ACTIVE_TASKS:
+            case ConstValue.ACTIVE_TASKS:
                 mTasksView.showActiveFilterLabel();
                 break;
-            case COMPLETED_TASKS:
+            case ConstValue.COMPLETED_TASKS:
                 mTasksView.showCompletedFilterLabel();
                 break;
             default:
@@ -171,10 +170,10 @@ public class TasksPresenter implements TasksContract.Presenter {
 
     private void processEmptyTasks() {
         switch (mCurrentFiltering) {
-            case ACTIVE_TASKS:
+            case ConstValue.ACTIVE_TASKS:
                 mTasksView.showNoActiveTasks();
                 break;
-            case COMPLETED_TASKS:
+            case ConstValue.COMPLETED_TASKS:
                 mTasksView.showNoCompletedTasks();
                 break;
             default:
@@ -183,18 +182,15 @@ public class TasksPresenter implements TasksContract.Presenter {
         }
     }
 
-    @Override
     public void addNewTask() {
         mTasksView.showAddTask();
     }
 
-    @Override
     public void openTaskDetails(@NonNull Task requestedTask) {
         checkNotNull(requestedTask, "requestedTask cannot be null!");
         mTasksView.showTaskDetailsUi(requestedTask.getId());
     }
 
-    @Override
     public void completeTask(@NonNull Task completedTask) {
         checkNotNull(completedTask, "completedTask cannot be null!");
         mTasksRepository.completeTask(completedTask);
@@ -202,7 +198,6 @@ public class TasksPresenter implements TasksContract.Presenter {
         loadTasks(false, false);
     }
 
-    @Override
     public void activateTask(@NonNull Task activeTask) {
         checkNotNull(activeTask, "activeTask cannot be null!");
         mTasksRepository.activateTask(activeTask);
@@ -210,7 +205,6 @@ public class TasksPresenter implements TasksContract.Presenter {
         loadTasks(false, false);
     }
 
-    @Override
     public void clearCompletedTasks() {
         mTasksRepository.clearCompletedTasks();
         mTasksView.showCompletedTasksCleared();
@@ -219,18 +213,12 @@ public class TasksPresenter implements TasksContract.Presenter {
 
     /**
      * Sets the current task filtering type.
-     *
-     * @param requestType Can be {@link TasksFilterType#ALL_TASKS},
-     *                    {@link TasksFilterType#COMPLETED_TASKS}, or
-     *                    {@link TasksFilterType#ACTIVE_TASKS}
      */
-    @Override
-    public void setFiltering(TasksFilterType requestType) {
+    public void setFiltering(int requestType) {
         mCurrentFiltering = requestType;
     }
 
-    @Override
-    public TasksFilterType getFiltering() {
+    public int getFiltering() {
         return mCurrentFiltering;
     }
 
