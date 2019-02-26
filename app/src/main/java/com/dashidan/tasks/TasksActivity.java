@@ -16,37 +16,27 @@
 
 package com.dashidan.tasks;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.dashidan.Injection;
 import com.dashidan.R;
 import com.dashidan.util.ActivityUtils;
-import com.dashidan.util.EspressoIdlingResource;
 import com.google.android.material.navigation.NavigationView;
 
-import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.test.espresso.IdlingResource;
 
 public class TasksActivity extends AppCompatActivity {
 
-    private static final String CURRENT_FILTERING_KEY = "CURRENT_FILTERING_KEY";
-
     private DrawerLayout mDrawerLayout;
-
-    private TasksPresenter mTasksPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tasks_act);
-
         // Set up the toolbar.
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -70,23 +60,6 @@ public class TasksActivity extends AppCompatActivity {
             ActivityUtils.addFragmentToActivity(
                     getSupportFragmentManager(), tasksFragment, R.id.contentFrame);
         }
-
-        // Create the presenter
-        mTasksPresenter = new TasksPresenter(
-                Injection.provideTasksRepository(getApplicationContext()), tasksFragment);
-
-        // Load previously saved state, if available.
-        if (savedInstanceState != null) {
-//            int currentFiltering = (int) savedInstanceState.getSerializable(CURRENT_FILTERING_KEY);
-//            mTasksPresenter.setFiltering(currentFiltering);
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-//        outState.putSerializable(CURRENT_FILTERING_KEY, mTasksPresenter.getFiltering());
-
-        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -105,28 +78,10 @@ public class TasksActivity extends AppCompatActivity {
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
-//                        switch (menuItem.getItemId()) {
-//                            case R.id.list_navigation_menu_item:
-//                                // Do nothing, we're already on that screen
-//                                break;
-//                            case R.id.statistics_navigation_menu_item:
-////                                Intent intent =
-////                                        new Intent(TasksActivity.this, StatisticsActivity.class);
-////                                startActivity(intent);
-//                                break;
-//                            default:
-//                                break;
-//                        }
-                        // Close the navigation drawer when an item is selected.
                         menuItem.setChecked(true);
                         mDrawerLayout.closeDrawers();
                         return true;
                     }
                 });
-    }
-
-    @VisibleForTesting
-    public IdlingResource getCountingIdlingResource() {
-        return EspressoIdlingResource.getIdlingResource();
     }
 }
