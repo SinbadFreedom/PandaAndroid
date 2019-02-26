@@ -38,12 +38,12 @@ public class TasksRemoteDataSource {
 
     private static final int SERVICE_LATENCY_IN_MILLIS = 5000;
 
-    private final static Map<String, Task> TASKS_SERVICE_DATA;
+    private final static Map<String, String> TASKS_SERVICE_DATA;
 
     static {
         TASKS_SERVICE_DATA = new LinkedHashMap<>(2);
-        addTask("Build tower in Pisa", "Ground looks good, no foundation work required.");
-        addTask("Finish bridge in Tacoma", "Found awesome girders at half the cost!");
+        addTask("Build tower in Pisa");
+        addTask("Finish bridge in Tacoma");
     }
 
     public static TasksRemoteDataSource getInstance() {
@@ -57,9 +57,9 @@ public class TasksRemoteDataSource {
     private TasksRemoteDataSource() {
     }
 
-    private static void addTask(String title, String description) {
-        Task newTask = new Task(title, description);
-        TASKS_SERVICE_DATA.put(newTask.getId(), newTask);
+    private static void addTask(String newTask) {
+//        Task newTask = new Task(title, description);
+        TASKS_SERVICE_DATA.put(newTask, newTask);
     }
 
     /**
@@ -83,52 +83,52 @@ public class TasksRemoteDataSource {
      * source implementation, this would be fired if the server can't be contacted or the server
      * returns an error.
      */
-    public void getTask(@NonNull String taskId, final @NonNull GetTaskCallback callback) {
-        final Task task = TASKS_SERVICE_DATA.get(taskId);
+//    public void getTask(@NonNull String taskId, final @NonNull GetTaskCallback callback) {
+//        final Task task = TASKS_SERVICE_DATA.get(taskId);
+//
+//        // Simulate network by delaying the execution.
+//        Handler handler = new Handler();
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                callback.onTaskLoaded(task);
+//            }
+//        }, SERVICE_LATENCY_IN_MILLIS);
+//    }
 
-        // Simulate network by delaying the execution.
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                callback.onTaskLoaded(task);
-            }
-        }, SERVICE_LATENCY_IN_MILLIS);
+//    public void saveTask(@NonNull Task task) {
+//        TASKS_SERVICE_DATA.put(task.getId(), task);
+//    }
+
+    public void completeTask(@NonNull String task) {
+//        Task completedTask = new Task(task.getTitle(), task.getDescription(), task.getId(), true);
+        TASKS_SERVICE_DATA.put(task, task);
     }
 
-    public void saveTask(@NonNull Task task) {
-        TASKS_SERVICE_DATA.put(task.getId(), task);
+//    public void completeTask(@NonNull String taskId) {
+//        // Not required for the remote data source because the {@link TasksRepository} handles
+//        // converting from a {@code taskId} to a {@link task} using its cached data.
+//    }
+
+    public void activateTask(@NonNull String task) {
+//        Task activeTask = new Task(task.getTitle(), task.getDescription(), task.getId());
+        TASKS_SERVICE_DATA.put(task, task);
     }
 
-    public void completeTask(@NonNull Task task) {
-        Task completedTask = new Task(task.getTitle(), task.getDescription(), task.getId(), true);
-        TASKS_SERVICE_DATA.put(task.getId(), completedTask);
-    }
+//    public void activateTask(@NonNull String taskId) {
+//        // Not required for the remote data source because the {@link TasksRepository} handles
+//        // converting from a {@code taskId} to a {@link task} using its cached data.
+//    }
 
-    public void completeTask(@NonNull String taskId) {
-        // Not required for the remote data source because the {@link TasksRepository} handles
-        // converting from a {@code taskId} to a {@link task} using its cached data.
-    }
-
-    public void activateTask(@NonNull Task task) {
-        Task activeTask = new Task(task.getTitle(), task.getDescription(), task.getId());
-        TASKS_SERVICE_DATA.put(task.getId(), activeTask);
-    }
-
-    public void activateTask(@NonNull String taskId) {
-        // Not required for the remote data source because the {@link TasksRepository} handles
-        // converting from a {@code taskId} to a {@link task} using its cached data.
-    }
-
-    public void clearCompletedTasks() {
-        Iterator<Map.Entry<String, Task>> it = TASKS_SERVICE_DATA.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry<String, Task> entry = it.next();
-            if (entry.getValue().isCompleted()) {
-                it.remove();
-            }
-        }
-    }
+//    public void clearCompletedTasks() {
+//        Iterator<Map.Entry<String, Task>> it = TASKS_SERVICE_DATA.entrySet().iterator();
+//        while (it.hasNext()) {
+//            Map.Entry<String, Task> entry = it.next();
+//            if (entry.getValue().isCompleted()) {
+//                it.remove();
+//            }
+//        }
+//    }
 
     public void refreshTasks() {
         // Not required because the {@link TasksRepository} handles the logic of refreshing the

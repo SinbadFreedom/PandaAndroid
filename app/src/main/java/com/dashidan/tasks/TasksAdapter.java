@@ -1,5 +1,6 @@
 package com.dashidan.tasks;
 
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,20 +17,21 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class TasksAdapter extends BaseAdapter {
 
-    private List<Task> mTasks;
-    private TaskItemListener mItemListener;
+//    private List<Task> mTasks;
+    private List<String> mTasks;
+//    private TaskItemListener mItemListener;
 
-    public TasksAdapter(List<Task> tasks, TaskItemListener itemListener) {
+    public TasksAdapter(List<String> tasks) {
         setList(tasks);
-        mItemListener = itemListener;
+//        mItemListener = itemListener;
     }
 
-    public void replaceData(List<Task> tasks) {
+    public void replaceData(List<String> tasks) {
         setList(tasks);
         notifyDataSetChanged();
     }
 
-    private void setList(List<Task> tasks) {
+    private void setList(List<String> tasks) {
         mTasks = checkNotNull(tasks);
     }
 
@@ -39,7 +41,7 @@ public class TasksAdapter extends BaseAdapter {
     }
 
     @Override
-    public Task getItem(int i) {
+    public String getItem(int i) {
         return mTasks.get(i);
     }
 
@@ -56,41 +58,45 @@ public class TasksAdapter extends BaseAdapter {
             rowView = inflater.inflate(R.layout.task_item, viewGroup, false);
         }
 
-        final Task task = getItem(i);
-
+        final String task = getItem(i);
         TextView titleTV = (TextView) rowView.findViewById(R.id.title);
-        titleTV.setText(task.getTitleForList());
+        titleTV.setText(Html.fromHtml(task));
 
-        CheckBox completeCB = (CheckBox) rowView.findViewById(R.id.complete);
 
-        // Active/completed task UI
-        completeCB.setChecked(task.isCompleted());
-        if (task.isCompleted()) {
-            rowView.setBackgroundDrawable(viewGroup.getContext()
-                    .getResources().getDrawable(R.drawable.list_completed_touch_feedback));
-        } else {
-            rowView.setBackgroundDrawable(viewGroup.getContext()
-                    .getResources().getDrawable(R.drawable.touch_feedback));
-        }
+//        TextView titleTV = (TextView) rowView.findViewById(R.id.title);
+//        titleTV.setText(task.getTitleForList());
 
-        completeCB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!task.isCompleted()) {
-                    mItemListener.onCompleteTaskClick(task);
-                } else {
-                    mItemListener.onActivateTaskClick(task);
-                }
-            }
-        });
+//        CheckBox completeCB = (CheckBox) rowView.findViewById(R.id.complete);
 
-        rowView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mItemListener.onTaskClick(task);
-            }
-        });
+//        // Active/completed task UI
+//        completeCB.setChecked(task.isCompleted());
+//        if (task.isCompleted()) {
+//            rowView.setBackgroundDrawable(viewGroup.getContext()
+//                    .getResources().getDrawable(R.drawable.list_completed_touch_feedback));
+//        } else {
+//            rowView.setBackgroundDrawable(viewGroup.getContext()
+//                    .getResources().getDrawable(R.drawable.touch_feedback));
+//        }
+//
+//        completeCB.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (!task.isCompleted()) {
+//                    mItemListener.onCompleteTaskClick(task);
+//                } else {
+//                    mItemListener.onActivateTaskClick(task);
+//                }
+//            }
+//        });
+
+//        rowView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                mItemListener.onTaskClick(task);
+//            }
+//        });
 
         return rowView;
+//        return textView;
     }
 }

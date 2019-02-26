@@ -34,7 +34,7 @@ public class FakeTasksRemoteDataSource {
 
     private static FakeTasksRemoteDataSource INSTANCE;
 
-    private static final Map<String, Task> TASKS_SERVICE_DATA = new LinkedHashMap<>();
+    private static final Map<String, String> TASKS_SERVICE_DATA = new LinkedHashMap<>();
 
     // Prevent direct instantiation.
     private FakeTasksRemoteDataSource() {
@@ -52,37 +52,37 @@ public class FakeTasksRemoteDataSource {
     }
 
     public void getTask(@NonNull String taskId, @NonNull GetTaskCallback callback) {
-        Task task = TASKS_SERVICE_DATA.get(taskId);
+        String task = TASKS_SERVICE_DATA.get(taskId);
         callback.onTaskLoaded(task);
     }
 
-    public void saveTask(@NonNull Task task) {
-        TASKS_SERVICE_DATA.put(task.getId(), task);
+    public void saveTask(@NonNull String task) {
+        TASKS_SERVICE_DATA.put(task, task);
     }
 
-    public void completeTask(@NonNull Task task) {
-        Task completedTask = new Task(task.getTitle(), task.getDescription(), task.getId(), true);
-        TASKS_SERVICE_DATA.put(task.getId(), completedTask);
-    }
+//    public void completeTask(@NonNull String task) {
+////        String completedTask = new Task(task.getTitle(), task.getDescription(), task.getId(), true);
+//        TASKS_SERVICE_DATA.put(task, task);
+//    }
 
     public void completeTask(@NonNull String taskId) {
         // Not required for the remote data source.
     }
 
-    public void activateTask(@NonNull Task task) {
-        Task activeTask = new Task(task.getTitle(), task.getDescription(), task.getId());
-        TASKS_SERVICE_DATA.put(task.getId(), activeTask);
-    }
+//    public void activateTask(@NonNull String task) {
+////        Task activeTask = new Task(task.getTitle(), task.getDescription(), task.getId());
+//        TASKS_SERVICE_DATA.put(task, task);
+//    }
 
     public void activateTask(@NonNull String taskId) {
         // Not required for the remote data source.
     }
 
     public void clearCompletedTasks() {
-        Iterator<Map.Entry<String, Task>> it = TASKS_SERVICE_DATA.entrySet().iterator();
+        Iterator<Map.Entry<String, String>> it = TASKS_SERVICE_DATA.entrySet().iterator();
         while (it.hasNext()) {
-            Map.Entry<String, Task> entry = it.next();
-            if (entry.getValue().isCompleted()) {
+            Map.Entry<String, String> entry = it.next();
+            if (entry != null) {
                 it.remove();
             }
         }
@@ -102,9 +102,9 @@ public class FakeTasksRemoteDataSource {
     }
 
     @VisibleForTesting
-    public void addTasks(Task... tasks) {
-        for (Task task : tasks) {
-            TASKS_SERVICE_DATA.put(task.getId(), task);
+    public void addTasks(String... tasks) {
+        for (String task : tasks) {
+            TASKS_SERVICE_DATA.put(task, task);
         }
     }
 }

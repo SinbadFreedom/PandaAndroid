@@ -27,7 +27,7 @@ import androidx.room.RoomDatabase;
 /**
  * The Room Database that contains the Task table.
  */
-@Database(entities = {Task.class}, version = 1)
+@Database(entities = {Task.class}, version = 1, exportSchema = false)
 public abstract class ToDoDatabase extends RoomDatabase {
 
     private static ToDoDatabase INSTANCE;

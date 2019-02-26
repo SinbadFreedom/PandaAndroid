@@ -22,7 +22,6 @@ import android.view.MenuItem;
 
 import com.dashidan.Injection;
 import com.dashidan.R;
-import com.dashidan.statistics.StatisticsActivity;
 import com.dashidan.util.ActivityUtils;
 import com.dashidan.util.EspressoIdlingResource;
 import com.google.android.material.navigation.NavigationView;
@@ -78,14 +77,14 @@ public class TasksActivity extends AppCompatActivity {
 
         // Load previously saved state, if available.
         if (savedInstanceState != null) {
-            int currentFiltering = (int) savedInstanceState.getSerializable(CURRENT_FILTERING_KEY);
-            mTasksPresenter.setFiltering(currentFiltering);
+//            int currentFiltering = (int) savedInstanceState.getSerializable(CURRENT_FILTERING_KEY);
+//            mTasksPresenter.setFiltering(currentFiltering);
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putSerializable(CURRENT_FILTERING_KEY, mTasksPresenter.getFiltering());
+//        outState.putSerializable(CURRENT_FILTERING_KEY, mTasksPresenter.getFiltering());
 
         super.onSaveInstanceState(outState);
     }
@@ -106,18 +105,18 @@ public class TasksActivity extends AppCompatActivity {
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        switch (menuItem.getItemId()) {
-                            case R.id.list_navigation_menu_item:
-                                // Do nothing, we're already on that screen
-                                break;
-                            case R.id.statistics_navigation_menu_item:
-                                Intent intent =
-                                        new Intent(TasksActivity.this, StatisticsActivity.class);
-                                startActivity(intent);
-                                break;
-                            default:
-                                break;
-                        }
+//                        switch (menuItem.getItemId()) {
+//                            case R.id.list_navigation_menu_item:
+//                                // Do nothing, we're already on that screen
+//                                break;
+//                            case R.id.statistics_navigation_menu_item:
+////                                Intent intent =
+////                                        new Intent(TasksActivity.this, StatisticsActivity.class);
+////                                startActivity(intent);
+//                                break;
+//                            default:
+//                                break;
+//                        }
                         // Close the navigation drawer when an item is selected.
                         menuItem.setChecked(true);
                         mDrawerLayout.closeDrawers();

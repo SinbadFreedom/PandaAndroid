@@ -14,79 +14,111 @@
   ~ limitations under the License.
   -->
 
-<com.dashidan.tasks.ScrollChildSwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/refresh_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<!--<com.dashidan.tasks.ScrollChildSwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:id="@+id/refresh_layout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent">-->
 
-    <RelativeLayout
-        android:id="@+id/tasksContainer"
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/tasksContainer"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:clickable="true"-->
+        <!--android:orientation="vertical">-->
+
+        <!--<LinearLayout-->
+            <!--android:id="@+id/tasksLL"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="vertical">-->
+
+            <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+                <!--&lt;!&ndash;android:id="@+id/filteringLabel"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:textAppearance="@style/TextAppearance.AppCompat.Title"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:gravity="center_vertical"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_marginLeft="@dimen/list_item_padding"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_marginRight="@dimen/list_item_padding"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_marginTop="@dimen/activity_vertical_margin"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_marginBottom="@dimen/activity_vertical_margin" />&ndash;&gt;-->
+
+            <!--<ListView-->
+                <!--android:id="@+id/tasks_list"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content" />-->
+        <!--</LinearLayout>-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/noTasks"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerInParent="true"
+    android:orientation="vertical"
+    android:visibility="visible">
+
+    <!--<LinearLayout-->
+    <!--android:id="@+id/noTasks"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_centerInParent="true"-->
+    <!--android:orientation="vertical">-->
+
+    <!--<ListView-->
+    <!--android:id="@+id/tasks_list"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent">-->
+
+    <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+    <!--&lt;!&ndash;android:id="@+id/task_textView"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:text="TextView" />&ndash;&gt;-->
+    <!--</ListView>-->
+
+    <!--<ImageView-->
+    <!--android:id="@+id/noTasksIcon"-->
+    <!--android:layout_width="48dp"-->
+    <!--android:layout_height="48dp"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:src="@drawable/ic_assignment_turned_in_24dp" />-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/noTasksMain"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:layout_marginBottom="@dimen/list_item_padding"-->
+    <!--android:text="@string/no_tasks_all" />-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/noTasksAdd"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="48dp"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:background="@drawable/touch_feedback"-->
+    <!--android:gravity="center"-->
+    <!--android:text="@string/no_tasks_add" />-->
+
+
+    <WebView
+        android:id="@+id/task_web_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clickable="true"
-        android:orientation="vertical">
+        android:visibility="visible">
 
-        <LinearLayout
-            android:id="@+id/tasksLL"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+    </WebView>
 
-            <TextView
-                android:id="@+id/filteringLabel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:gravity="center_vertical"
-                android:layout_marginLeft="@dimen/list_item_padding"
-                android:layout_marginRight="@dimen/list_item_padding"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:layout_marginBottom="@dimen/activity_vertical_margin" />
+    <!--<TextView-->
+        <!--android:id="@+id/textView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@android:dimen/thumbnail_height"-->
+        <!--android:text="TextView11111111121212121212122232421343324543eaws"-->
+        <!--android:textSize="36sp"-->
+        <!--android:visibility="visible"-->
+        <!--tools:text="@string/no_tasks_completed" />-->
 
-            <ListView
-                android:id="@+id/tasks_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/noTasks"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:orientation="vertical">
-
-            <WebView
-                android:id="@+id/doc_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="visible" />
-
-            <!--<ImageView-->
-                <!--android:id="@+id/noTasksIcon"-->
-                <!--android:layout_width="48dp"-->
-                <!--android:layout_height="48dp"-->
-                <!--android:layout_gravity="center"-->
-                <!--android:src="@drawable/ic_assignment_turned_in_24dp" />-->
-
-            <!--<TextView-->
-                <!--android:id="@+id/noTasksMain"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="center"-->
-                <!--android:layout_marginBottom="@dimen/list_item_padding"-->
-                <!--android:text="@string/no_tasks_all" />-->
-
-            <!--<TextView-->
-                <!--android:id="@+id/noTasksAdd"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="48dp"-->
-                <!--android:layout_gravity="center"-->
-                <!--android:background="@drawable/touch_feedback"-->
-                <!--android:gravity="center"-->
-                <!--android:text="@string/no_tasks_add" />-->
-
-        </LinearLayout>
-    </RelativeLayout>
-</com.dashidan.tasks.ScrollChildSwipeRefreshLayout>
+</LinearLayout>
+    <!--</RelativeLayout>-->
+<!--</com.dashidan.tasks.ScrollChildSwipeRefreshLayout>-->
 

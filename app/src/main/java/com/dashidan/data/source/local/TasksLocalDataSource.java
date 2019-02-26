@@ -64,25 +64,25 @@ public class TasksLocalDataSource {
      * or the table is empty.
      */
     public void getTasks(@NonNull final LoadTasksCallback callback) {
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                final List<Task> tasks = mTasksDao.getTasks();
-                mAppExecutors.mainThread().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (tasks.isEmpty()) {
-                            // This will be called if the table is new or just empty.
-                            callback.onDataNotAvailable();
-                        } else {
-                            callback.onTasksLoaded(tasks);
-                        }
-                    }
-                });
-            }
-        };
+//        Runnable runnable = new Runnable() {
+//            @Override
+//            public void run() {
+//                final List<String> tasks = mTasksDao.getTasks();
+//                mAppExecutors.mainThread().execute(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        if (tasks.isEmpty()) {
+//                            // This will be called if the table is new or just empty.
+//                            callback.onDataNotAvailable();
+//                        } else {
+//                            callback.onTasksLoaded(tasks);
+//                        }
+//                    }
+//                });
+//            }
+//        };
 
-        mAppExecutors.diskIO().execute(runnable);
+//        mAppExecutors.diskIO().execute(runnable);
     }
 
     /**
@@ -90,36 +90,36 @@ public class TasksLocalDataSource {
      * found.
      */
     public void getTask(@NonNull final String taskId, @NonNull final GetTaskCallback callback) {
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                final Task task = mTasksDao.getTaskById(taskId);
-
-                mAppExecutors.mainThread().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (task != null) {
-                            callback.onTaskLoaded(task);
-                        } else {
-                            callback.onDataNotAvailable();
-                        }
-                    }
-                });
-            }
-        };
-
-        mAppExecutors.diskIO().execute(runnable);
+//        Runnable runnable = new Runnable() {
+//            @Override
+//            public void run() {
+//                final Task task = mTasksDao.getTaskById(taskId);
+//
+//                mAppExecutors.mainThread().execute(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        if (task != null) {
+//                            callback.onTaskLoaded(task);
+//                        } else {
+//                            callback.onDataNotAvailable();
+//                        }
+//                    }
+//                });
+//            }
+//        };
+//
+//        mAppExecutors.diskIO().execute(runnable);
     }
 
-    public void saveTask(@NonNull final Task task) {
-        checkNotNull(task);
-        Runnable saveRunnable = new Runnable() {
-            @Override
-            public void run() {
-                mTasksDao.insertTask(task);
-            }
-        };
-        mAppExecutors.diskIO().execute(saveRunnable);
+    public void saveTask(@NonNull final String task) {
+//        checkNotNull(task);
+//        Runnable saveRunnable = new Runnable() {
+//            @Override
+//            public void run() {
+//                mTasksDao.insertTask(task);
+//            }
+//        };
+//        mAppExecutors.diskIO().execute(saveRunnable);
     }
 
     public void completeTask(@NonNull final Task task) {

@@ -34,17 +34,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.dashidan.taskdetail.TaskDetailActivity" />
-        <activity android:name="com.dashidan.addedittask.AddEditTaskActivity" />
-        <activity
-            android:name="com.dashidan.statistics.StatisticsActivity"
-            android:parentActivityName=".tasks.TasksActivity"
-            tools:ignore="UnusedAttribute">
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".tasks.TasksActivity" />
-        </activity>
+        <!--<activity android:name="com.dashidan.taskdetail.TaskDetailActivity" />-->
+        <!--<activity android:name="com.dashidan.addedittask.AddEditTaskActivity" />-->
+        <!--<activity-->
+            <!--android:name="com.dashidan.statistics.StatisticsActivity"-->
+            <!--android:parentActivityName=".tasks.TasksActivity"-->
+            <!--tools:ignore="UnusedAttribute">-->
+            <!--&lt;!&ndash; Parent activity meta-data to support 4.0 and lower &ndash;&gt;-->
+            <!--<meta-data-->
+                <!--android:name="android.support.PARENT_ACTIVITY"-->
+                <!--android:value=".tasks.TasksActivity" />-->
+        <!--</activity>-->
     </application>
 
 </manifest>

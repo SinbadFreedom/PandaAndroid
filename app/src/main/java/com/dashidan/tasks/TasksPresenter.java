@@ -20,7 +20,6 @@ import android.app.Activity;
 
 import com.dashidan.ConstValue;
 import com.dashidan.LoadTasksCallback;
-import com.dashidan.addedittask.AddEditTaskActivity;
 import com.dashidan.data.Task;
 import com.dashidan.data.source.TasksRepository;
 import com.dashidan.util.EspressoIdlingResource;
@@ -43,7 +42,7 @@ public class TasksPresenter {
     private final TasksFragment mTasksView;
 
     //    private TasksFilterType mCurrentFiltering = TasksFilterType.ALL_TASKS;
-    private static int mCurrentFiltering = ConstValue.ALL_TASKS;
+//    private static int mCurrentFiltering = ConstValue.ALL_TASKS;
 
     private boolean mFirstLoad = true;
 
@@ -51,7 +50,7 @@ public class TasksPresenter {
         mTasksRepository = checkNotNull(tasksRepository, "tasksRepository cannot be null");
         mTasksView = checkNotNull(tasksView, "tasksView cannot be null!");
 
-        mTasksView.setPresenter(this);
+//        mTasksView.setPresenter(this);
     }
 
     public void start() {
@@ -60,9 +59,9 @@ public class TasksPresenter {
 
     public void result(int requestCode, int resultCode) {
         // If a task was successfully added, show snackbar
-        if (AddEditTaskActivity.REQUEST_ADD_TASK == requestCode && Activity.RESULT_OK == resultCode) {
+//        if (AddEditTaskActivity.REQUEST_ADD_TASK == requestCode && Activity.RESULT_OK == resultCode) {
             mTasksView.showSuccessfullySavedMessage();
-        }
+//        }
     }
 
     public void loadTasks(boolean forceUpdate) {
@@ -76,9 +75,9 @@ public class TasksPresenter {
      * @param showLoadingUI Pass in true to display a loading icon in the UI
      */
     private void loadTasks(boolean forceUpdate, final boolean showLoadingUI) {
-        if (showLoadingUI) {
-            mTasksView.setLoadingIndicator(true);
-        }
+//        if (showLoadingUI) {
+//            mTasksView.setLoadingIndicator(true);
+//        }
         if (forceUpdate) {
             mTasksRepository.refreshTasks();
         }
@@ -89,8 +88,8 @@ public class TasksPresenter {
 
         mTasksRepository.getTasks(new LoadTasksCallback() {
             @Override
-            public void onTasksLoaded(List<Task> tasks) {
-                List<Task> tasksToShow = new ArrayList<Task>();
+            public void onTasksLoaded(List<String> tasks) {
+                List<String> tasksToShow = new ArrayList<String>();
 
                 // This callback may be called twice, once for the cache and once for loading
                 // the data from the server API, so we check before decrementing, otherwise
@@ -100,35 +99,35 @@ public class TasksPresenter {
                 }
 
                 // We filter the tasks based on the requestType
-                for (Task task : tasks) {
-                    switch (mCurrentFiltering) {
-                        case ConstValue.ALL_TASKS:
+                for (String task : tasks) {
+//                    switch (mCurrentFiltering) {
+//                        case ConstValue.ALL_TASKS:
                             tasksToShow.add(task);
-                            break;
-                        case ConstValue.ACTIVE_TASKS:
-                            if (task.isActive()) {
-                                tasksToShow.add(task);
-                            }
-                            break;
-                        case ConstValue.COMPLETED_TASKS:
-                            if (task.isCompleted()) {
-                                tasksToShow.add(task);
-                            }
-                            break;
-                        default:
-                            tasksToShow.add(task);
-                            break;
-                    }
+//                            break;
+//                        case ConstValue.ACTIVE_TASKS:
+////                            if (task.isActive()) {
+//                                tasksToShow.add(task);
+//                            }
+//                            break;
+//                        case ConstValue.COMPLETED_TASKS:
+//                            if (task.isCompleted()) {
+//                                tasksToShow.add(task);
+//                            }
+//                            break;
+//                        default:
+//                            tasksToShow.add(task);
+//                            break;
+//                    }
                 }
                 // The view may not be able to handle UI updates anymore
                 if (!mTasksView.isActive()) {
                     return;
                 }
-                if (showLoadingUI) {
-                    mTasksView.setLoadingIndicator(false);
-                }
+//                if (showLoadingUI) {
+//                    mTasksView.setLoadingIndicator(false);
+//                }
 
-                processTasks(tasksToShow);
+//                processTasks(tasksToShow);
             }
 
             @Override
@@ -142,63 +141,63 @@ public class TasksPresenter {
         });
     }
 
-    private void processTasks(List<Task> tasks) {
-        if (tasks.isEmpty()) {
-            // Show a message indicating there are no tasks for that filter type.
-            processEmptyTasks();
-        } else {
-            // Show the list of tasks
-            mTasksView.showTasks(tasks);
-            // Set the filter label's text.
-            showFilterLabel();
-        }
-    }
+//    private void processTasks(List<String> tasks) {
+//        if (tasks.isEmpty()) {
+//            // Show a message indicating there are no tasks for that filter type.
+//            processEmptyTasks();
+//        } else {
+//            // Show the list of tasks
+//            mTasksView.showTasks(tasks);
+////            // Set the filter label's text.
+////            showFilterLabel();
+//        }
+//    }
 
-    private void showFilterLabel() {
-        switch (mCurrentFiltering) {
-            case ConstValue.ACTIVE_TASKS:
-                mTasksView.showActiveFilterLabel();
-                break;
-            case ConstValue.COMPLETED_TASKS:
-                mTasksView.showCompletedFilterLabel();
-                break;
-            default:
-                mTasksView.showAllFilterLabel();
-                break;
-        }
-    }
+//    private void showFilterLabel() {
+//        switch (mCurrentFiltering) {
+//            case ConstValue.ACTIVE_TASKS:
+//                mTasksView.showActiveFilterLabel();
+//                break;
+//            case ConstValue.COMPLETED_TASKS:
+//                mTasksView.showCompletedFilterLabel();
+//                break;
+//            default:
+//                mTasksView.showAllFilterLabel();
+//                break;
+//        }
+//    }
 
-    private void processEmptyTasks() {
-        switch (mCurrentFiltering) {
-            case ConstValue.ACTIVE_TASKS:
-                mTasksView.showNoActiveTasks();
-                break;
-            case ConstValue.COMPLETED_TASKS:
-                mTasksView.showNoCompletedTasks();
-                break;
-            default:
-                mTasksView.showNoTasks();
-                break;
-        }
-    }
+//    private void processEmptyTasks() {
+////        switch (mCurrentFiltering) {
+////            case ConstValue.ACTIVE_TASKS:
+////                mTasksView.showNoActiveTasks();
+////                break;
+////            case ConstValue.COMPLETED_TASKS:
+////                mTasksView.showNoCompletedTasks();
+////                break;
+////            default:
+//                mTasksView.showNoTasks();
+////                break;
+////        }
+//    }
 
-    public void addNewTask() {
-        mTasksView.showAddTask();
-    }
+//    public void addNewTask() {
+//        mTasksView.showAddTask();
+//    }
+//
+//    public void openTaskDetails(@NonNull String requestedTask) {
+//        checkNotNull(requestedTask, "requestedTask cannot be null!");
+//        mTasksView.showTaskDetailsUi(requestedTask);
+//    }
 
-    public void openTaskDetails(@NonNull Task requestedTask) {
-        checkNotNull(requestedTask, "requestedTask cannot be null!");
-        mTasksView.showTaskDetailsUi(requestedTask.getId());
-    }
-
-    public void completeTask(@NonNull Task completedTask) {
+    public void completeTask(@NonNull String completedTask) {
         checkNotNull(completedTask, "completedTask cannot be null!");
         mTasksRepository.completeTask(completedTask);
         mTasksView.showTaskMarkedComplete();
         loadTasks(false, false);
     }
 
-    public void activateTask(@NonNull Task activeTask) {
+    public void activateTask(@NonNull String activeTask) {
         checkNotNull(activeTask, "activeTask cannot be null!");
         mTasksRepository.activateTask(activeTask);
         mTasksView.showTaskMarkedActive();
@@ -211,15 +210,15 @@ public class TasksPresenter {
         loadTasks(false, false);
     }
 
-    /**
-     * Sets the current task filtering type.
-     */
-    public void setFiltering(int requestType) {
-        mCurrentFiltering = requestType;
-    }
-
-    public int getFiltering() {
-        return mCurrentFiltering;
-    }
+//    /**
+//     * Sets the current task filtering type.
+//     */
+//    public void setFiltering(int requestType) {
+//        mCurrentFiltering = requestType;
+//    }
+//
+//    public int getFiltering() {
+//        return mCurrentFiltering;
+//    }
 
 }

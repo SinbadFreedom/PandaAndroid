@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface LoadTasksCallback {
 
-    void onTasksLoaded(List<Task> tasks);
+    void onTasksLoaded(List<String> tasks);
 
     void onDataNotAvailable();
 }

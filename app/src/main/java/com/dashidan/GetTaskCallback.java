@@ -4,7 +4,7 @@ import com.dashidan.data.Task;
 
 public interface GetTaskCallback {
 
-    void onTaskLoaded(Task task);
+    void onTaskLoaded(String task);
 
     void onDataNotAvailable();
 }
