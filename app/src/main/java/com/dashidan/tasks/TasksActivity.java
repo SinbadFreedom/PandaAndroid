@@ -17,7 +17,11 @@
 package com.dashidan.tasks;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.webkit.WebView;
 
 import com.dashidan.R;
 import com.dashidan.util.ActivityUtils;
@@ -51,6 +55,12 @@ public class TasksActivity extends AppCompatActivity {
         if (navigationView != null) {
             setupDrawerContent(navigationView);
         }
+
+        // add catalog throw webview
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View headerViewer = inflater.inflate(R.layout.nav_header, navigationView);
+        WebView headerWebView = headerViewer.findViewById(R.id.header_web_view);
+        headerWebView.loadUrl("https://dashidan.com/and_doc/python3/catalog.html");
 
         TasksFragment tasksFragment =
                 (TasksFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
