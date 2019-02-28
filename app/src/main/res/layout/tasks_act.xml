@@ -50,15 +50,20 @@
                 tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
     </LinearLayout>
 
-    <!-- Navigation Drawer -->
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="600dp"
+        android:layout_gravity="start">
+
+        <TextView
+            android:id="@+id/task_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary"
+            android:visibility="visible" />
+    </LinearLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>

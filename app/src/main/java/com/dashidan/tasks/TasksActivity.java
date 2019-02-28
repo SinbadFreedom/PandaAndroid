@@ -20,19 +20,35 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.TextView;
 
 import com.dashidan.R;
+import com.dashidan.http.NetworkFragment;
 import com.dashidan.util.ActivityUtils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.common.io.LineReader;
+
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringBufferInputStream;
+import java.io.StringReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentActivity;
 
-public class TasksActivity extends AppCompatActivity {
+public class TasksActivity extends FragmentActivity {
 
     private DrawerLayout mDrawerLayout;
+//    private NavigationView navigationView;
+    private NetworkFragment mNetworkFragment;
+    TextView mTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,13 +60,9 @@ public class TasksActivity extends AppCompatActivity {
         mDrawerLayout.setStatusBarBackground(R.color.colorPrimaryDark);
         // 禁止手势滑动
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-
-        // add catalog throw webview
-        LayoutInflater inflater = LayoutInflater.from(this);
-        View headerViewer = inflater.inflate(R.layout.nav_header, navigationView);
-        WebView headerWebView = headerViewer.findViewById(R.id.header_web_view);
-        headerWebView.loadUrl("https://dashidan.com/and_doc/python3/catalog.html");
+        // drawer
+        mTextView = findViewById(R.id.task_text_view);
+        mNetworkFragment = NetworkFragment.getInstance(getSupportFragmentManager(), "https://dashidan.com/and_doc/python3/catalog.md");
 
         TasksFragment tasksFragment =
                 (TasksFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
@@ -74,4 +86,15 @@ public class TasksActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void updateFromDownload(String result) {
+        mTextView.setText(result);
+    }
+
+    public void finishDownloading() {
+        if (mNetworkFragment != null) {
+            mNetworkFragment.cancelDownload();
+        }
+    }
 }
+
