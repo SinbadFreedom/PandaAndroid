@@ -17,38 +17,27 @@
 package com.dashidan.tasks;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.webkit.WebView;
-import android.widget.TextView;
+import android.widget.ListView;
 
 import com.dashidan.R;
 import com.dashidan.http.NetworkFragment;
 import com.dashidan.util.ActivityUtils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.navigation.NavigationView;
-import com.google.common.io.LineReader;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringBufferInputStream;
-import java.io.StringReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.ArrayList;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentActivity;
 
 public class TasksActivity extends FragmentActivity {
 
+    public static final String LOG_TAG = "dashidan.com";
+
     private DrawerLayout mDrawerLayout;
-//    private NavigationView navigationView;
     private NetworkFragment mNetworkFragment;
-    TextView mTextView;
+    private TaskAdapter taskAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +50,6 @@ public class TasksActivity extends FragmentActivity {
         // 禁止手势滑动
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         // drawer
-        mTextView = findViewById(R.id.task_text_view);
         mNetworkFragment = NetworkFragment.getInstance(getSupportFragmentManager(), "https://dashidan.com/and_doc/python3/catalog.md");
 
         TasksFragment tasksFragment =
@@ -73,6 +61,9 @@ public class TasksActivity extends FragmentActivity {
                     getSupportFragmentManager(), tasksFragment, R.id.contentFrame);
         }
 
+        taskAdapter = new TaskAdapter(mDrawerLayout, tasksFragment);
+        ListView listView = (ListView) findViewById(R.id.tasks_list);
+        listView.setAdapter(taskAdapter);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add_task);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -87,8 +78,8 @@ public class TasksActivity extends FragmentActivity {
         });
     }
 
-    public void updateFromDownload(String result) {
-        mTextView.setText(result);
+    public void updateFromDownload(ArrayList<String> result) {
+        taskAdapter.setContents(result);
     }
 
     public void finishDownloading() {

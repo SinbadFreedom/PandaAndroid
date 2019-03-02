@@ -48,7 +48,7 @@ public class TasksFragment extends Fragment {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.tasks_frag, container, false);
         mWebView = root.findViewById(R.id.task_web_view);
-        mWebView.loadUrl("https://dashidan.com/and_doc/python3/2.html");
+        this.showWebPage(1);
         //覆盖WebView默认使用第三方或系统默认浏览器打开网页的行为，使网页用WebView打开
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
@@ -58,6 +58,7 @@ public class TasksFragment extends Fragment {
                 return true;
             }
         });
+
 
         mWebView.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -79,6 +80,10 @@ public class TasksFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.tasks_fragment_menu, menu);
+    }
+
+    public void showWebPage(int pageNum) {
+        mWebView.loadUrl("https://dashidan.com/and_doc/python3/" + pageNum + ".html");
     }
 
 }
