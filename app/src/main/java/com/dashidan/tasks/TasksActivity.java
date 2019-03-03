@@ -17,12 +17,19 @@
 package com.dashidan.tasks;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.dashidan.R;
 import com.dashidan.http.NetworkFragment;
 import com.dashidan.util.ActivityUtils;
+import com.dashidan.conf.Conf;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -33,15 +40,18 @@ import androidx.fragment.app.FragmentActivity;
 
 public class TasksActivity extends FragmentActivity {
 
-    public static final String LOG_TAG = "dashidan.com";
-
     private DrawerLayout mDrawerLayout;
     private NetworkFragment mNetworkFragment;
     private TaskAdapter taskAdapter;
+    private TasksFragment tasksFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.tasks_act);
 
         // Set up the navigation drawer.
@@ -50,10 +60,9 @@ public class TasksActivity extends FragmentActivity {
         // 禁止手势滑动
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         // drawer
-        mNetworkFragment = NetworkFragment.getInstance(getSupportFragmentManager(), "https://dashidan.com/and_doc/python3/catalog.md");
+        mNetworkFragment = NetworkFragment.getInstance(getSupportFragmentManager(), Conf.URL_CATALOG);
 
-        TasksFragment tasksFragment =
-                (TasksFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
+        tasksFragment = (TasksFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
         if (tasksFragment == null) {
             // Create the fragment
             tasksFragment = TasksFragment.newInstance();
@@ -64,6 +73,35 @@ public class TasksActivity extends FragmentActivity {
         taskAdapter = new TaskAdapter(mDrawerLayout, tasksFragment);
         ListView listView = (ListView) findViewById(R.id.tasks_list);
         listView.setAdapter(taskAdapter);
+        /** 点击标题事件*/
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (view instanceof LinearLayout) {
+                    TextView textView = (TextView) ((LinearLayout) view).getChildAt(0);
+                    String str = (String) textView.getText();
+                    str = str.trim();
+                    String[] strarr = str.split(" ");
+                    if (strarr.length > 0) {
+                        String index = strarr[0];
+                        String[] numArr = index.split("\\.");
+                        if (numArr.length > 0) {
+                            /** 获取文章编号*/
+                            String num = numArr[0];
+                            /** 切换文章内容*/
+                            tasksFragment.showWebPage(Integer.parseInt(num));
+                        } else {
+                            Log.e(Conf.LOG_TAG, " numArr.length == 0 " + str);
+                        }
+                    } else {
+                        Log.e(Conf.LOG_TAG, " strarr.length == 0 " + str);
+                    }
+                } else {
+                    Log.e(Conf.LOG_TAG, "view instanceof LinearLayout false position " + position);
+                }
+                mDrawerLayout.closeDrawers();
+            }
+        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add_task);
         fab.setOnClickListener(new View.OnClickListener() {

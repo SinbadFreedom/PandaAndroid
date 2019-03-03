@@ -59,7 +59,6 @@ public class TasksFragment extends Fragment {
             }
         });
 
-
         mWebView.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
