@@ -27,9 +27,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.dashidan.R;
+import com.dashidan.conf.Conf;
 import com.dashidan.http.NetworkFragment;
 import com.dashidan.util.ActivityUtils;
-import com.dashidan.conf.Conf;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -74,7 +74,7 @@ public class TasksActivity extends FragmentActivity {
         ListView listView = (ListView) findViewById(R.id.tasks_list);
         listView.setAdapter(taskAdapter);
         /** 点击标题事件*/
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (view instanceof LinearLayout) {

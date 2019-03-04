@@ -19,14 +19,13 @@ package com.dashidan.tasks;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.dashidan.R;
+import com.dashidan.conf.Conf;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -76,13 +75,8 @@ public class TasksFragment extends Fragment {
         return root;
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.tasks_fragment_menu, menu);
-    }
-
     public void showWebPage(int pageNum) {
-        mWebView.loadUrl("https://dashidan.com/and_doc/python3/" + pageNum + ".html");
+        mWebView.loadUrl(Conf.URL_DOC_CONTENT_PRE + pageNum + ".html");
     }
 
 }
