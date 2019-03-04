@@ -57,7 +57,7 @@ public class TasksActivity extends FragmentActivity {
         // Set up the navigation drawer.
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerLayout.setStatusBarBackground(R.color.colorPrimaryDark);
-        // 禁止手势滑动
+        /** 禁止手势滑动*/
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         // drawer
         mNetworkFragment = NetworkFragment.getInstance(getSupportFragmentManager(), Conf.URL_CATALOG);

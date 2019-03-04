@@ -23,10 +23,10 @@ import javax.net.ssl.HttpsURLConnection;
  */
 public class DownloadTask extends AsyncTask<String, Integer, Result> {
 
-    Context mCallback;
+    Context context;
 
-    public DownloadTask(Context mCallback) {
-        this.mCallback = mCallback;
+    public DownloadTask(Context context) {
+        this.context = context;
     }
 
     /**
@@ -34,13 +34,13 @@ public class DownloadTask extends AsyncTask<String, Integer, Result> {
      */
     @Override
     protected void onPreExecute() {
-        if (mCallback != null) {
-            NetworkInfo networkInfo = NetUtil.getActiveNetworkInfo(mCallback);
+        if (context != null) {
+            NetworkInfo networkInfo = NetUtil.getActiveNetworkInfo(context);
             if (networkInfo == null || !networkInfo.isConnected() ||
                     (networkInfo.getType() != ConnectivityManager.TYPE_WIFI
                             && networkInfo.getType() != ConnectivityManager.TYPE_MOBILE)) {
                 // If no connectivity, cancel task and update Callback with null data.
-                ((TasksActivity) mCallback).updateFromDownload(null);
+                ((TasksActivity) context).updateFromDownload(null);
                 cancel(true);
             }
         }
@@ -74,13 +74,13 @@ public class DownloadTask extends AsyncTask<String, Integer, Result> {
      */
     @Override
     protected void onPostExecute(Result result) {
-        if (result != null && mCallback != null) {
+        if (result != null && context != null) {
             if (result.mException != null) {
                 Log.e(Conf.LOG_TAG, result.mException.getMessage());
             } else if (result.mResultValue != null) {
-                ((TasksActivity) mCallback).updateFromDownload(result.mResultValue);
+                ((TasksActivity) context).updateFromDownload(result.mResultValue);
             }
-            ((TasksActivity) mCallback).finishDownloading();
+            ((TasksActivity) context).finishDownloading();
         }
     }
 

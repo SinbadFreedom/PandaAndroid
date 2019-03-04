@@ -48,11 +48,11 @@ public class TasksFragment extends Fragment {
         View root = inflater.inflate(R.layout.tasks_frag, container, false);
         mWebView = root.findViewById(R.id.task_web_view);
         this.showWebPage(1);
-        //覆盖WebView默认使用第三方或系统默认浏览器打开网页的行为，使网页用WebView打开
+        /** 覆盖WebView默认使用第三方或系统默认浏览器打开网页的行为，使网页用WebView打开*/
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                //返回值是true的时候控制去WebView打开，为false调用系统浏览器或第三方浏览器
+                /** 返回值是true的时候控制去WebView打开，为false调用系统浏览器或第三方浏览器*/
                 view.loadUrl(url);
                 return true;
             }
@@ -62,9 +62,9 @@ public class TasksFragment extends Fragment {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                    //按返回键操作并且能回退网页
+                    /** 按返回键操作并且能回退网页*/
                     if (keyCode == KeyEvent.KEYCODE_BACK && mWebView.canGoBack()) {
-                        //后退
+                        /** 后退*/
                         mWebView.goBack();
                         return true;
                     }
