@@ -93,21 +93,16 @@ public class TaskAdapter extends BaseAdapter {
         switch (rank) {
             case 0:
             case 1:
+                /** 1级标题*/
                 textView.setTypeface(Typeface.DEFAULT_BOLD);
-                textView.setTextSize(18);
-                break;
-            case 2:
-                textView.setTypeface(Typeface.DEFAULT);
                 textView.setTextSize(16);
                 break;
+            case 2:
             case 3:
-                Typeface tf = Typeface.create(textView.getTypeface(), Typeface.ITALIC);
-                textView.setTypeface(tf);
-                textView.setTextSize(14);
-                break;
             case 4:
-                tf = Typeface.create(textView.getTypeface(), Typeface.ITALIC);
-                textView.setTextSize(12);
+                /** 2,3,4级标题*/
+                textView.setTypeface(Typeface.DEFAULT);
+                textView.setTextSize(16);
                 break;
             default:
                 Log.e(Conf.LOG_TAG, " setTextViewFontType rank " + rank);

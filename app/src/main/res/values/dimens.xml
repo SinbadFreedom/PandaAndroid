@@ -22,5 +22,6 @@
     <dimen name="list_item_padding">1dp</dimen>
 
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="bottom_nav_height">52dp</dimen>
 
 </resources>

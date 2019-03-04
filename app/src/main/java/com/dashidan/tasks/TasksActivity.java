@@ -18,6 +18,7 @@ package com.dashidan.tasks;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -30,10 +31,11 @@ import com.dashidan.R;
 import com.dashidan.conf.Conf;
 import com.dashidan.http.NetworkFragment;
 import com.dashidan.util.ActivityUtils;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentActivity;
@@ -57,8 +59,8 @@ public class TasksActivity extends FragmentActivity {
         // Set up the navigation drawer.
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerLayout.setStatusBarBackground(R.color.colorPrimaryDark);
-        /** 禁止手势滑动*/
-        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+//        /** 禁止手势滑动*/
+//        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         // drawer
         mNetworkFragment = NetworkFragment.getInstance(getSupportFragmentManager(), Conf.URL_CATALOG);
 
@@ -97,17 +99,8 @@ public class TasksActivity extends FragmentActivity {
             }
         });
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add_task);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mDrawerLayout.isDrawerVisible(GravityCompat.START)) {
-                    mDrawerLayout.closeDrawers();
-                } else {
-                    mDrawerLayout.openDrawer(GravityCompat.START);
-                }
-            }
-        });
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
     public void updateFromDownload(ArrayList<String> result) {
@@ -119,5 +112,28 @@ public class TasksActivity extends FragmentActivity {
             mNetworkFragment.cancelDownload();
         }
     }
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.navigation_home:
+                    //TODO
+                    return true;
+                case R.id.navigation_dashboard:
+                    if (mDrawerLayout.isDrawerVisible(GravityCompat.START)) {
+                        mDrawerLayout.closeDrawers();
+                    } else {
+                        mDrawerLayout.openDrawer(GravityCompat.START);
+                    }
+                    return true;
+                case R.id.navigation_notifications:
+                    //TODO
+                    return true;
+            }
+            return false;
+        }
+    };
 }
 
