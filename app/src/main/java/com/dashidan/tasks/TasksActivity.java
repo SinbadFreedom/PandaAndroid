@@ -81,20 +81,14 @@ public class TasksActivity extends FragmentActivity {
                     TextView textView = (TextView) ((LinearLayout) view).getChildAt(0);
                     String str = (String) textView.getText();
                     str = str.trim();
-                    String[] strarr = str.split(" ");
-                    if (strarr.length > 0) {
-                        String index = strarr[0];
-                        String[] numArr = index.split("\\.");
-                        if (numArr.length > 0) {
-                            /** 获取文章编号*/
-                            String num = numArr[0];
-                            /** 切换文章内容*/
-                            tasksFragment.showWebPage(Integer.parseInt(num));
-                        } else {
-                            Log.e(Conf.LOG_TAG, " numArr.length == 0 " + str);
-                        }
+                    String[] numArr = str.split("\\.");
+                    if (numArr.length > 0) {
+                        /** 获取文章编号*/
+                        String num = numArr[0];
+                        /** 切换文章内容*/
+                        tasksFragment.showWebPage(Integer.parseInt(num));
                     } else {
-                        Log.e(Conf.LOG_TAG, " strarr.length == 0 " + str);
+                        Log.e(Conf.LOG_TAG, " numArr.length == 0 " + str);
                     }
                 } else {
                     Log.e(Conf.LOG_TAG, "view instanceof LinearLayout false position " + position);
