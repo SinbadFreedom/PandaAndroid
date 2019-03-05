@@ -21,11 +21,14 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.dashidan.R;
 import com.dashidan.conf.Conf;
+import com.dashidan.http.JavaScriptWebViewClient;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -47,7 +50,16 @@ public class TasksFragment extends Fragment {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.tasks_frag, container, false);
         mWebView = root.findViewById(R.id.task_web_view);
-        this.showWebPage(1);
+
+        /** 修复webview 加载的网页中包含的js不生效*/
+        mWebView.setWebChromeClient(new WebChromeClient());
+        /** 修复加载外部css和js不生效的问题*/
+        mWebView.setWebViewClient(new JavaScriptWebViewClient());
+        WebSettings webSettings = mWebView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setDomStorageEnabled(true);
+
+        this.showWebPage(Conf.URL_HOME_PAGE_NUM);
         /** 覆盖WebView默认使用第三方或系统默认浏览器打开网页的行为，使网页用WebView打开*/
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
@@ -75,7 +87,7 @@ public class TasksFragment extends Fragment {
         return root;
     }
 
-    public void showWebPage(int pageNum) {
+    public void showWebPage(String pageNum) {
         mWebView.loadUrl(Conf.URL_DOC_CONTENT_PRE + pageNum + ".html");
     }
 

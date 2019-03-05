@@ -88,7 +88,7 @@ public class TasksActivity extends FragmentActivity {
                         /** 获取文章编号*/
                         String num = numArr[0];
                         /** 切换文章内容*/
-                        tasksFragment.showWebPage(Integer.parseInt(num));
+                        tasksFragment.showWebPage(num);
                     } else {
                         Log.e(Conf.LOG_TAG, " numArr.length == 0 " + str);
                     }
