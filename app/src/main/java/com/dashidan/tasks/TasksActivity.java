@@ -119,7 +119,10 @@ public class TasksActivity extends FragmentActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    //TODO
+                    /** 网页后退*/
+                    if (tasksFragment.getmWebView() != null && tasksFragment.getmWebView().canGoBack()) {
+                        tasksFragment.getmWebView().goBack();
+                    }
                     return true;
                 case R.id.navigation_dashboard:
                     if (mDrawerLayout.isDrawerVisible(GravityCompat.START)) {
@@ -129,7 +132,10 @@ public class TasksActivity extends FragmentActivity {
                     }
                     return true;
                 case R.id.navigation_notifications:
-                    //TODO
+                    /** 网页前进*/
+                    if (tasksFragment.getmWebView() != null && tasksFragment.getmWebView().canGoForward()) {
+                        tasksFragment.getmWebView().goForward();
+                    }
                     return true;
             }
             return false;
@@ -141,6 +147,12 @@ public class TasksActivity extends FragmentActivity {
      */
     @Override
     public void onBackPressed() {
+        if (mDrawerLayout.isDrawerVisible(GravityCompat.START)) {
+            mDrawerLayout.closeDrawers();
+            /** 按返回键时如果开启了滑动屏，则关闭*/
+            return;
+        }
+
         if (System.currentTimeMillis() - firstPressedTime < Conf.TOAST_EXIT_SHOW_TIME) {
             super.onBackPressed();
         } else {

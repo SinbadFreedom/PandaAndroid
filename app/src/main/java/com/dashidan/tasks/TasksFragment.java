@@ -89,4 +89,7 @@ public class TasksFragment extends Fragment {
         mWebView.loadUrl(Conf.URL_DOC_CONTENT_PRE + pageNum + ".html");
     }
 
+    public WebView getmWebView() {
+        return mWebView;
+    }
 }
