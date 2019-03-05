@@ -42,7 +42,7 @@ public class TaskAdapter extends BaseAdapter {
                     Log.e(Conf.LOG_TAG, " temp.length != 2 str " + str + " titleNum " + titleNum);
                 }
                 String titleContent = str.replace(titleNum + " ", "");
-                Title title = new Title(titleNum, titleContent);
+                Title title = new Title(titleNum, titleContent, str);
                 titles.add(title);
             } else {
                 Log.e(Conf.LOG_TAG, "setContents strarr.length == 0 str " + str);

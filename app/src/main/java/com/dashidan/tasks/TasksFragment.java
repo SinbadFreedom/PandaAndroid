@@ -58,7 +58,7 @@ public class TasksFragment extends Fragment {
         webSettings.setJavaScriptEnabled(true);
         webSettings.setDomStorageEnabled(true);
 
-        this.showWebPage(Conf.URL_HOME_PAGE_NUM);
+        this.showWebPage(Conf.URL_HOME_PAGE_NUM, null);
         /** 覆盖WebView默认使用第三方或系统默认浏览器打开网页的行为，使网页用WebView打开*/
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
@@ -85,8 +85,12 @@ public class TasksFragment extends Fragment {
         return root;
     }
 
-    public void showWebPage(String pageNum) {
-        mWebView.loadUrl(Conf.URL_DOC_CONTENT_PRE + pageNum + ".html");
+    public void showWebPage(String pageNum, String anchor) {
+        if (null == anchor) {
+            mWebView.loadUrl(Conf.URL_DOC_CONTENT_PRE + pageNum + ".html");
+        } else {
+            mWebView.loadUrl(Conf.URL_DOC_CONTENT_PRE + pageNum + ".html#" + anchor);
+        }
     }
 
     public WebView getmWebView() {

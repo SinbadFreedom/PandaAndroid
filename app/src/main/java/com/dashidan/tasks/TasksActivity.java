@@ -87,8 +87,19 @@ public class TasksActivity extends FragmentActivity {
                     if (numArr.length > 0) {
                         /** 获取文章编号*/
                         String num = numArr[0];
+                        /** 获取完整标题*/
+                        Title title = taskAdapter.getItem(position);
+                        String fullTitle = title.getFullTitle().trim();
+                        /**
+                         * 获取标题id
+                         * 与showdown转化的html标题id规则统一，目前是去掉了空格和“.”， 变小写
+                         * 有可能有特殊字符过滤，后续添加。
+                         */
+                        String anchor = fullTitle.replaceAll("\\.", "")
+                                .replaceAll(" ", "")
+                                .toLowerCase();
                         /** 切换文章内容*/
-                        tasksFragment.showWebPage(num);
+                        tasksFragment.showWebPage(num, anchor);
                     } else {
                         Log.e(Conf.LOG_TAG, " numArr.length == 0 " + str);
                     }
