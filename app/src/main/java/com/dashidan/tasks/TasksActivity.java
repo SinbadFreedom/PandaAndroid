@@ -20,12 +20,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dashidan.R;
 import com.dashidan.conf.Conf;
@@ -46,6 +45,8 @@ public class TasksActivity extends FragmentActivity {
     private NetworkFragment mNetworkFragment;
     private TaskAdapter taskAdapter;
     private TasksFragment tasksFragment;
+
+    private long firstPressedTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,5 +135,19 @@ public class TasksActivity extends FragmentActivity {
             return false;
         }
     };
+
+    /**
+     * 后退键处理,按一次出提示文字，再按一次退出
+     */
+    @Override
+    public void onBackPressed() {
+        if (System.currentTimeMillis() - firstPressedTime < Conf.TOAST_EXIT_SHOW_TIME) {
+            super.onBackPressed();
+        } else {
+            Toast.makeText(this, getResources().getString(R.string.toast_press_to_exit),
+                    Toast.LENGTH_SHORT).show();
+            firstPressedTime = System.currentTimeMillis();
+        }
+    }
 }
 

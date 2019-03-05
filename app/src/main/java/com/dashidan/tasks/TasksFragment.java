@@ -17,7 +17,6 @@
 package com.dashidan.tasks;
 
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,20 +69,19 @@ public class TasksFragment extends Fragment {
             }
         });
 
-        mWebView.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                    /** 按返回键操作并且能回退网页*/
-                    if (keyCode == KeyEvent.KEYCODE_BACK && mWebView.canGoBack()) {
-                        /** 后退*/
-                        mWebView.goBack();
-                        return true;
-                    }
-                }
-                return false;
-            }
-        });
+//        mWebView.setOnKeyListener(new View.OnKeyListener() {
+//            @Override
+//            public boolean onKey(View v, int keyCode, KeyEvent event) {
+//                if (event.getAction() == KeyEvent.ACTION_DOWN) {
+//                    /** 按返回键操作并且能回退网页*/
+//                    if (keyCode == KeyEvent.KEYCODE_BACK && mWebView.canGoBack()) {
+//                        /** 后退*/
+//                        mWebView.goBack();
+//                    }
+//                }
+//                return false;
+//            }
+//        });
         return root;
     }
 
