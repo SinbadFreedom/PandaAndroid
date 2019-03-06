@@ -60,4 +60,5 @@
     <string name="toast_press_to_exit">再按一次退出</string>
     <string name="this_is_the_first">这是第一篇</string>
     <string name="this_is_the_last">这是最后一篇</string>
+    <string name="translate">原文</string>
 </resources>

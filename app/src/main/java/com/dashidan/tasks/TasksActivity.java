@@ -47,6 +47,8 @@ public class TasksActivity extends FragmentActivity {
     private TasksFragment tasksFragment;
 
     private long firstPressedTime;
+    /** 语言状态*/
+    public static boolean showCnfile = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +64,7 @@ public class TasksActivity extends FragmentActivity {
 //        /** 禁止手势滑动*/
 //        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         // drawer
-        mNetworkFragment = NetworkFragment.getInstance(getSupportFragmentManager(), Conf.URL_CATALOG);
+        mNetworkFragment = NetworkFragment.getInstance(getSupportFragmentManager());
 
         tasksFragment = (TasksFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
         if (tasksFragment == null) {
@@ -89,15 +91,12 @@ public class TasksActivity extends FragmentActivity {
                         String num = numArr[0];
                         /** 获取完整标题*/
                         Title title = taskAdapter.getItem(position);
-                        String fullTitle = title.getFullTitle().trim();
                         /**
                          * 获取标题id
                          * 与showdown转化的html标题id规则统一，目前是去掉了空格和“.”， 变小写
                          * 有可能有特殊字符过滤，后续添加。
                          */
-                        String anchor = fullTitle.replaceAll("\\.", "")
-                                .replaceAll(" ", "")
-                                .toLowerCase();
+                        String anchor = title.getFullTitle().trim().split(" ")[0];
                         /** 切换文章内容*/
                         tasksFragment.showWebPage(num, anchor);
                     } else {
@@ -145,6 +144,21 @@ public class TasksActivity extends FragmentActivity {
                         mDrawerLayout.closeDrawers();
                     } else {
                         mDrawerLayout.openDrawer(GravityCompat.START);
+                    }
+                    return true;
+                case R.id.navigation_translate:
+                    /** 切换语言状态*/
+                    if (tasksFragment.getmWebView() != null) {
+                        updateCharset();
+                        String catalogUrl;
+                        if (showCnfile) {
+                            catalogUrl = Conf.URL_DOC_CONTENT_PRE + Conf.URL_CATALOG_CN;
+                        } else {
+                            catalogUrl = Conf.URL_DOC_CONTENT_PRE + Conf.URL_CATALOG;
+                        }
+
+                        mNetworkFragment.startDownload(catalogUrl);
+
                     }
                     return true;
                 case R.id.navigation_notifications:
@@ -202,6 +216,12 @@ public class TasksActivity extends FragmentActivity {
                         Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    /** 切换语言状态*/
+    public void updateCharset() {
+        TasksActivity.showCnfile = !TasksActivity.showCnfile;
+        tasksFragment.showWebPage(tasksFragment.getCurrentPageNum(), tasksFragment.getAnchor());
     }
 }
 

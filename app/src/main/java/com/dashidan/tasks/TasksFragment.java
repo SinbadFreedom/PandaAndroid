@@ -36,6 +36,7 @@ public class TasksFragment extends Fragment {
 
     private WebView mWebView;
     private String currentPageNum;
+    private String anchor;
 
     public TasksFragment() {
     }
@@ -87,13 +88,21 @@ public class TasksFragment extends Fragment {
     }
 
     public void showWebPage(String pageNum, String anchor) {
-        if (null == anchor) {
-            mWebView.loadUrl(Conf.URL_DOC_CONTENT_PRE + pageNum + ".html");
-        } else {
-            mWebView.loadUrl(Conf.URL_DOC_CONTENT_PRE + pageNum + ".html#" + anchor);
+        this.currentPageNum = pageNum;
+        this.anchor = anchor;
+
+        if (TasksActivity.showCnfile) {
+            /** 默认显示中文页面*/
+            pageNum = pageNum + ".cn";
         }
 
-        this.currentPageNum = pageNum;
+        String url = Conf.URL_DOC_CONTENT_PRE + pageNum + ".html";
+
+        if (anchor != null) {
+            /** 跳转锚点*/
+            url = url + "#" + anchor;
+        }
+        mWebView.loadUrl(url);
     }
 
     public WebView getmWebView() {
@@ -102,5 +111,9 @@ public class TasksFragment extends Fragment {
 
     public String getCurrentPageNum() {
         return currentPageNum;
+    }
+
+    public String getAnchor() {
+        return anchor;
     }
 }
