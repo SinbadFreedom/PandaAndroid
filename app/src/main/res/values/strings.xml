@@ -54,8 +54,10 @@
     <string name="no_tasks_completed">You have no completed TO-DOs!</string>
     <string name="no_tasks_add">Add a TO-DO item +</string>
     <string name="refresh">Refresh</string>
-    <string name="title_home">Back</string>
+    <string name="title_home">Last</string>
     <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Forward</string>
+    <string name="title_notifications">Next</string>
     <string name="toast_press_to_exit">Press again to exit</string>
+    <string name="this_is_the_first">This is the first</string>
+    <string name="this_is_the_last">This is the last</string>
 </resources>

@@ -54,8 +54,10 @@
     <string name="no_tasks_completed">You have no completed TO-DOs!</string>
     <string name="no_tasks_add">Add a TO-DO item +</string>
     <string name="refresh">Refresh</string>
-    <string name="title_home">后退</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">前进</string>
+    <string name="title_home">上一篇</string>
+    <string name="title_dashboard">目录</string>
+    <string name="title_notifications">下一篇</string>
     <string name="toast_press_to_exit">再按一次退出</string>
+    <string name="this_is_the_first">这是第一篇</string>
+    <string name="this_is_the_last">这是最后一篇</string>
 </resources>

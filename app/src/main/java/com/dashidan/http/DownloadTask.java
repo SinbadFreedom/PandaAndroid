@@ -40,7 +40,7 @@ public class DownloadTask extends AsyncTask<String, Integer, Result> {
                     (networkInfo.getType() != ConnectivityManager.TYPE_WIFI
                             && networkInfo.getType() != ConnectivityManager.TYPE_MOBILE)) {
                 // If no connectivity, cancel task and update Callback with null data.
-                ((TasksActivity) context).updateFromDownload(null);
+//                ((TasksActivity) context).updateFromDownload(null);
                 cancel(true);
             }
         }

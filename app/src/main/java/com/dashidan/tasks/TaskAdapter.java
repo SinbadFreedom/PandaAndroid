@@ -12,6 +12,7 @@ import com.dashidan.R;
 import com.dashidan.conf.Conf;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -19,9 +20,11 @@ public class TaskAdapter extends BaseAdapter {
     ArrayList<Title> titles;
     TasksFragment tasksFragment;
     DrawerLayout mDrawerLayout;
+    HashSet<String> docIndexes;
 
     public TaskAdapter(DrawerLayout mDrawerLayout, TasksFragment tasksFragment) {
         titles = new ArrayList<>();
+        docIndexes = new HashSet<>();
         this.tasksFragment = tasksFragment;
         this.mDrawerLayout = mDrawerLayout;
     }
@@ -34,6 +37,9 @@ public class TaskAdapter extends BaseAdapter {
             String[] strarr = trimStr.split(" ");
             if (strarr.length > 0) {
                 String titleNum = strarr[0];
+                /** 获取文章第一个数字，统计文章总数用*/
+                String docIndex = titleNum.split("\\.")[0];
+                docIndexes.add(docIndex);
                 /** 补充标题前边的空格*/
                 String[] temp = str.split(titleNum);
                 if (temp.length == 2) {
@@ -108,6 +114,10 @@ public class TaskAdapter extends BaseAdapter {
                 Log.e(Conf.LOG_TAG, " setTextViewFontType rank " + rank);
                 break;
         }
+    }
+
+    public int getDocCount() {
+        return this.docIndexes.size();
     }
 }
 

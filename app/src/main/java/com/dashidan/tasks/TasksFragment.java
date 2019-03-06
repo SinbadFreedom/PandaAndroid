@@ -35,6 +35,7 @@ import androidx.fragment.app.Fragment;
 public class TasksFragment extends Fragment {
 
     private WebView mWebView;
+    private String currentPageNum;
 
     public TasksFragment() {
     }
@@ -91,9 +92,15 @@ public class TasksFragment extends Fragment {
         } else {
             mWebView.loadUrl(Conf.URL_DOC_CONTENT_PRE + pageNum + ".html#" + anchor);
         }
+
+        this.currentPageNum = pageNum;
     }
 
     public WebView getmWebView() {
         return mWebView;
+    }
+
+    public String getCurrentPageNum() {
+        return currentPageNum;
     }
 }

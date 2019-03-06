@@ -115,7 +115,11 @@ public class TasksActivity extends FragmentActivity {
     }
 
     public void updateFromDownload(ArrayList<String> result) {
-        taskAdapter.setContents(result);
+        if (null == result) {
+            Log.e(Conf.LOG_TAG, "updateFromDownload null == result");
+        } else {
+            taskAdapter.setContents(result);
+        }
     }
 
     public void finishDownloading() {
@@ -130,12 +134,13 @@ public class TasksActivity extends FragmentActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    /** 网页后退*/
-                    if (tasksFragment.getmWebView() != null && tasksFragment.getmWebView().canGoBack()) {
-                        tasksFragment.getmWebView().goBack();
+                    /** 上一篇*/
+                    if (tasksFragment.getmWebView() != null) {
+                        showLastPage();
                     }
                     return true;
                 case R.id.navigation_dashboard:
+                    /** 目录*/
                     if (mDrawerLayout.isDrawerVisible(GravityCompat.START)) {
                         mDrawerLayout.closeDrawers();
                     } else {
@@ -143,9 +148,9 @@ public class TasksActivity extends FragmentActivity {
                     }
                     return true;
                 case R.id.navigation_notifications:
-                    /** 网页前进*/
-                    if (tasksFragment.getmWebView() != null && tasksFragment.getmWebView().canGoForward()) {
-                        tasksFragment.getmWebView().goForward();
+                    /** 下一篇*/
+                    if (tasksFragment.getmWebView() != null) {
+                        showNextPage();
                     }
                     return true;
             }
@@ -170,6 +175,32 @@ public class TasksActivity extends FragmentActivity {
             Toast.makeText(this, getResources().getString(R.string.toast_press_to_exit),
                     Toast.LENGTH_SHORT).show();
             firstPressedTime = System.currentTimeMillis();
+        }
+    }
+
+    public void showLastPage() {
+        if (tasksFragment.getCurrentPageNum() != null) {
+            int num = Integer.parseInt(tasksFragment.getCurrentPageNum());
+            if (num > 1) {
+                num--;
+                tasksFragment.showWebPage(num + "", null);
+            } else {
+                Toast.makeText(this, getResources().getString(R.string.this_is_the_first),
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    public void showNextPage() {
+        if (tasksFragment.getCurrentPageNum() != null) {
+            int num = Integer.parseInt(tasksFragment.getCurrentPageNum());
+            if (num < taskAdapter.getDocCount()) {
+                num++;
+                tasksFragment.showWebPage(num + "", null);
+            } else {
+                Toast.makeText(this, getResources().getString(R.string.this_is_the_last),
+                        Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }
