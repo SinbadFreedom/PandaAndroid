@@ -61,4 +61,6 @@
     <string name="this_is_the_first">这是第一篇</string>
     <string name="this_is_the_last">这是最后一篇</string>
     <string name="translate">原文</string>
+    <string name="use_menu_button">请从目录选择想查看的文章</string>
+    <string name="home_page">主页</string>
 </resources>

@@ -61,4 +61,6 @@
     <string name="this_is_the_first">This is the first</string>
     <string name="this_is_the_last">This is the last</string>
     <string name="translate">Translate</string>
+    <string name="use_menu_button">Please use menu button</string>
+    <string name="home_page">Home page</string>
 </resources>

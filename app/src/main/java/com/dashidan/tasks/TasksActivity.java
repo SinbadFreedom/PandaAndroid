@@ -16,6 +16,7 @@
 
 package com.dashidan.tasks;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -47,7 +48,9 @@ public class TasksActivity extends FragmentActivity {
     private TasksFragment tasksFragment;
 
     private long firstPressedTime;
-    /** 语言状态*/
+    /**
+     * 语言状态
+     */
     public static boolean showCnfile = true;
 
     @Override
@@ -146,6 +149,14 @@ public class TasksActivity extends FragmentActivity {
                         mDrawerLayout.openDrawer(GravityCompat.START);
                     }
                     return true;
+
+                case R.id.navigation_homepage:
+                    /** 主页*/
+                    if (mDrawerLayout.isDrawerVisible(GravityCompat.START)) {
+                        mDrawerLayout.closeDrawers();
+                    }
+                    tasksFragment.showWebPage(Conf.URL_HOME_PAGE_NUM, null);
+                    return true;
                 case R.id.navigation_translate:
                     /** 切换语言状态*/
                     if (tasksFragment.getmWebView() != null) {
@@ -194,12 +205,18 @@ public class TasksActivity extends FragmentActivity {
 
     public void showLastPage() {
         if (tasksFragment.getCurrentPageNum() != null) {
-            int num = Integer.parseInt(tasksFragment.getCurrentPageNum());
-            if (num > 1) {
-                num--;
-                tasksFragment.showWebPage(num + "", null);
-            } else {
-                Toast.makeText(this, getResources().getString(R.string.this_is_the_first),
+            try {
+                int num = Integer.parseInt(tasksFragment.getCurrentPageNum());
+                if (num > 1) {
+                    num--;
+                    tasksFragment.showWebPage(num + "", null);
+                } else {
+                    Toast.makeText(this, getResources().getString(R.string.this_is_the_first),
+                            Toast.LENGTH_SHORT).show();
+                }
+            } catch (NumberFormatException e) {
+                Log.e(Conf.LOG_TAG, " showLastPage " + tasksFragment.getCurrentPageNum());
+                Toast.makeText(this, getResources().getString(R.string.use_menu_button),
                         Toast.LENGTH_SHORT).show();
             }
         }
@@ -207,18 +224,29 @@ public class TasksActivity extends FragmentActivity {
 
     public void showNextPage() {
         if (tasksFragment.getCurrentPageNum() != null) {
-            int num = Integer.parseInt(tasksFragment.getCurrentPageNum());
-            if (num < taskAdapter.getDocCount()) {
-                num++;
-                tasksFragment.showWebPage(num + "", null);
-            } else {
-                Toast.makeText(this, getResources().getString(R.string.this_is_the_last),
+            try {
+                int num = Integer.parseInt(tasksFragment.getCurrentPageNum());
+                if (num < taskAdapter.getDocCount()) {
+                    num++;
+                    tasksFragment.showWebPage(num + "", null);
+                } else {
+                    Toast.makeText(this, getResources().getString(R.string.this_is_the_last),
+                            Toast.LENGTH_SHORT).show();
+                }
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                Log.e(Conf.LOG_TAG, " showNextPage " + tasksFragment.getCurrentPageNum());
+                Toast.makeText(this, getResources().getString(R.string.use_menu_button),
                         Toast.LENGTH_SHORT).show();
+            } catch (Resources.NotFoundException e) {
+                e.printStackTrace();
             }
         }
     }
 
-    /** 切换语言状态*/
+    /**
+     * 切换语言状态
+     */
     public void updateCharset() {
         TasksActivity.showCnfile = !TasksActivity.showCnfile;
         tasksFragment.showWebPage(tasksFragment.getCurrentPageNum(), tasksFragment.getAnchor());
