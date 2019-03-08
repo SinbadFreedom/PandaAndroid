@@ -84,8 +84,6 @@ public class TasksActivity extends FragmentActivity {
 
         taskAdapter = new TaskAdapter(mDrawerLayout, tasksFragment, this);
 
-        tasksFragment.setTasksActivity(taskAdapter);
-
         ListView listView = (ListView) findViewById(R.id.tasks_list);
         listView.setAdapter(taskAdapter);
         /** 点击标题事件*/

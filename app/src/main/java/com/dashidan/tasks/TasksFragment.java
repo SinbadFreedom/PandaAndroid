@@ -28,7 +28,6 @@ import android.webkit.WebViewClient;
 import com.dashidan.R;
 import com.dashidan.conf.Conf;
 import com.dashidan.http.JavaScriptWebViewClient;
-import com.dashidan.jsbridge.JavaScriptinterface;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -38,8 +37,6 @@ public class TasksFragment extends Fragment {
     private WebView mWebView;
     private String currentPageNum;
     private String anchor;
-
-    private TaskAdapter taskAdapter;
 
     public TasksFragment() {
     }
@@ -73,11 +70,6 @@ public class TasksFragment extends Fragment {
                 return true;
             }
         });
-
-
-        /** webview 加入js桥*/
-        mWebView.addJavascriptInterface(new JavaScriptinterface(taskAdapter), Conf.ANDROID_JS_BRIDGE);
-
 
 //        mWebView.setOnKeyListener(new View.OnKeyListener() {
 //            @Override
@@ -123,9 +115,5 @@ public class TasksFragment extends Fragment {
 
     public String getAnchor() {
         return anchor;
-    }
-
-    public void setTasksActivity(TaskAdapter taskAdapter) {
-        this.taskAdapter = taskAdapter;
     }
 }

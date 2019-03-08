@@ -26,8 +26,6 @@ public class TaskAdapter extends BaseAdapter {
     TasksFragment tasksFragment;
     DrawerLayout mDrawerLayout;
 
-    String anchorTitleId;
-
     Context context;
 
     public TaskAdapter(DrawerLayout mDrawerLayout, TasksFragment tasksFragment, Context context) {
@@ -125,23 +123,10 @@ public class TaskAdapter extends BaseAdapter {
                 Log.e(Conf.LOG_TAG, " setTextViewFontType rank " + title.getTitleRank());
                 break;
         }
-
-        if (this.anchorTitleId != null && this.anchorTitleId.equals(title.getTitleNum().trim())) {
-            /** 锚点标题变色*/
-            textView.setTextColor(ContextCompat.getColor(context, R.color.colorBlueAccent));
-        }
     }
 
     public int getDocCount() {
         return this.docIndexes.size();
-    }
-
-    /**
-     * 设置锚点标题id，做变色处理
-     */
-    public void setAnchorTitleId(String titleId) {
-        this.anchorTitleId = titleId;
-        notifyDataSetChanged();
     }
 }
 
