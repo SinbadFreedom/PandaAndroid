@@ -44,7 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/bottom_nav_height"
                 android:layout_gravity="bottom"
-                android:background="@color/colorPrimary"
+                android:background="@color/colorBluePrimaryCenter"
                 app:itemIconTint="@color/white"
                 app:itemTextColor="@color/white"
                 app:menu="@menu/navigation" />
@@ -63,12 +63,12 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimaryDark"
+            android:background="@color/colorBluePrimaryDark"
             android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:paddingTop="10dp"
                 android:paddingBottom="20dp"
@@ -87,6 +87,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/background_light"
-            android:visibility="visible" />
+            android:visibility="visible"
+            android:divider="@null"
+            android:dividerHeight="0dp" />
     </LinearLayout>
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -173,7 +173,7 @@ public class DownloadTask extends AsyncTask<String, Integer, Result> {
         ArrayList<String> sb = new ArrayList<>();
         String line;
         try {
-            br = new BufferedReader(new InputStreamReader(is));
+            br = new BufferedReader(new InputStreamReader(is, "utf-8"));
             while ((line = br.readLine()) != null) {
                 sb.add(line);
             }

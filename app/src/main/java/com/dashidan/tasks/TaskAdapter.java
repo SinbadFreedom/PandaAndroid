@@ -1,5 +1,6 @@
 package com.dashidan.tasks;
 
+import android.content.Context;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,24 +15,31 @@ import com.dashidan.conf.Conf;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 public class TaskAdapter extends BaseAdapter {
-    ArrayList<Title> titles;
+
+    ArrayList<Title> allTitles = new ArrayList<>();
+    HashSet<String> docIndexes = new HashSet<>();
+
     TasksFragment tasksFragment;
     DrawerLayout mDrawerLayout;
-    HashSet<String> docIndexes;
 
-    public TaskAdapter(DrawerLayout mDrawerLayout, TasksFragment tasksFragment) {
-        titles = new ArrayList<>();
-        docIndexes = new HashSet<>();
+    String anchorTitleId;
+
+    Context context;
+
+    public TaskAdapter(DrawerLayout mDrawerLayout, TasksFragment tasksFragment, Context context) {
         this.tasksFragment = tasksFragment;
         this.mDrawerLayout = mDrawerLayout;
+        this.context = context;
     }
 
-    public void setContents(ArrayList<String> contents) {
-        ArrayList<Title> titles = new ArrayList<>();
-        for (String str : contents) {
+    public void initContents(ArrayList<String> contents) {
+        /** 当前显示的标题，包括 主标题和 点开的主标题对应的子标题，初始化只有主标题*/
+        allTitles.clear();
+        for (final String str : contents) {
             /** 分离标题数字和内容*/
             String trimStr = str.trim();
             String[] strarr = trimStr.split(" ");
@@ -49,23 +57,23 @@ public class TaskAdapter extends BaseAdapter {
                 }
                 String titleContent = str.replace(titleNum + " ", "");
                 Title title = new Title(titleNum, titleContent, str);
-                titles.add(title);
+                this.allTitles.add(title);
             } else {
-                Log.e(Conf.LOG_TAG, "setContents strarr.length == 0 str " + str);
+                Log.e(Conf.LOG_TAG, "initContents strarr.length == 0 str " + str);
             }
         }
-        this.titles = titles;
+        /** 更新目录内容*/
         notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        return titles.size();
+        return this.allTitles.size();
     }
 
     @Override
     public Title getItem(int position) {
-        return titles.get(position);
+        return this.allTitles.get(position);
     }
 
     @Override
@@ -86,38 +94,54 @@ public class TaskAdapter extends BaseAdapter {
         /** 设置标题数字和内容*/
         final Title task = getItem(position);
         TextView titleNum = (TextView) rowView.findViewById(R.id.title_num);
-        setTextViewFontType(titleNum, task.getTitleRank());
+        setTextViewFontType(titleNum, task);
         titleNum.setText(task.getTitleNum());
+
         TextView titleContent = (TextView) rowView.findViewById(R.id.title_content);
-        setTextViewFontType(titleContent, task.getTitleRank());
+        setTextViewFontType(titleContent, task);
         titleContent.setText(task.getTitleContent());
 
         return rowView;
     }
 
-    private void setTextViewFontType(TextView textView, int rank) {
-        switch (rank) {
+    private void setTextViewFontType(TextView textView, Title title) {
+        switch (title.getTitleRank()) {
             case 0:
             case 1:
                 /** 1级标题*/
                 textView.setTypeface(Typeface.DEFAULT_BOLD);
-                textView.setTextSize(16);
+                textView.setTextSize(25);
+                textView.setTextColor(ContextCompat.getColor(context, R.color.white));
                 break;
             case 2:
             case 3:
             case 4:
                 /** 2,3,4级标题*/
                 textView.setTypeface(Typeface.DEFAULT);
-                textView.setTextSize(16);
+                textView.setTextSize(19);
+                textView.setTextColor(ContextCompat.getColor(context, R.color.white));
                 break;
             default:
-                Log.e(Conf.LOG_TAG, " setTextViewFontType rank " + rank);
+                Log.e(Conf.LOG_TAG, " setTextViewFontType rank " + title.getTitleRank());
                 break;
+        }
+
+        if (this.anchorTitleId != null && this.anchorTitleId.equals(title.getTitleNum().trim())) {
+            /** 锚点标题变色*/
+            textView.setTextColor(ContextCompat.getColor(context, R.color.colorBlueAccent));
         }
     }
 
     public int getDocCount() {
         return this.docIndexes.size();
+    }
+
+    /**
+     * 设置锚点标题id，做变色处理
+     */
+    public void setAnchorTitleId(String titleId) {
+        this.anchorTitleId = titleId;
+        notifyDataSetChanged();
     }
 }
 

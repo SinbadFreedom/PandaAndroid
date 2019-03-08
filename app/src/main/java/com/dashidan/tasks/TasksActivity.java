@@ -61,6 +61,11 @@ public class TasksActivity extends FragmentActivity {
 //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.tasks_act);
 
+//        AssetManager assets = this.getAssets();
+//        Typeface.create(droidsansfallback);
+//        this.getCol
+//        FONT = Typeface.createFromAsset(assets, "font/droidsansfallback.ttf");
+
         // Set up the navigation drawer.
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerLayout.setStatusBarBackground(R.color.colorPrimaryDark);
@@ -77,7 +82,10 @@ public class TasksActivity extends FragmentActivity {
                     getSupportFragmentManager(), tasksFragment, R.id.contentFrame);
         }
 
-        taskAdapter = new TaskAdapter(mDrawerLayout, tasksFragment);
+        taskAdapter = new TaskAdapter(mDrawerLayout, tasksFragment, this);
+
+        tasksFragment.setTasksActivity(taskAdapter);
+
         ListView listView = (ListView) findViewById(R.id.tasks_list);
         listView.setAdapter(taskAdapter);
         /** 点击标题事件*/
@@ -120,7 +128,7 @@ public class TasksActivity extends FragmentActivity {
         if (null == result) {
             Log.e(Conf.LOG_TAG, "updateFromDownload null == result");
         } else {
-            taskAdapter.setContents(result);
+            taskAdapter.initContents(result);
         }
     }
 
