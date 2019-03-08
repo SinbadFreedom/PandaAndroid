@@ -19,7 +19,8 @@
     android:layout_height="match_parent"
     android:layout_centerInParent="true"
     android:orientation="vertical"
-    android:visibility="visible">
+    android:visibility="visible"
+    android:padding="@dimen/web_view_padding">
 
     <WebView
         android:id="@+id/task_web_view"
