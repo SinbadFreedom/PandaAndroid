@@ -92,24 +92,25 @@ public class TaskAdapter extends BaseAdapter {
         /** 设置标题数字和内容*/
         final Title task = getItem(position);
         TextView titleNum = (TextView) rowView.findViewById(R.id.title_num);
-        setTextViewFontType(titleNum, task);
+//        setTextViewFontType(titleNum, task);
         titleNum.setText(task.getTitleNum());
-
         TextView titleContent = (TextView) rowView.findViewById(R.id.title_content);
-        setTextViewFontType(titleContent, task);
+        setTextViewFontType(titleNum, titleContent, task);
         titleContent.setText(task.getTitleContent());
 
         return rowView;
     }
 
-    private void setTextViewFontType(TextView textView, Title title) {
+    private void setTextViewFontType(TextView numView, TextView textView, Title title) {
         switch (title.getTitleRank()) {
             case 0:
             case 1:
                 /** 1级标题*/
-                textView.setTypeface(Typeface.DEFAULT_BOLD);
-                textView.setTextSize(25);
-                textView.setTextColor(ContextCompat.getColor(context, R.color.white));
+//                textView.setTypeface(Typeface.DEFAULT_BOLD);
+                numView.setTextSize(36);
+                numView.setTextColor(ContextCompat.getColor(context, R.color.colorBluePrimary));
+                textView.setTextSize(23);
+                textView.setTextColor(ContextCompat.getColor(context, R.color.black));
                 break;
             case 2:
             case 3:
@@ -117,14 +118,16 @@ public class TaskAdapter extends BaseAdapter {
             case 5:
             case 6:
                 /** 2,3,4级标题*/
-                textView.setTypeface(Typeface.DEFAULT);
+                numView.setTextSize(19);
+                numView.setTextColor(ContextCompat.getColor(context, R.color.black));
                 textView.setTextSize(19);
-                textView.setTextColor(ContextCompat.getColor(context, R.color.white));
+                textView.setTextColor(ContextCompat.getColor(context, R.color.black));
                 break;
             default:
                 Log.e(Conf.LOG_TAG, " setTextViewFontType rank " + title.getTitleRank());
                 break;
         }
+
     }
 
     public int getDocCount() {

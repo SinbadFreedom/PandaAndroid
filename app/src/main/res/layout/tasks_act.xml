@@ -63,7 +63,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorBluePrimaryCenter"
+            android:background="@color/colorBluePrimaryDark"
             android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
             <ImageView
