@@ -114,6 +114,8 @@ public class TaskAdapter extends BaseAdapter {
             case 2:
             case 3:
             case 4:
+            case 5:
+            case 6:
                 /** 2,3,4级标题*/
                 textView.setTypeface(Typeface.DEFAULT);
                 textView.setTextSize(19);

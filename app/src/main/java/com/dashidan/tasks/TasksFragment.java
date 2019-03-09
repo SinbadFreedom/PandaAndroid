@@ -50,6 +50,7 @@ public class TasksFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.tasks_frag, container, false);
+
         mWebView = root.findViewById(R.id.task_web_view);
 
         /** 修复webview 加载的网页中包含的js不生效*/
@@ -91,10 +92,18 @@ public class TasksFragment extends Fragment {
         this.currentPageNum = pageNum;
         this.anchor = anchor;
 
-        if (TasksActivity.showCnfile) {
-            /** 默认显示中文页面*/
-            pageNum = pageNum + ".cn";
+        switch (TasksActivity.languageState) {
+            case TasksActivity.LAN_ZH_CN:
+                pageNum = pageNum + ".cn";
+                break;
+            case TasksActivity.LAN_EN:
+                break;
         }
+
+//        if (TasksActivity.showCnfile) {
+//            /** 默认显示中文页面*/
+//            pageNum = pageNum + ".cn";
+//        }
 
         String url = Conf.URL_DOC_CONTENT_PRE + pageNum + ".html";
 

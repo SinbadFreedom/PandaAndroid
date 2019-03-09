@@ -27,7 +27,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
         android:text="ssssssssss"
-        android:background="@color/colorBluePrimaryCenter"
+        android:background="@color/colorBluePrimaryDark"
         android:paddingLeft="@dimen/web_view_padding"
         app:fontFamily="@font/droidsansfallback" />
 
@@ -36,6 +36,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
-        android:background="@color/colorBluePrimaryCenter"
+        android:background="@color/colorBluePrimaryDark"
         app:fontFamily="@font/droidsansfallback" />
 </LinearLayout>

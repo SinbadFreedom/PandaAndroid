@@ -55,12 +55,15 @@
     <string name="no_tasks_add">Add a TO-DO item +</string>
     <string name="refresh">Refresh</string>
     <string name="title_home">上一篇</string>
-    <string name="title_dashboard">目录</string>
     <string name="title_notifications">下一篇</string>
     <string name="toast_press_to_exit">再按一次退出</string>
     <string name="this_is_the_first">这是第一篇</string>
     <string name="this_is_the_last">这是最后一篇</string>
-    <string name="translate">原文</string>
+    <string name="translate">语言</string>
     <string name="use_menu_button">请从目录选择想查看的文章</string>
     <string name="home_page">主页</string>
+    <string name="catalog">目\n录</string>
+    <string name="language_en">EN</string>
+    <string name="language_zh_ch">简</string>
+    <string name="language_zh_tw">繁</string>
 </resources>

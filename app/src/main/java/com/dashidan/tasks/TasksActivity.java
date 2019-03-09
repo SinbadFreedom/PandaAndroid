@@ -16,7 +16,6 @@
 
 package com.dashidan.tasks;
 
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -31,11 +30,13 @@ import com.dashidan.R;
 import com.dashidan.conf.Conf;
 import com.dashidan.http.NetworkFragment;
 import com.dashidan.util.ActivityUtils;
+import com.dashidan.util.NumberUtil;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentActivity;
@@ -51,7 +52,12 @@ public class TasksActivity extends FragmentActivity {
     /**
      * 语言状态
      */
-    public static boolean showCnfile = true;
+    public static final int LAN_ZH_CN = 1;
+    public static final int LAN_EN = 2;
+    //    public static final int LAN_ZH_TW = 3;
+    public static int languageState = LAN_ZH_CN;
+
+    PopupMenu popupMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +111,7 @@ public class TasksActivity extends FragmentActivity {
                          * 与showdown转化的html标题id规则统一，目前是去掉了空格和“.”， 变小写
                          * 有可能有特殊字符过滤，后续添加。
                          */
-                        String anchor = title.getFullTitle().trim().split(" ")[0];
+                        String anchor = title.getFullTitle().trim().split(" " + "")[0];
                         /** 切换文章内容*/
                         tasksFragment.showWebPage(num, anchor);
                     } else {
@@ -120,6 +126,12 @@ public class TasksActivity extends FragmentActivity {
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        // 这里的view代表popupMenu需要依附的view
+        popupMenu = new PopupMenu(this, findViewById(R.id.navigation_translate));
+        // 获取布局文件
+        popupMenu.getMenuInflater().inflate(R.menu.language, popupMenu.getMenu());
+        initPopMenuEvent();
     }
 
     public void updateFromDownload(ArrayList<String> result) {
@@ -147,15 +159,6 @@ public class TasksActivity extends FragmentActivity {
                         showLastPage();
                     }
                     return true;
-                case R.id.navigation_dashboard:
-                    /** 目录*/
-                    if (mDrawerLayout.isDrawerVisible(GravityCompat.START)) {
-                        mDrawerLayout.closeDrawers();
-                    } else {
-                        mDrawerLayout.openDrawer(GravityCompat.START);
-                    }
-                    return true;
-
                 case R.id.navigation_homepage:
                     /** 主页*/
                     if (mDrawerLayout.isDrawerVisible(GravityCompat.START)) {
@@ -165,18 +168,7 @@ public class TasksActivity extends FragmentActivity {
                     return true;
                 case R.id.navigation_translate:
                     /** 切换语言状态*/
-                    if (tasksFragment.getmWebView() != null) {
-                        updateCharset();
-                        String catalogUrl;
-                        if (showCnfile) {
-                            catalogUrl = Conf.URL_DOC_CONTENT_PRE + Conf.URL_CATALOG_CN;
-                        } else {
-                            catalogUrl = Conf.URL_DOC_CONTENT_PRE + Conf.URL_CATALOG;
-                        }
-
-                        mNetworkFragment.startDownload(catalogUrl);
-
-                    }
+                    popupMenu.show();
                     return true;
                 case R.id.navigation_notifications:
                     /** 下一篇*/
@@ -210,42 +202,28 @@ public class TasksActivity extends FragmentActivity {
     }
 
     public void showLastPage() {
-        if (tasksFragment.getCurrentPageNum() != null) {
-            try {
-                int num = Integer.parseInt(tasksFragment.getCurrentPageNum());
-                if (num > 1) {
-                    num--;
-                    tasksFragment.showWebPage(num + "", null);
-                } else {
-                    Toast.makeText(this, getResources().getString(R.string.this_is_the_first),
-                            Toast.LENGTH_SHORT).show();
-                }
-            } catch (NumberFormatException e) {
-                Log.e(Conf.LOG_TAG, " showLastPage " + tasksFragment.getCurrentPageNum());
-                Toast.makeText(this, getResources().getString(R.string.use_menu_button),
+        boolean isInteger = NumberUtil.isInteger(tasksFragment.getCurrentPageNum());
+        if (isInteger) {
+            Integer integer = Integer.parseInt(tasksFragment.getCurrentPageNum());
+            if (integer > 1) {
+                integer--;
+                tasksFragment.showWebPage(integer + "", null);
+            } else {
+                Toast.makeText(this, getResources().getString(R.string.this_is_the_first),
                         Toast.LENGTH_SHORT).show();
             }
         }
     }
 
     public void showNextPage() {
-        if (tasksFragment.getCurrentPageNum() != null) {
-            try {
-                int num = Integer.parseInt(tasksFragment.getCurrentPageNum());
-                if (num < taskAdapter.getDocCount()) {
-                    num++;
-                    tasksFragment.showWebPage(num + "", null);
-                } else {
-                    Toast.makeText(this, getResources().getString(R.string.this_is_the_last),
-                            Toast.LENGTH_SHORT).show();
-                }
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
-                Log.e(Conf.LOG_TAG, " showNextPage " + tasksFragment.getCurrentPageNum());
-                Toast.makeText(this, getResources().getString(R.string.use_menu_button),
-                        Toast.LENGTH_SHORT).show();
-            } catch (Resources.NotFoundException e) {
-                e.printStackTrace();
+        boolean isInteger = NumberUtil.isInteger(tasksFragment.getCurrentPageNum());
+        if (isInteger) {
+            Integer num = Integer.parseInt(tasksFragment.getCurrentPageNum());
+            if (num < taskAdapter.getDocCount()) {
+                num++;
+                tasksFragment.showWebPage(num + "", null);
+            } else {
+                Toast.makeText(this, getResources().getString(R.string.this_is_the_last), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -254,8 +232,44 @@ public class TasksActivity extends FragmentActivity {
      * 切换语言状态
      */
     public void updateCharset() {
-        TasksActivity.showCnfile = !TasksActivity.showCnfile;
         tasksFragment.showWebPage(tasksFragment.getCurrentPageNum(), tasksFragment.getAnchor());
+    }
+
+    private void initPopMenuEvent() {
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                // 控件每一个item的点击事件
+                String catalogUrl = null;
+                switch (item.getItemId()) {
+                    case R.id.popupmenu_ch_cn:
+                        catalogUrl = Conf.URL_DOC_CONTENT_PRE + Conf.URL_CATALOG_CN;
+                        languageState = LAN_ZH_CN;
+                        break;
+                    case R.id.popupmenu_en:
+                        catalogUrl = Conf.URL_DOC_CONTENT_PRE + Conf.URL_CATALOG;
+                        languageState = LAN_EN;
+                        break;
+                    case R.id.popupmenu_ch_tw:
+
+                        break;
+                }
+
+                if (catalogUrl != null) {
+                    mNetworkFragment.startDownload(catalogUrl);
+                }
+
+                updateCharset();
+                return true;
+            }
+        });
+
+        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+            @Override
+            public void onDismiss(PopupMenu menu) {
+                // 控件消失时的事件
+            }
+        });
     }
 }
 

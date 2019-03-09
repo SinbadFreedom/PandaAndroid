@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/popupmenu_en"
+        android:title="@string/language_en"/>
+
+    <item
+        android:id="@+id/popupmenu_ch_cn"
+        android:title="@string/language_zh_ch" />
+
+    <item
+        android:id="@+id/popupmenu_ch_tw"
+        android:title="@string/language_zh_tw" />
+</menu>
