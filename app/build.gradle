@@ -26,6 +26,13 @@ android {
             useProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguardTest-rules.pro'
+            applicationVariants.all { variant ->
+                variant.outputs.all {
+                    def appName = "PythonDocAndroid"
+//                    outputFileName = appName + "_${variant.buildType.name}_${defaultConfig.versionName}.apk"
+                    outputFileName = appName + "_${defaultConfig.versionName}.apk"
+                }
+            }
         }
     }
 
