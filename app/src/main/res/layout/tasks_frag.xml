@@ -20,10 +20,12 @@
     android:layout_centerInParent="true"
     android:orientation="horizontal"
     android:visibility="visible">
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
@@ -31,7 +33,7 @@
             android:clickable="false"
             android:text="@string/catalog"
             android:textColor="@color/white"
-            android:background="@color/colorBluePrimaryDark"/>
+            android:background="@color/colorBluePrimaryDark" />
 
         <ImageView
             android:layout_width="match_parent"
@@ -39,8 +41,8 @@
             android:layout_gravity="center"
             android:src="@drawable/ic_forward_black_24dp" />
         <!--<ImageView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content" />-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content" />-->
 
     </LinearLayout>
 

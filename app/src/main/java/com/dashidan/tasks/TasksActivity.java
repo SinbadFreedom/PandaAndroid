@@ -54,7 +54,6 @@ public class TasksActivity extends FragmentActivity {
      */
     public static final int LAN_ZH_CN = 1;
     public static final int LAN_EN = 2;
-    //    public static final int LAN_ZH_TW = 3;
     public static int languageState = LAN_ZH_CN;
 
     PopupMenu popupMenu;
@@ -63,20 +62,10 @@ public class TasksActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.tasks_act);
-
-//        AssetManager assets = this.getAssets();
-//        Typeface.create(droidsansfallback);
-//        this.getCol
-//        FONT = Typeface.createFromAsset(assets, "font/droidsansfallback.ttf");
-
         // Set up the navigation drawer.
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerLayout.setStatusBarBackground(R.color.colorPrimaryDark);
-//        /** 禁止手势滑动*/
-//        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         // drawer
         mNetworkFragment = NetworkFragment.getInstance(getSupportFragmentManager());
 

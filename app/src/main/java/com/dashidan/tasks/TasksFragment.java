@@ -72,19 +72,6 @@ public class TasksFragment extends Fragment {
             }
         });
 
-//        mWebView.setOnKeyListener(new View.OnKeyListener() {
-//            @Override
-//            public boolean onKey(View v, int keyCode, KeyEvent event) {
-//                if (event.getAction() == KeyEvent.ACTION_DOWN) {
-//                    /** 按返回键操作并且能回退网页*/
-//                    if (keyCode == KeyEvent.KEYCODE_BACK && mWebView.canGoBack()) {
-//                        /** 后退*/
-//                        mWebView.goBack();
-//                    }
-//                }
-//                return false;
-//            }
-//        });
         return root;
     }
 
@@ -99,11 +86,6 @@ public class TasksFragment extends Fragment {
             case TasksActivity.LAN_EN:
                 break;
         }
-
-//        if (TasksActivity.showCnfile) {
-//            /** 默认显示中文页面*/
-//            pageNum = pageNum + ".cn";
-//        }
 
         String url = Conf.URL_DOC_CONTENT_PRE + pageNum + ".html";
 

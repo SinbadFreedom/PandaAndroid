@@ -1,7 +1,6 @@
 package com.dashidan.tasks;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -92,7 +91,6 @@ public class TaskAdapter extends BaseAdapter {
         /** 设置标题数字和内容*/
         final Title task = getItem(position);
         TextView titleNum = (TextView) rowView.findViewById(R.id.title_num);
-//        setTextViewFontType(titleNum, task);
         titleNum.setText(task.getTitleNum());
         TextView titleContent = (TextView) rowView.findViewById(R.id.title_content);
         setTextViewFontType(titleNum, titleContent, task);
@@ -106,7 +104,6 @@ public class TaskAdapter extends BaseAdapter {
             case 0:
             case 1:
                 /** 1级标题*/
-//                textView.setTypeface(Typeface.DEFAULT_BOLD);
                 numView.setTextSize(36);
                 numView.setTextColor(ContextCompat.getColor(context, R.color.colorBluePrimary));
                 textView.setTextSize(23);

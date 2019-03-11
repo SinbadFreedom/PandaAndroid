@@ -6,7 +6,7 @@
 
     <item
         android:id="@+id/popupmenu_en"
-        android:title="@string/language_en"/>
+        android:title="@string/language_en" />
 
     <item
         android:id="@+id/popupmenu_ch_cn"

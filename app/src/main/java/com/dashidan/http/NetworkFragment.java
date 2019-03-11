@@ -31,11 +31,8 @@ import androidx.fragment.app.FragmentManager;
 public class NetworkFragment extends Fragment {
     public static final String TAG = "NetworkFragment";
 
-//    private static final String URL_KEY = "UrlKey";
-
     private Context mCallback;
     private DownloadTask mDownloadTask;
-//    private String mUrlString;
 
     /**
      * Static initializer for NetworkFragment that sets the URL of the host it will be downloading
@@ -51,9 +48,6 @@ public class NetworkFragment extends Fragment {
                 .findFragmentByTag(NetworkFragment.TAG);
         if (networkFragment == null) {
             networkFragment = new NetworkFragment();
-//            Bundle args = new Bundle();
-//            args.putString(URL_KEY, url);
-//            networkFragment.setArguments(args);
             fragmentManager.beginTransaction().add(networkFragment, TAG).commit();
         }
         return networkFragment;
@@ -64,7 +58,6 @@ public class NetworkFragment extends Fragment {
         super.onCreate(savedInstanceState);
         // Retain this Fragment across configuration changes in the host Activity.
         setRetainInstance(true);
-//        mUrlString = getArguments().getString(URL_KEY);
         this.startDownload(Conf.URL_DOC_CONTENT_PRE + Conf.URL_CATALOG_CN);
     }
 
