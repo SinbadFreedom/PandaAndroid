@@ -16,6 +16,7 @@
 
 package com.dashidan.tasks;
 
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -26,12 +27,21 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.dashidan.R;
 import com.dashidan.conf.Conf;
 import com.dashidan.http.NetworkFragment;
 import com.dashidan.util.ActivityUtils;
 import com.dashidan.util.NumberUtil;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -42,21 +52,20 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentActivity;
 
 public class TasksActivity extends FragmentActivity {
-
-    private DrawerLayout mDrawerLayout;
-    private NetworkFragment mNetworkFragment;
-    private TaskAdapter taskAdapter;
-    private TasksFragment tasksFragment;
-
-    private long firstPressedTime;
     /**
      * 语言状态
      */
     public static final int LAN_ZH_CN = 1;
     public static final int LAN_EN = 2;
     public static int languageState = LAN_ZH_CN;
-
     PopupMenu popupMenu;
+    private DrawerLayout mDrawerLayout;
+    private NetworkFragment mNetworkFragment;
+    private TaskAdapter taskAdapter;
+    private TasksFragment tasksFragment;
+    private long firstPressedTime;
+
+    private static String TAG_DIALOG = "TASK_FRAGE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +82,7 @@ public class TasksActivity extends FragmentActivity {
         if (tasksFragment == null) {
             // Create the fragment
             tasksFragment = TasksFragment.newInstance();
-            ActivityUtils.addFragmentToActivity(
-                    getSupportFragmentManager(), tasksFragment, R.id.contentFrame);
+            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), tasksFragment, R.id.contentFrame);
         }
 
         taskAdapter = new TaskAdapter(mDrawerLayout, tasksFragment, this);
@@ -121,6 +129,8 @@ public class TasksActivity extends FragmentActivity {
         // 获取布局文件
         popupMenu.getMenuInflater().inflate(R.menu.language, popupMenu.getMenu());
         initPopMenuEvent();
+
+        versionCheck();
     }
 
     public void updateFromDownload(ArrayList<String> result) {
@@ -134,6 +144,25 @@ public class TasksActivity extends FragmentActivity {
     public void finishDownloading() {
         if (mNetworkFragment != null) {
             mNetworkFragment.cancelDownload();
+        }
+    }
+
+    /**
+     * 后退键处理,按一次出提示文字，再按一次退出
+     */
+    @Override
+    public void onBackPressed() {
+        if (mDrawerLayout.isDrawerVisible(GravityCompat.START)) {
+            mDrawerLayout.closeDrawers();
+            /** 按返回键时如果开启了滑动屏，则关闭*/
+            return;
+        }
+
+        if (System.currentTimeMillis() - firstPressedTime < Conf.TOAST_EXIT_SHOW_TIME) {
+            super.onBackPressed();
+        } else {
+            Toast.makeText(this, getResources().getString(R.string.toast_press_to_exit), Toast.LENGTH_SHORT).show();
+            firstPressedTime = System.currentTimeMillis();
         }
     }
 
@@ -169,26 +198,6 @@ public class TasksActivity extends FragmentActivity {
             return false;
         }
     };
-
-    /**
-     * 后退键处理,按一次出提示文字，再按一次退出
-     */
-    @Override
-    public void onBackPressed() {
-        if (mDrawerLayout.isDrawerVisible(GravityCompat.START)) {
-            mDrawerLayout.closeDrawers();
-            /** 按返回键时如果开启了滑动屏，则关闭*/
-            return;
-        }
-
-        if (System.currentTimeMillis() - firstPressedTime < Conf.TOAST_EXIT_SHOW_TIME) {
-            super.onBackPressed();
-        } else {
-            Toast.makeText(this, getResources().getString(R.string.toast_press_to_exit),
-                    Toast.LENGTH_SHORT).show();
-            firstPressedTime = System.currentTimeMillis();
-        }
-    }
 
     public void showLastPage() {
         boolean isInteger = NumberUtil.isInteger(tasksFragment.getCurrentPageNum());
@@ -259,6 +268,54 @@ public class TasksActivity extends FragmentActivity {
                 // 控件消失时的事件
             }
         });
+    }
+
+    /**
+     * 版本检测
+     */
+    private void versionCheck() {
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = Conf.URL_DOC_CONTENT_PRE + Conf.URL_VERSION;
+
+// Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        System.out.println(" response " + response);
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            String version = jsonObject.getString(Conf.KEY_VERSION);
+
+                            String versionName = TasksActivity.this.getPackageManager().
+                                    getPackageInfo(TasksActivity.this.getPackageName(), 0).versionName;
+                            if (!version.equals(versionName)) {
+                                showUpdateUI();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (PackageManager.NameNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        // Display the first 500 characters of the response string.
+//                        textView.setText("Response is: "+ response.substring(0,500));
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                textView.setText("That didn't work!");
+            }
+        });
+
+// Add the request to the RequestQueue.
+        queue.add(stringRequest);
+    }
+
+    private void showUpdateUI() {
+        CheckVersionDialogFragment fragment = new CheckVersionDialogFragment();
+        fragment.showNow(getSupportFragmentManager(), TAG_DIALOG);
     }
 }
 

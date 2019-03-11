@@ -66,4 +66,7 @@
     <string name="language_en">EN</string>
     <string name="language_zh_ch">简</string>
     <string name="language_zh_tw">繁</string>
+    <string name="dialog_new_version">新版本下载</string>
+    <string name="dialog_ok">确定</string>
+    <string name="dialog_cancel">取消</string>
 </resources>
