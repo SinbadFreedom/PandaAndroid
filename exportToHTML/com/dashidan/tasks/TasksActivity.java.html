@@ -1,0 +1,347 @@
+<html>
+<head>
+<title>TasksActivity.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #808080;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #cc7832;}
+.s3 { color: #629755; font-style: italic;}
+.s4 { color: #6897bb;}
+.s5 { color: #6a8759;}
+.ln { color: #606366; font-weight: normal; font-style: normal; }
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+TasksActivity.java</font>
+</center></td></tr></table>
+<pre><a name="l1"><span class="ln">1    </span></a><span class="s0">/* 
+<a name="l2"><span class="ln">2    </span></a> * Copyright (C) 2015 The Android Open Source Project 
+<a name="l3"><span class="ln">3    </span></a> * 
+<a name="l4"><span class="ln">4    </span></a> * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;); 
+<a name="l5"><span class="ln">5    </span></a> * you may not use this file except in compliance with the License. 
+<a name="l6"><span class="ln">6    </span></a> * You may obtain a copy of the License at 
+<a name="l7"><span class="ln">7    </span></a> * 
+<a name="l8"><span class="ln">8    </span></a> *      http://www.apache.org/licenses/LICENSE-2.0 
+<a name="l9"><span class="ln">9    </span></a> * 
+<a name="l10"><span class="ln">10   </span></a> * Unless required by applicable law or agreed to in writing, software 
+<a name="l11"><span class="ln">11   </span></a> * distributed under the License is distributed on an &quot;AS IS&quot; BASIS, 
+<a name="l12"><span class="ln">12   </span></a> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+<a name="l13"><span class="ln">13   </span></a> * See the License for the specific language governing permissions and 
+<a name="l14"><span class="ln">14   </span></a> * limitations under the License. 
+<a name="l15"><span class="ln">15   </span></a> */</span>
+
+<span class="s2">package </span><span class="s1">com.dashidan.tasks</span><span class="s2">;</span>
+
+import <span class="s1">android.content.pm.PackageManager</span><span class="s2">;</span>
+import <span class="s1">android.os.Bundle</span><span class="s2">;</span>
+import <span class="s1">android.util.Log</span><span class="s2">;</span>
+import <span class="s1">android.view.MenuItem</span><span class="s2">;</span>
+import <span class="s1">android.view.View</span><span class="s2">;</span>
+import <span class="s1">android.widget.AdapterView</span><span class="s2">;</span>
+import <span class="s1">android.widget.LinearLayout</span><span class="s2">;</span>
+import <span class="s1">android.widget.ListView</span><span class="s2">;</span>
+import <span class="s1">android.widget.TextView</span><span class="s2">;</span>
+import <span class="s1">android.widget.Toast</span><span class="s2">;</span>
+
+import <span class="s1">com.android.volley.Request</span><span class="s2">;</span>
+import <span class="s1">com.android.volley.RequestQueue</span><span class="s2">;</span>
+import <span class="s1">com.android.volley.Response</span><span class="s2">;</span>
+import <span class="s1">com.android.volley.VolleyError</span><span class="s2">;</span>
+import <span class="s1">com.android.volley.toolbox.StringRequest</span><span class="s2">;</span>
+import <span class="s1">com.android.volley.toolbox.Volley</span><span class="s2">;</span>
+import <span class="s1">com.dashidan.R</span><span class="s2">;</span>
+import <span class="s1">com.dashidan.conf.Conf</span><span class="s2">;</span>
+import <span class="s1">com.dashidan.http.NetworkFragment</span><span class="s2">;</span>
+import <span class="s1">com.dashidan.util.ActivityUtils</span><span class="s2">;</span>
+import <span class="s1">com.dashidan.util.NumberUtil</span><span class="s2">;</span>
+import <span class="s1">com.google.android.material.bottomnavigation.BottomNavigationView</span><span class="s2">;</span>
+
+import <span class="s1">org.json.JSONException</span><span class="s2">;</span>
+import <span class="s1">org.json.JSONObject</span><span class="s2">;</span>
+
+import <span class="s1">java.util.ArrayList</span><span class="s2">;</span>
+
+import <span class="s1">androidx.annotation.NonNull</span><span class="s2">;</span>
+import <span class="s1">androidx.appcompat.widget.PopupMenu</span><span class="s2">;</span>
+import <span class="s1">androidx.core.view.GravityCompat</span><span class="s2">;</span>
+import <span class="s1">androidx.drawerlayout.widget.DrawerLayout</span><span class="s2">;</span>
+import <span class="s1">androidx.fragment.app.FragmentActivity</span><span class="s2">;</span>
+
+public class <span class="s1">TasksActivity </span><span class="s2">extends </span><span class="s1">FragmentActivity {</span>
+    <span class="s3">/**</span>
+     * 语言状态
+     */
+    <span class="s2">public static final int </span><span class="s1">LAN_ZH_CN = </span><span class="s4">1</span><span class="s2">;</span>
+    public static final int <span class="s1">LAN_EN = </span><span class="s4">2</span><span class="s2">;</span>
+    public static int <span class="s1">languageState = LAN_ZH_CN</span><span class="s2">;</span>
+    <span class="s1">PopupMenu popupMenu</span><span class="s2">;</span>
+    private <span class="s1">DrawerLayout mDrawerLayout</span><span class="s2">;</span>
+    private <span class="s1">NetworkFragment mNetworkFragment</span><span class="s2">;</span>
+    private <span class="s1">TaskAdapter taskAdapter</span><span class="s2">;</span>
+    private <span class="s1">TasksFragment tasksFragment</span><span class="s2">;</span>
+    private long <span class="s1">firstPressedTime</span><span class="s2">;</span>
+
+    private static <span class="s1">String TAG_DIALOG = </span><span class="s5">&quot;TASK_FRAGE&quot;</span><span class="s2">;</span>
+
+    <span class="s1">@Override</span>
+    <span class="s2">protected void </span><span class="s1">onCreate(Bundle savedInstanceState) {</span>
+        <span class="s2">super</span><span class="s1">.onCreate(savedInstanceState)</span><span class="s2">;</span>
+
+        <span class="s1">setContentView(R.layout.tasks_act)</span><span class="s2">;</span>
+        <span class="s0">// Set up the navigation drawer.</span>
+        <span class="s1">mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout)</span><span class="s2">;</span>
+        <span class="s1">mDrawerLayout.setStatusBarBackground(R.color.colorPrimaryDark)</span><span class="s2">;</span>
+        <span class="s0">// drawer</span>
+        <span class="s1">mNetworkFragment = NetworkFragment.getInstance(getSupportFragmentManager())</span><span class="s2">;</span>
+
+        <span class="s1">tasksFragment = (TasksFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame)</span><span class="s2">;</span>
+        if <span class="s1">(tasksFragment == </span><span class="s2">null</span><span class="s1">) {</span>
+            <span class="s0">// Create the fragment</span>
+            <span class="s1">tasksFragment = TasksFragment.newInstance()</span><span class="s2">;</span>
+            <span class="s1">ActivityUtils.addFragmentToActivity(getSupportFragmentManager()</span><span class="s2">, </span><span class="s1">tasksFragment</span><span class="s2">, </span><span class="s1">R.id.contentFrame)</span><span class="s2">;</span>
+        <span class="s1">}</span>
+
+        taskAdapter = <span class="s2">new </span><span class="s1">TaskAdapter(mDrawerLayout</span><span class="s2">, </span><span class="s1">tasksFragment</span><span class="s2">, this</span><span class="s1">)</span><span class="s2">;</span>
+
+        <span class="s1">ListView listView = (ListView) findViewById(R.id.tasks_list)</span><span class="s2">;</span>
+        <span class="s1">listView.setAdapter(taskAdapter)</span><span class="s2">;</span>
+        <span class="s3">/** 点击标题事件*/</span>
+        <span class="s1">listView.setOnItemClickListener(</span><span class="s2">new </span><span class="s1">AdapterView.OnItemClickListener() {</span>
+            @Override
+            <span class="s2">public void </span><span class="s1">onItemClick(AdapterView&lt;?&gt; parent</span><span class="s2">, </span><span class="s1">View view</span><span class="s2">, int </span><span class="s1">position</span><span class="s2">, long </span><span class="s1">id) {</span>
+                <span class="s2">if </span><span class="s1">(view </span><span class="s2">instanceof </span><span class="s1">LinearLayout) {</span>
+                    TextView textView = (TextView) ((LinearLayout) view).getChildAt(<span class="s4">0</span><span class="s1">)</span><span class="s2">;</span>
+                    <span class="s1">String str = (String) textView.getText()</span><span class="s2">;</span>
+                    <span class="s1">str = str.trim()</span><span class="s2">;</span>
+                    <span class="s1">String[] numArr = str.split(</span><span class="s5">&quot;</span><span class="s2">\\</span><span class="s5">.&quot;</span><span class="s1">)</span><span class="s2">;</span>
+                    if <span class="s1">(numArr.length &gt; </span><span class="s4">0</span><span class="s1">) {</span>
+                        <span class="s3">/** 获取文章编号*/</span>
+                        <span class="s1">String num = numArr[</span><span class="s4">0</span><span class="s1">]</span><span class="s2">;</span>
+                        <span class="s3">/** 获取完整标题*/</span>
+                        <span class="s1">Title title = taskAdapter.getItem(position)</span><span class="s2">;</span>
+                        <span class="s3">/**</span>
+                         * 获取标题id
+                         * 与showdown转化的html标题id规则统一，目前是去掉了空格和“.”， 变小写
+                         * 有可能有特殊字符过滤，后续添加。
+                         */
+                        <span class="s1">String anchor = title.getFullTitle().trim().split(</span><span class="s5">&quot; &quot; </span><span class="s1">+ </span><span class="s5">&quot;&quot;</span><span class="s1">)[</span><span class="s4">0</span><span class="s1">]</span><span class="s2">;</span>
+                        <span class="s3">/** 切换文章内容*/</span>
+                        <span class="s1">tasksFragment.showWebPage(num</span><span class="s2">, </span><span class="s1">anchor)</span><span class="s2">;</span>
+                    <span class="s1">} </span><span class="s2">else </span><span class="s1">{</span>
+                        Log.e(Conf.LOG_TAG<span class="s2">, </span><span class="s5">&quot; numArr.length == 0 &quot; </span><span class="s1">+ str)</span><span class="s2">;</span>
+                    <span class="s1">}</span>
+                } <span class="s2">else </span><span class="s1">{</span>
+                    Log.e(Conf.LOG_TAG<span class="s2">, </span><span class="s5">&quot;view instanceof LinearLayout false position &quot; </span><span class="s1">+ position)</span><span class="s2">;</span>
+                <span class="s1">}</span>
+                mDrawerLayout.closeDrawers()<span class="s2">;</span>
+            <span class="s1">}</span>
+        })<span class="s2">;</span>
+
+        <span class="s1">BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.bottom_navigation)</span><span class="s2">;</span>
+        <span class="s1">navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)</span><span class="s2">;</span>
+
+        <span class="s0">// 这里的view代表popupMenu需要依附的view</span>
+        <span class="s1">popupMenu = </span><span class="s2">new </span><span class="s1">PopupMenu(</span><span class="s2">this, </span><span class="s1">findViewById(R.id.navigation_translate))</span><span class="s2">;</span>
+        <span class="s0">// 获取布局文件</span>
+        <span class="s1">popupMenu.getMenuInflater().inflate(R.menu.language</span><span class="s2">, </span><span class="s1">popupMenu.getMenu())</span><span class="s2">;</span>
+        <span class="s1">initPopMenuEvent()</span><span class="s2">;</span>
+
+        <span class="s1">versionCheck()</span><span class="s2">;</span>
+    <span class="s1">}</span>
+
+    <span class="s2">public void </span><span class="s1">updateFromDownload(ArrayList&lt;String&gt; result) {</span>
+        <span class="s2">if </span><span class="s1">(</span><span class="s2">null </span><span class="s1">== result) {</span>
+            Log.e(Conf.LOG_TAG<span class="s2">, </span><span class="s5">&quot;updateFromDownload null == result&quot;</span><span class="s1">)</span><span class="s2">;</span>
+        <span class="s1">} </span><span class="s2">else </span><span class="s1">{</span>
+            taskAdapter.initContents(result)<span class="s2">;</span>
+        <span class="s1">}</span>
+    }
+
+    <span class="s2">public void </span><span class="s1">finishDownloading() {</span>
+        <span class="s2">if </span><span class="s1">(mNetworkFragment != </span><span class="s2">null</span><span class="s1">) {</span>
+            mNetworkFragment.cancelDownload()<span class="s2">;</span>
+        <span class="s1">}</span>
+    }
+
+    <span class="s3">/**</span>
+     * 后退键处理,按一次出提示文字，再按一次退出
+     */
+    <span class="s1">@Override</span>
+    <span class="s2">public void </span><span class="s1">onBackPressed() {</span>
+        <span class="s2">if </span><span class="s1">(mDrawerLayout.isDrawerVisible(GravityCompat.START)) {</span>
+            mDrawerLayout.closeDrawers()<span class="s2">;</span>
+            <span class="s3">/** 按返回键时如果开启了滑动屏，则关闭*/</span>
+            <span class="s2">return;</span>
+        <span class="s1">}</span>
+
+        <span class="s2">if </span><span class="s1">(System.currentTimeMillis() - firstPressedTime &lt; Conf.TOAST_EXIT_SHOW_TIME) {</span>
+            <span class="s2">super</span><span class="s1">.onBackPressed()</span><span class="s2">;</span>
+        <span class="s1">} </span><span class="s2">else </span><span class="s1">{</span>
+            Toast.makeText(<span class="s2">this, </span><span class="s1">getResources().getString(R.string.toast_press_to_exit)</span><span class="s2">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s2">;</span>
+            <span class="s1">firstPressedTime = System.currentTimeMillis()</span><span class="s2">;</span>
+        <span class="s1">}</span>
+    }
+
+    <span class="s2">private </span><span class="s1">BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener</span>
+            = <span class="s2">new </span><span class="s1">BottomNavigationView.OnNavigationItemSelectedListener() {</span>
+        @Override
+        <span class="s2">public boolean </span><span class="s1">onNavigationItemSelected(@NonNull MenuItem item) {</span>
+            <span class="s2">switch </span><span class="s1">(item.getItemId()) {</span>
+                <span class="s2">case </span><span class="s1">R.id.navigation_home:</span>
+                    <span class="s3">/** 上一篇*/</span>
+                    <span class="s2">if </span><span class="s1">(tasksFragment.getmWebView() != </span><span class="s2">null</span><span class="s1">) {</span>
+                        showLastPage()<span class="s2">;</span>
+                    <span class="s1">}</span>
+                    <span class="s2">return true;</span>
+                case <span class="s1">R.id.navigation_homepage:</span>
+                    <span class="s3">/** 主页*/</span>
+                    <span class="s2">if </span><span class="s1">(mDrawerLayout.isDrawerVisible(GravityCompat.START)) {</span>
+                        mDrawerLayout.closeDrawers()<span class="s2">;</span>
+                    <span class="s1">}</span>
+                    tasksFragment.showWebPage(Conf.URL_HOME_PAGE_NUM<span class="s2">, null</span><span class="s1">)</span><span class="s2">;</span>
+                    return true;
+                case <span class="s1">R.id.navigation_translate:</span>
+                    <span class="s3">/** 切换语言状态*/</span>
+                    <span class="s1">popupMenu.show()</span><span class="s2">;</span>
+                    return true;
+                case <span class="s1">R.id.navigation_notifications:</span>
+                    <span class="s3">/** 下一篇*/</span>
+                    <span class="s2">if </span><span class="s1">(tasksFragment.getmWebView() != </span><span class="s2">null</span><span class="s1">) {</span>
+                        showNextPage()<span class="s2">;</span>
+                    <span class="s1">}</span>
+                    <span class="s2">return true;</span>
+            <span class="s1">}</span>
+            <span class="s2">return false;</span>
+        <span class="s1">}</span>
+    }<span class="s2">;</span>
+
+    public void <span class="s1">showLastPage() {</span>
+        <span class="s2">boolean </span><span class="s1">isInteger = NumberUtil.isInteger(tasksFragment.getCurrentPageNum())</span><span class="s2">;</span>
+        if <span class="s1">(isInteger) {</span>
+            Integer integer = Integer.parseInt(tasksFragment.getCurrentPageNum())<span class="s2">;</span>
+            if <span class="s1">(integer &gt; </span><span class="s4">1</span><span class="s1">) {</span>
+                integer--<span class="s2">;</span>
+                <span class="s1">tasksFragment.showWebPage(integer + </span><span class="s5">&quot;&quot;</span><span class="s2">, null</span><span class="s1">)</span><span class="s2">;</span>
+            <span class="s1">} </span><span class="s2">else </span><span class="s1">{</span>
+                Toast.makeText(<span class="s2">this, </span><span class="s1">getResources().getString(R.string.this_is_the_first)</span><span class="s2">,</span>
+                        <span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s2">;</span>
+            <span class="s1">}</span>
+        }
+    }
+
+    <span class="s2">public void </span><span class="s1">showNextPage() {</span>
+        <span class="s2">boolean </span><span class="s1">isInteger = NumberUtil.isInteger(tasksFragment.getCurrentPageNum())</span><span class="s2">;</span>
+        if <span class="s1">(isInteger) {</span>
+            Integer num = Integer.parseInt(tasksFragment.getCurrentPageNum())<span class="s2">;</span>
+            if <span class="s1">(num &lt; taskAdapter.getDocCount()) {</span>
+                num++<span class="s2">;</span>
+                <span class="s1">tasksFragment.showWebPage(num + </span><span class="s5">&quot;&quot;</span><span class="s2">, null</span><span class="s1">)</span><span class="s2">;</span>
+            <span class="s1">} </span><span class="s2">else </span><span class="s1">{</span>
+                Toast.makeText(<span class="s2">this, </span><span class="s1">getResources().getString(R.string.this_is_the_last)</span><span class="s2">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s2">;</span>
+            <span class="s1">}</span>
+        }
+    }
+
+    <span class="s3">/**</span>
+     * 切换语言状态
+     */
+    <span class="s2">public void </span><span class="s1">updateCharset() {</span>
+        tasksFragment.showWebPage(tasksFragment.getCurrentPageNum()<span class="s2">, </span><span class="s1">tasksFragment.getAnchor())</span><span class="s2">;</span>
+    <span class="s1">}</span>
+
+    <span class="s2">private void </span><span class="s1">initPopMenuEvent() {</span>
+        popupMenu.setOnMenuItemClickListener(<span class="s2">new </span><span class="s1">PopupMenu.OnMenuItemClickListener() {</span>
+            @Override
+            <span class="s2">public boolean </span><span class="s1">onMenuItemClick(MenuItem item) {</span>
+                <span class="s0">// 控件每一个item的点击事件</span>
+                <span class="s1">String catalogUrl = </span><span class="s2">null;</span>
+                switch <span class="s1">(item.getItemId()) {</span>
+                    <span class="s2">case </span><span class="s1">R.id.popupmenu_ch_cn:</span>
+                        catalogUrl = Conf.URL_DOC_CONTENT_PRE + Conf.URL_CATALOG_CN<span class="s2">;</span>
+                        <span class="s1">languageState = LAN_ZH_CN</span><span class="s2">;</span>
+                        break;
+                    case <span class="s1">R.id.popupmenu_en:</span>
+                        catalogUrl = Conf.URL_DOC_CONTENT_PRE + Conf.URL_CATALOG<span class="s2">;</span>
+                        <span class="s1">languageState = LAN_EN</span><span class="s2">;</span>
+                        break;
+                    case <span class="s1">R.id.popupmenu_ch_tw:</span>
+
+                        <span class="s2">break;</span>
+                <span class="s1">}</span>
+
+                <span class="s2">if </span><span class="s1">(catalogUrl != </span><span class="s2">null</span><span class="s1">) {</span>
+                    mNetworkFragment.startDownload(catalogUrl)<span class="s2">;</span>
+                <span class="s1">}</span>
+
+                updateCharset()<span class="s2">;</span>
+                return true;
+            <span class="s1">}</span>
+        })<span class="s2">;</span>
+
+        <span class="s1">popupMenu.setOnDismissListener(</span><span class="s2">new </span><span class="s1">PopupMenu.OnDismissListener() {</span>
+            @Override
+            <span class="s2">public void </span><span class="s1">onDismiss(PopupMenu menu) {</span>
+                <span class="s0">// 控件消失时的事件</span>
+            <span class="s1">}</span>
+        })<span class="s2">;</span>
+    <span class="s1">}</span>
+
+    <span class="s3">/**</span>
+     * 版本检测
+     */
+    <span class="s2">private void </span><span class="s1">versionCheck() {</span>
+        <span class="s0">// Instantiate the RequestQueue.</span>
+        <span class="s1">RequestQueue queue = Volley.newRequestQueue(</span><span class="s2">this</span><span class="s1">)</span><span class="s2">;</span>
+        <span class="s1">String url = Conf.URL_DOC_CONTENT_PRE + Conf.URL_VERSION</span><span class="s2">;</span>
+
+<span class="s0">// Request a string response from the provided URL.</span>
+        <span class="s1">StringRequest stringRequest = </span><span class="s2">new </span><span class="s1">StringRequest(Request.Method.GET</span><span class="s2">, </span><span class="s1">url</span><span class="s2">,</span>
+                new <span class="s1">Response.Listener&lt;String&gt;() {</span>
+                    @Override
+                    <span class="s2">public void </span><span class="s1">onResponse(String response) {</span>
+                        System.out.println(<span class="s5">&quot; response &quot; </span><span class="s1">+ response)</span><span class="s2">;</span>
+                        try <span class="s1">{</span>
+                            JSONObject jsonObject = <span class="s2">new </span><span class="s1">JSONObject(response)</span><span class="s2">;</span>
+                            <span class="s1">String version = jsonObject.getString(Conf.KEY_VERSION)</span><span class="s2">;</span>
+                            <span class="s1">String apk_url = jsonObject.getString(Conf.KEY_APK_URL)</span><span class="s2">;</span>
+                            <span class="s1">String apk_name = jsonObject.getString(Conf.KEY_APK_NAME)</span><span class="s2">;</span>
+
+                            <span class="s1">String versionName = TasksActivity.</span><span class="s2">this</span><span class="s1">.getPackageManager().</span>
+                                    getPackageInfo(TasksActivity.<span class="s2">this</span><span class="s1">.getPackageName()</span><span class="s2">, </span><span class="s4">0</span><span class="s1">).versionName</span><span class="s2">;</span>
+                            if <span class="s1">(!version.equals(versionName)) {</span>
+                                showUpdateUI(apk_url<span class="s2">, </span><span class="s1">apk_name)</span><span class="s2">;</span>
+                            <span class="s1">}</span>
+
+                        } <span class="s2">catch </span><span class="s1">(JSONException e) {</span>
+                            e.printStackTrace()<span class="s2">;</span>
+                        <span class="s1">} </span><span class="s2">catch </span><span class="s1">(PackageManager.NameNotFoundException e) {</span>
+                            e.printStackTrace()<span class="s2">;</span>
+                        <span class="s1">}</span>
+                        <span class="s0">// Display the first 500 characters of the response string.</span>
+//                        textView.setText(&quot;Response is: &quot;+ response.substring(0,500));
+                    <span class="s1">}</span>
+                }<span class="s2">, new </span><span class="s1">Response.ErrorListener() {</span>
+            @Override
+            <span class="s2">public void </span><span class="s1">onErrorResponse(VolleyError error) {</span>
+<span class="s0">//                textView.setText(&quot;That didn't work!&quot;);</span>
+            <span class="s1">}</span>
+        })<span class="s2">;</span>
+
+<span class="s0">// Add the request to the RequestQueue.</span>
+        <span class="s1">queue.add(stringRequest)</span><span class="s2">;</span>
+    <span class="s1">}</span>
+
+    <span class="s2">private void </span><span class="s1">showUpdateUI(String apkUrl</span><span class="s2">, </span><span class="s1">String apkName) {</span>
+        CheckVersionDialogFragment fragment = <span class="s2">new </span><span class="s1">CheckVersionDialogFragment()</span><span class="s2">;</span>
+        <span class="s1">fragment.setApkUrl(</span><span class="s2">this, </span><span class="s1">apkUrl</span><span class="s2">, </span><span class="s1">apkName)</span><span class="s2">;</span>
+        <span class="s1">fragment.showNow(getSupportFragmentManager()</span><span class="s2">, </span><span class="s1">TAG_DIALOG)</span><span class="s2">;</span>
+    <span class="s1">}</span>
+}
+
+</pre>
+</body>
+</html>

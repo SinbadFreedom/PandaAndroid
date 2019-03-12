@@ -50,6 +50,7 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 public class TasksActivity extends FragmentActivity {
     /**
@@ -66,6 +67,8 @@ public class TasksActivity extends FragmentActivity {
     private long firstPressedTime;
 
     private static String TAG_DIALOG = "TASK_FRAGE";
+
+    public static String versionName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,7 +164,7 @@ public class TasksActivity extends FragmentActivity {
         if (System.currentTimeMillis() - firstPressedTime < Conf.TOAST_EXIT_SHOW_TIME) {
             super.onBackPressed();
         } else {
-            Toast.makeText(this, getResources().getString(R.string.toast_press_to_exit), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.toast_press_to_exit), Toast.LENGTH_LONG).show();
             firstPressedTime = System.currentTimeMillis();
         }
     }
@@ -183,6 +186,15 @@ public class TasksActivity extends FragmentActivity {
                         mDrawerLayout.closeDrawers();
                     }
                     tasksFragment.showWebPage(Conf.URL_HOME_PAGE_NUM, null);
+                    return true;
+                case R.id.navigation_about:
+                    /** 关于*/
+//                    if (mDrawerLayout.isDrawerVisible(GravityCompat.START)) {
+//                        mDrawerLayout.closeDrawers();
+//                    }
+//                    tasksFragment.showWebPage(Conf.URL_HOME_PAGE_NUM, null);
+//                    versionName = TasksActivity.this.getPackageManager().getPackageInfo(TasksActivity.this.getPackageName(), 0).versionName;
+                    Toast.makeText(TasksActivity.this, versionName, Toast.LENGTH_LONG).show();
                     return true;
                 case R.id.navigation_translate:
                     /** 切换语言状态*/
@@ -208,7 +220,7 @@ public class TasksActivity extends FragmentActivity {
                 tasksFragment.showWebPage(integer + "", null);
             } else {
                 Toast.makeText(this, getResources().getString(R.string.this_is_the_first),
-                        Toast.LENGTH_SHORT).show();
+                        Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -221,7 +233,7 @@ public class TasksActivity extends FragmentActivity {
                 num++;
                 tasksFragment.showWebPage(num + "", null);
             } else {
-                Toast.makeText(this, getResources().getString(R.string.this_is_the_last), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getResources().getString(R.string.this_is_the_last), Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -287,11 +299,13 @@ public class TasksActivity extends FragmentActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             String version = jsonObject.getString(Conf.KEY_VERSION);
+                            String apk_url = jsonObject.getString(Conf.KEY_APK_URL);
+                            String apk_name = jsonObject.getString(Conf.KEY_APK_NAME);
 
-                            String versionName = TasksActivity.this.getPackageManager().
+                            versionName = TasksActivity.this.getPackageManager().
                                     getPackageInfo(TasksActivity.this.getPackageName(), 0).versionName;
                             if (!version.equals(versionName)) {
-                                showUpdateUI();
+                                showUpdateUI(apk_url, apk_name);
                             }
 
                         } catch (JSONException e) {
@@ -313,9 +327,13 @@ public class TasksActivity extends FragmentActivity {
         queue.add(stringRequest);
     }
 
-    private void showUpdateUI() {
+    private void showUpdateUI(String apkUrl, String apkName) {
         CheckVersionDialogFragment fragment = new CheckVersionDialogFragment();
+        fragment.setApkUrl(this, apkUrl, apkName);
         fragment.showNow(getSupportFragmentManager(), TAG_DIALOG);
+//        FragmentTransaction trandrawer_layoutsaction = getSupportFragmentManager().beginTransaction();
+//        transaction.add(R.id., fragment);
+//        transaction.commit();
     }
 }
 

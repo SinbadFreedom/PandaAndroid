@@ -25,7 +25,7 @@
     <string name="menu_filter">Filter</string>
     <string name="menu_clear">Clear completed</string>
     <string name="menu_delete_task">Delete task</string>
-    <string name="navigation_view_header_title">V3.7.2</string>
+    <string name="navigation_view_header_title">3.7.2</string>
     <string name="title_hint">Title</string>
     <string name="description_hint">Enter your TO-DO here.</string>
     <string name="empty_task_message">TO DOs cannot be empty</string>
@@ -62,11 +62,13 @@
     <string name="translate">Language</string>
     <string name="use_menu_button">Please use menu button</string>
     <string name="home_page">Home page</string>
+    <string name="nav_about">About</string>
     <string name="catalog">C\nO\nN\nT\nE\nN\nT\nS</string>
     <string name="language_en">EN</string>
     <string name="language_zh_ch">简</string>
     <string name="language_zh_tw">繁</string>
     <string name="dialog_new_version">New version release</string>
+    <string name="dialog_update">Update now?</string>
     <string name="dialog_ok">OK</string>
     <string name="dialog_cancel">cancel</string>
 </resources>

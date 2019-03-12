@@ -77,7 +77,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center_horizontal"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="60dp"
+                android:layout_marginLeft="10dp"
                 android:text="@string/navigation_view_header_title"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
         </FrameLayout>

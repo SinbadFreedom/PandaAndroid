@@ -10,4 +10,8 @@ public class Conf {
     public static final String URL_VERSION = "version.json";
     public static final String URL_VERSION_CN = "version.cn.json";
     public static final String KEY_VERSION = "v";
+    public static final String KEY_APK_URL = "apk_url";
+    public static final String KEY_APK_NAME = "apk_name";
+
+    public static final String FOLDER_APK = "python3";
 }
