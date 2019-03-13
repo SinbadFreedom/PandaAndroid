@@ -50,7 +50,6 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentTransaction;
 
 public class TasksActivity extends FragmentActivity {
     /**
@@ -189,11 +188,6 @@ public class TasksActivity extends FragmentActivity {
                     return true;
                 case R.id.navigation_about:
                     /** 关于*/
-//                    if (mDrawerLayout.isDrawerVisible(GravityCompat.START)) {
-//                        mDrawerLayout.closeDrawers();
-//                    }
-//                    tasksFragment.showWebPage(Conf.URL_HOME_PAGE_NUM, null);
-//                    versionName = TasksActivity.this.getPackageManager().getPackageInfo(TasksActivity.this.getPackageName(), 0).versionName;
                     Toast.makeText(TasksActivity.this, versionName, Toast.LENGTH_LONG).show();
                     return true;
                 case R.id.navigation_translate:
@@ -286,11 +280,8 @@ public class TasksActivity extends FragmentActivity {
      * 版本检测
      */
     private void versionCheck() {
-        // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = Conf.URL_DOC_CONTENT_PRE + Conf.URL_VERSION;
-
-// Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -313,17 +304,13 @@ public class TasksActivity extends FragmentActivity {
                         } catch (PackageManager.NameNotFoundException e) {
                             e.printStackTrace();
                         }
-                        // Display the first 500 characters of the response string.
-//                        textView.setText("Response is: "+ response.substring(0,500));
                     }
                 }, new Response.ErrorListener() {
+
             @Override
             public void onErrorResponse(VolleyError error) {
-//                textView.setText("That didn't work!");
             }
         });
-
-// Add the request to the RequestQueue.
         queue.add(stringRequest);
     }
 
@@ -331,9 +318,6 @@ public class TasksActivity extends FragmentActivity {
         CheckVersionDialogFragment fragment = new CheckVersionDialogFragment();
         fragment.setApkUrl(this, apkUrl, apkName);
         fragment.showNow(getSupportFragmentManager(), TAG_DIALOG);
-//        FragmentTransaction trandrawer_layoutsaction = getSupportFragmentManager().beginTransaction();
-//        transaction.add(R.id., fragment);
-//        transaction.commit();
     }
 }
 
