@@ -23,40 +23,14 @@
     tools:context=".tasks.TasksActivity"
     tools:openDrawer="start">
 
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:orientation="vertical">-->
+    <fragment
+        android:id="@+id/garden_nav_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_task" />
 
-        <!--<androidx.coordinatorlayout.widget.CoordinatorLayout-->
-            <!--android:id="@+id/coordinatorLayout"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent">-->
-
-            <!--<FrameLayout-->
-                <!--android:id="@+id/contentFrame"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:layout_marginBottom="@dimen/bottom_nav_height" />-->
-            <fragment
-                android:id="@+id/garden_nav_fragment"
-                android:name="androidx.navigation.fragment.NavHostFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:defaultNavHost="true"
-                app:navGraph="@navigation/nav_task"/>
-
-    <!--<fragment-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:id="@+id/tasksFragment3"-->
-        <!--android:name="com.dashidan.tasks.TasksFragment"-->
-        <!--android:label="tasks_frag"-->
-        <!--tools:layout="@layout/tasks_frag" >-->
-    <!--</fragment>-->
-        <!--</androidx.coordinatorlayout.widget.CoordinatorLayout>-->
-
-    <!--</LinearLayout>-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -83,8 +57,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="60dp"
                 android:layout_marginLeft="10dp"
+                android:layout_marginTop="60dp"
                 android:text="@string/navigation_view_header_title"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
         </FrameLayout>
