@@ -144,7 +144,7 @@ public class TasksActivity extends FragmentActivity {
             return;
         }
 
-        Fragment fragment = navHostFragment.getChildFragmentManager().getFragments().get(0);
+        Fragment fragment = navHostFragment.getChildFragmentManager().getPrimaryNavigationFragment();
         if (fragment instanceof DocNoteFragment) {
             navHostFragment.findNavController(fragment).navigateUp();
         }
