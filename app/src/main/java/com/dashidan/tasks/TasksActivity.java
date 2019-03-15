@@ -19,13 +19,11 @@ package com.dashidan.tasks;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -36,20 +34,17 @@ import com.android.volley.toolbox.Volley;
 import com.dashidan.R;
 import com.dashidan.conf.Conf;
 import com.dashidan.http.NetworkFragment;
-import com.dashidan.util.ActivityUtils;
-import com.dashidan.util.NumberUtil;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.navigation.fragment.NavHostFragment;
 
 public class TasksActivity extends FragmentActivity {
     /**
@@ -58,16 +53,16 @@ public class TasksActivity extends FragmentActivity {
     public static final int LAN_ZH_CN = 1;
     public static final int LAN_EN = 2;
     public static int languageState = LAN_ZH_CN;
-    PopupMenu popupMenu;
+
     private DrawerLayout mDrawerLayout;
-    private NetworkFragment mNetworkFragment;
-    private TaskAdapter taskAdapter;
-    private TasksFragment tasksFragment;
-    private long firstPressedTime;
+    public static NetworkFragment mNetworkFragment;
+    public static TaskAdapter taskAdapter;
 
     private static String TAG_DIALOG = "TASK_FRAGE";
 
     public static String versionName = "";
+
+    NavHostFragment navHostFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,15 +74,7 @@ public class TasksActivity extends FragmentActivity {
         mDrawerLayout.setStatusBarBackground(R.color.colorPrimaryDark);
         // drawer
         mNetworkFragment = NetworkFragment.getInstance(getSupportFragmentManager());
-
-        tasksFragment = (TasksFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
-        if (tasksFragment == null) {
-            // Create the fragment
-            tasksFragment = TasksFragment.newInstance();
-            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), tasksFragment, R.id.contentFrame);
-        }
-
-        taskAdapter = new TaskAdapter(mDrawerLayout, tasksFragment, this);
+        taskAdapter = new TaskAdapter(mDrawerLayout, this);
 
         ListView listView = (ListView) findViewById(R.id.tasks_list);
         listView.setAdapter(taskAdapter);
@@ -112,7 +99,10 @@ public class TasksActivity extends FragmentActivity {
                          */
                         String anchor = title.getFullTitle().trim().split(" " + "")[0];
                         /** 切换文章内容*/
-                        tasksFragment.showWebPage(num, anchor);
+                        Fragment fragment = navHostFragment.getChildFragmentManager().getPrimaryNavigationFragment();
+                        if (fragment instanceof TasksFragment) {
+                            ((TasksFragment) fragment).showWebPage(num, anchor);
+                        }
                     } else {
                         Log.e(Conf.LOG_TAG, " numArr.length == 0 " + str);
                     }
@@ -123,14 +113,8 @@ public class TasksActivity extends FragmentActivity {
             }
         });
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.garden_nav_fragment);
 
-        // 这里的view代表popupMenu需要依附的view
-        popupMenu = new PopupMenu(this, findViewById(R.id.navigation_translate));
-        // 获取布局文件
-        popupMenu.getMenuInflater().inflate(R.menu.language, popupMenu.getMenu());
-        initPopMenuEvent();
 
         versionCheck();
     }
@@ -160,120 +144,10 @@ public class TasksActivity extends FragmentActivity {
             return;
         }
 
-        if (System.currentTimeMillis() - firstPressedTime < Conf.TOAST_EXIT_SHOW_TIME) {
-            super.onBackPressed();
-        } else {
-            Toast.makeText(this, getResources().getString(R.string.toast_press_to_exit), Toast.LENGTH_LONG).show();
-            firstPressedTime = System.currentTimeMillis();
+        Fragment fragment = navHostFragment.getChildFragmentManager().getFragments().get(0);
+        if (fragment instanceof DocNoteFragment) {
+            navHostFragment.findNavController(fragment).navigateUp();
         }
-    }
-
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    /** 上一篇*/
-                    if (tasksFragment.getmWebView() != null) {
-                        showLastPage();
-                    }
-                    return true;
-                case R.id.navigation_homepage:
-                    /** 主页*/
-                    if (mDrawerLayout.isDrawerVisible(GravityCompat.START)) {
-                        mDrawerLayout.closeDrawers();
-                    }
-                    tasksFragment.showWebPage(Conf.URL_HOME_PAGE_NUM, null);
-                    return true;
-                case R.id.navigation_about:
-                    /** 关于*/
-                    Toast.makeText(TasksActivity.this, versionName, Toast.LENGTH_LONG).show();
-                    return true;
-                case R.id.navigation_translate:
-                    /** 切换语言状态*/
-                    popupMenu.show();
-                    return true;
-                case R.id.navigation_notifications:
-                    /** 下一篇*/
-                    if (tasksFragment.getmWebView() != null) {
-                        showNextPage();
-                    }
-                    return true;
-            }
-            return false;
-        }
-    };
-
-    public void showLastPage() {
-        boolean isInteger = NumberUtil.isInteger(tasksFragment.getCurrentPageNum());
-        if (isInteger) {
-            Integer integer = Integer.parseInt(tasksFragment.getCurrentPageNum());
-            if (integer > 1) {
-                integer--;
-                tasksFragment.showWebPage(integer + "", null);
-            } else {
-                Toast.makeText(this, getResources().getString(R.string.this_is_the_first),
-                        Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-
-    public void showNextPage() {
-        boolean isInteger = NumberUtil.isInteger(tasksFragment.getCurrentPageNum());
-        if (isInteger) {
-            Integer num = Integer.parseInt(tasksFragment.getCurrentPageNum());
-            if (num < taskAdapter.getDocCount()) {
-                num++;
-                tasksFragment.showWebPage(num + "", null);
-            } else {
-                Toast.makeText(this, getResources().getString(R.string.this_is_the_last), Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-
-    /**
-     * 切换语言状态
-     */
-    public void updateCharset() {
-        tasksFragment.showWebPage(tasksFragment.getCurrentPageNum(), tasksFragment.getAnchor());
-    }
-
-    private void initPopMenuEvent() {
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                // 控件每一个item的点击事件
-                String catalogUrl = null;
-                switch (item.getItemId()) {
-                    case R.id.popupmenu_ch_cn:
-                        catalogUrl = Conf.URL_DOC_CONTENT_PRE + Conf.URL_CATALOG_CN;
-                        languageState = LAN_ZH_CN;
-                        break;
-                    case R.id.popupmenu_en:
-                        catalogUrl = Conf.URL_DOC_CONTENT_PRE + Conf.URL_CATALOG;
-                        languageState = LAN_EN;
-                        break;
-                    case R.id.popupmenu_ch_tw:
-
-                        break;
-                }
-
-                if (catalogUrl != null) {
-                    mNetworkFragment.startDownload(catalogUrl);
-                }
-
-                updateCharset();
-                return true;
-            }
-        });
-
-        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
-            @Override
-            public void onDismiss(PopupMenu menu) {
-                // 控件消失时的事件
-            }
-        });
     }
 
     /**
@@ -281,7 +155,17 @@ public class TasksActivity extends FragmentActivity {
      */
     private void versionCheck() {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = Conf.URL_DOC_CONTENT_PRE + Conf.URL_VERSION;
+
+        String url = null;
+        switch (TasksActivity.languageState) {
+            case TasksActivity.LAN_ZH_CN:
+                url = Conf.URL_VERSION;
+                break;
+            case TasksActivity.LAN_EN:
+                url = Conf.URL_VERSION_CN;
+                break;
+        }
+
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -319,5 +203,20 @@ public class TasksActivity extends FragmentActivity {
         fragment.setApkUrl(this, apkUrl, apkName);
         fragment.showNow(getSupportFragmentManager(), TAG_DIALOG);
     }
+
+    /**
+     * 开启手势滑动
+     */
+    public void openSlide() {
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+    }
+
+    /**
+     * 关闭手势滑动
+     */
+    public void closeSlide() {
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+    }
+
 }
 

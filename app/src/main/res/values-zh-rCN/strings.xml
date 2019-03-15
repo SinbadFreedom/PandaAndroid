@@ -62,7 +62,7 @@
     <string name="translate">语言</string>
     <string name="use_menu_button">请从目录选择想查看的文章</string>
     <string name="home_page">主页</string>
-    <string name="nav_about">关于</string>
+    <string name="nav_about">笔记</string>
     <string name="catalog">目\n录</string>
     <string name="language_en">EN</string>
     <string name="language_zh_ch">简</string>
@@ -71,4 +71,6 @@
     <string name="dialog_update">是否更新?</string>
     <string name="dialog_ok">确定</string>
     <string name="dialog_cancel">取消</string>
+    <string name="dialog_downloading">正在下载</string>
+    <string name="dialog_try_again">没有找到下载文件,请重新下载</string>
 </resources>

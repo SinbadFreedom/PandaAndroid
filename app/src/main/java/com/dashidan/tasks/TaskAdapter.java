@@ -22,13 +22,11 @@ public class TaskAdapter extends BaseAdapter {
     ArrayList<Title> allTitles = new ArrayList<>();
     HashSet<String> docIndexes = new HashSet<>();
 
-    TasksFragment tasksFragment;
     DrawerLayout mDrawerLayout;
 
     Context context;
 
-    public TaskAdapter(DrawerLayout mDrawerLayout, TasksFragment tasksFragment, Context context) {
-        this.tasksFragment = tasksFragment;
+    public TaskAdapter(DrawerLayout mDrawerLayout, Context context) {
         this.mDrawerLayout = mDrawerLayout;
         this.context = context;
     }

@@ -37,7 +37,6 @@ public class CheckVersionDialogFragment extends DialogFragment {
 
     static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 99;
 
-
     public void setApkUrl(Context context, String apkUrl, String apkName) {
         this.context = context;
         this.apkUrl = apkUrl;
@@ -108,8 +107,7 @@ public class CheckVersionDialogFragment extends DialogFragment {
         //必须一直下载完，不可取消
         pd.setCancelable(false);
         pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        pd.setMessage("正在下载安装包");
-        pd.setTitle("版本更新");
+        pd.setTitle(getString(R.string.dialog_downloading));
         pd.show();
 
         new Thread(new Runnable() {
@@ -123,7 +121,7 @@ public class CheckVersionDialogFragment extends DialogFragment {
                     if (file != null) {
                         installApk(file);
                     } else {
-                        Toast.makeText(context, "更新包无法下载", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, R.string.dialog_try_again, Toast.LENGTH_LONG).show();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -171,13 +169,12 @@ public class CheckVersionDialogFragment extends DialogFragment {
         }
     }
 
-
     /**
      * 安装apk
      */
     private void installApk(File file) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        /** 暂时注掉7.0的 启动应用的方法， 华为7.0测试正常，回头测试一下 oppo, vivo*/
+        /** TODO 暂时注掉7.0的 启动应用的方法， 华为7.0测试正常，回头测试一下 oppo, vivo*/
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 //            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 //            String authority = "com.dashidan.fileprovider";
