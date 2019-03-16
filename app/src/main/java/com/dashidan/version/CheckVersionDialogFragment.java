@@ -1,4 +1,4 @@
-package com.dashidan.tasks;
+package com.dashidan.version;
 
 import android.Manifest;
 import android.app.Activity;

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/doc_note"
-        android:name="com.dashidan.tasks.DocNoteFragment"
+        android:name="com.dashidan.note.DocNoteFragment"
         android:label="fragment_doc_note"
         tools:layout="@layout/fragment_doc_note" >
     </fragment>

@@ -10,24 +10,21 @@ import android.widget.TextView;
 
 import com.dashidan.R;
 import com.dashidan.conf.Conf;
+import com.dashidan.note.Title;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 
 import androidx.core.content.ContextCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 
 public class TaskAdapter extends BaseAdapter {
 
     ArrayList<Title> allTitles = new ArrayList<>();
     HashSet<String> docIndexes = new HashSet<>();
 
-    DrawerLayout mDrawerLayout;
-
     Context context;
 
-    public TaskAdapter(DrawerLayout mDrawerLayout, Context context) {
-        this.mDrawerLayout = mDrawerLayout;
+    public TaskAdapter(Context context) {
         this.context = context;
     }
 
@@ -107,22 +104,14 @@ public class TaskAdapter extends BaseAdapter {
                 textView.setTextSize(23);
                 textView.setTextColor(ContextCompat.getColor(context, R.color.black));
                 break;
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-                /** 2,3,4级标题*/
+            default:
+                /** 2,3,4级，及其他等级标题*/
                 numView.setTextSize(19);
                 numView.setTextColor(ContextCompat.getColor(context, R.color.black));
                 textView.setTextSize(19);
                 textView.setTextColor(ContextCompat.getColor(context, R.color.black));
                 break;
-            default:
-                Log.e(Conf.LOG_TAG, " setTextViewFontType rank " + title.getTitleRank());
-                break;
         }
-
     }
 
     public int getDocCount() {

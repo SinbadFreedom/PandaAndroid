@@ -43,7 +43,7 @@ public class TasksFragment extends Fragment {
     private WebView mWebView;
     private PopupMenu popupMenu;
 
-    private static String currentPageNum = Conf.URL_HOME_PAGE_NUM;
+    public static String currentPageNum = Conf.URL_HOME_PAGE_NUM;
     private static String anchor;
 
     public TasksFragment() {

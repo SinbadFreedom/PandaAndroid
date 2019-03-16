@@ -34,6 +34,9 @@ import com.android.volley.toolbox.Volley;
 import com.dashidan.R;
 import com.dashidan.conf.Conf;
 import com.dashidan.http.NetworkFragment;
+import com.dashidan.note.DocNoteFragment;
+import com.dashidan.note.Title;
+import com.dashidan.version.CheckVersionDialogFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -74,7 +77,7 @@ public class TasksActivity extends FragmentActivity {
         mDrawerLayout.setStatusBarBackground(R.color.colorPrimaryDark);
         // drawer
         mNetworkFragment = NetworkFragment.getInstance(getSupportFragmentManager());
-        taskAdapter = new TaskAdapter(mDrawerLayout, this);
+        taskAdapter = new TaskAdapter(this);
 
         ListView listView = (ListView) findViewById(R.id.tasks_list);
         listView.setAdapter(taskAdapter);
