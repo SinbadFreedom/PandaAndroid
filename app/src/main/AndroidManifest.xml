@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.dashidan">
+    package="com.panda_doc.python">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -12,19 +12,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <!--<provider-->
-            <!--android:name="androidx.core.content.FileProvider"-->
-            <!--android:authorities="com.dashidan.fileprovider"-->
-            <!--android:exported="false"-->
-            <!--android:grantUriPermissions="true">-->
-            <!--<meta-data-->
-                <!--android:name="android.support.FILE_PROVIDER_PATHS"-->
-                <!--android:resource="@xml/filepaths" />-->
-        <!--</provider>-->
-
         <activity
-            android:name=".tasks.TasksActivity"
+            android:name="com.panda_doc.python.tasks.TasksActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,16 +21,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- <provider -->
-        <!-- android:name="android.support.v4.content.FileProvider" -->
-        <!-- android:authorities="com.example.asd.fileprovider" -->
-        <!-- android:exported="false" -->
-        <!-- android:grantUriPermissions="true"> -->
-        <!-- <meta-data -->
-        <!-- android:name="android.support.FILE_PROVIDER_PATHS" -->
-        <!-- android:resource="@xml/filepaths" /> -->
-        <!-- </provider> -->
-
     </application>
 
 </manifest>

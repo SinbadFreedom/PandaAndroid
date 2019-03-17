@@ -7,16 +7,15 @@
 
     <fragment
         android:id="@+id/doc_note"
-        android:name="com.dashidan.note.DocNoteFragment"
+        android:name="com.panda_doc.python.note.DocNoteFragment"
         android:label="fragment_doc_note"
-        tools:layout="@layout/fragment_doc_note" >
-    </fragment>
+        tools:layout="@layout/fragment_doc_note"></fragment>
 
     <fragment
         android:id="@+id/tasksFragment3"
-        android:name="com.dashidan.tasks.TasksFragment"
+        android:name="com.panda_doc.python.tasks.TasksFragment"
         android:label="tasks_frag"
-        tools:layout="@layout/tasks_frag" >
+        tools:layout="@layout/tasks_frag">
         <action
             android:id="@+id/action_tasksFragment3_to_doc_note2"
             app:destination="@id/doc_note"

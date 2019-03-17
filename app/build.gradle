@@ -4,11 +4,11 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
-        applicationId "com.dashidan.PythonDocAndroid"
+        applicationId "com.panda_doc.python"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.0.2"
+        versionName "1.0.5"
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
@@ -29,7 +29,6 @@ android {
             applicationVariants.all { variant ->
                 variant.outputs.all {
                     def appName = "PythonDocAndroid"
-//                    outputFileName = appName + "_${variant.buildType.name}_${defaultConfig.versionName}.apk"
                     outputFileName = appName + "_${defaultConfig.versionName}.apk"
                 }
             }

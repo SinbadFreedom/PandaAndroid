@@ -12,9 +12,9 @@
         android:title="@string/translate" />
 
     <!--<item-->
-        <!--android:id="@+id/navigation_homepage"-->
-        <!--android:icon="@drawable/ic_home_black_24dp"-->
-        <!--android:title="@string/home_page" />-->
+    <!--android:id="@+id/navigation_homepage"-->
+    <!--android:icon="@drawable/ic_home_black_24dp"-->
+    <!--android:title="@string/home_page" />-->
 
     <item
         android:id="@+id/navigation_about"
