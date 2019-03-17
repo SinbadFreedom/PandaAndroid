@@ -52,9 +52,15 @@ public class DocNoteFragment extends Fragment {
      * 获取文章对应的笔记
      */
     private void getNoteByDocId(String id) {
+        if (null == id) {
+            Log.e(Conf.LOG_TAG, "getNoteByDocId null == id");
+            return;
+        }
+
         boolean isInt = NumberUtil.isInteger(id);
         if (!isInt) {
             /** 当前文章编号不是整型,比如index,返回*/
+            Log.e(Conf.LOG_TAG, " getNoteByDocId isInt false");
             return;
         }
 

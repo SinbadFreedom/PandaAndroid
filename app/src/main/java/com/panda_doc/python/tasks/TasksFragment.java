@@ -17,6 +17,7 @@
 package com.panda_doc.python.tasks;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,7 +31,6 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.panda_doc.python.R;
 import com.panda_doc.python.conf.Conf;
-import com.panda_doc.python.util.NumberUtil;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,7 +43,7 @@ public class TasksFragment extends Fragment {
     private WebView mWebView;
     private PopupMenu popupMenu;
 
-    public static String currentPageNum = Conf.URL_HOME_PAGE_NUM;
+    public static String currentPageNum;
     private static String anchor;
 
     public TasksFragment() {
@@ -67,13 +67,36 @@ public class TasksFragment extends Fragment {
         /** 修复webview 加载的网页中包含的js不生效*/
         mWebView.setWebChromeClient(new WebChromeClient());
         /** 修复加载外部css和js不生效的问题*/
-        mWebView.setWebViewClient(new WebViewClient());
+        mWebView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                if (!url.contains(Conf.URL_DOC_CONTENT_PRE)) {
+                    /** 非api文章返回，置空 currentPageNum*/
+                    currentPageNum = null;
+                    return;
+                }
+
+                String docName = url.replace(Conf.URL_DOC_CONTENT_PRE, "");
+                String[] arr = docName.split("\\.");
+                if (arr.length > 0) {
+                    String index = arr[0];
+                    currentPageNum = index;
+                } else {
+                    Log.e(Conf.LOG_TAG, "arr.length == 0 url " + url);
+                }
+            }
+
+        });
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setDomStorageEnabled(true);
 
-        /** 显示Index主页*/
-        this.showWebPage(currentPageNum, anchor);
+        /** currentPageNum 为空 显示Index主页, 不为空 显示当前页， 用在从笔记页面切换回来的时候*/
+        if (null == currentPageNum) {
+            this.showWebPage(Conf.URL_INDEX, anchor);
+        } else {
+            this.showWebPage(currentPageNum, anchor);
+        }
 
         BottomNavigationView navigation = (BottomNavigationView) root.findViewById(R.id.bottom_navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -90,16 +113,18 @@ public class TasksFragment extends Fragment {
     }
 
     public void showWebPage(String pageNum, String anc) {
-        currentPageNum = pageNum;
+        if (null == pageNum) {
+            Log.e(Conf.LOG_TAG, "showWebPage pageNum == null");
+            return;
+        }
         anchor = anc;
-
         String url = null;
         switch (TasksActivity.languageState) {
             case TasksActivity.LAN_ZH_CN:
-                url = Conf.URL_DOC_CONTENT_PRE + currentPageNum + ".cn.html";
+                url = Conf.URL_DOC_CONTENT_PRE + pageNum + ".cn.html";
                 break;
             case TasksActivity.LAN_EN:
-                url = Conf.URL_DOC_CONTENT_PRE + currentPageNum + ".html";
+                url = Conf.URL_DOC_CONTENT_PRE + pageNum + ".html";
                 break;
         }
 
@@ -115,12 +140,6 @@ public class TasksFragment extends Fragment {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    /** 上一篇*/
-                    if (mWebView != null) {
-                        showLastPage();
-                    }
-                    return true;
                 case R.id.navigation_about:
                     /** 关于*/
                     Toast.makeText(TasksFragment.this.getContext(), TasksActivity.versionName, Toast.LENGTH_LONG).show();
@@ -133,43 +152,10 @@ public class TasksFragment extends Fragment {
                     /** 切换语言状态*/
                     popupMenu.show();
                     return true;
-                case R.id.navigation_notifications:
-                    /** 下一篇*/
-                    if (mWebView != null) {
-                        showNextPage();
-                    }
-                    return true;
             }
             return false;
         }
     };
-
-    private void showLastPage() {
-        boolean isInteger = NumberUtil.isInteger(currentPageNum);
-        if (isInteger) {
-            Integer integer = Integer.parseInt(currentPageNum);
-            if (integer > 1) {
-                integer--;
-                showWebPage(integer + "", null);
-            } else {
-                Toast.makeText(this.getContext(), getResources().getString(R.string.this_is_the_first),
-                        Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-
-    private void showNextPage() {
-        boolean isInteger = NumberUtil.isInteger(currentPageNum);
-        if (isInteger) {
-            Integer num = Integer.parseInt(currentPageNum);
-            if (num < TasksActivity.taskAdapter.getDocCount()) {
-                num++;
-                showWebPage(num + "", null);
-            } else {
-                Toast.makeText(this.getContext(), getResources().getString(R.string.this_is_the_last), Toast.LENGTH_LONG).show();
-            }
-        }
-    }
 
     /**
      * 切换语言状态
