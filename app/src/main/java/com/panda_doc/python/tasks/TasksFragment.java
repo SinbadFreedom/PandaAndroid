@@ -73,6 +73,7 @@ public class TasksFragment extends Fragment {
                 if (!url.contains(Conf.URL_DOC_CONTENT_PRE)) {
                     /** 非api文章返回，置空 currentPageNum*/
                     currentPageNum = null;
+                    anchor = null;
                     return;
                 }
 
@@ -81,6 +82,7 @@ public class TasksFragment extends Fragment {
                 if (arr.length > 0) {
                     String index = arr[0];
                     currentPageNum = index;
+                    anchor = null;
                 } else {
                     Log.e(Conf.LOG_TAG, "arr.length == 0 url " + url);
                 }
