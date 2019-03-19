@@ -44,7 +44,7 @@ public class DocNoteFragment extends Fragment {
         /** 笔记列表*/
         ListView listView = (ListView) root.findViewById(R.id.note_list);
         listView.setAdapter(noteAdapter);
-        this.getNoteByDocId(TasksFragment.currentPageNum);
+        this.getCurrentPageNote();
 
         BottomNavigationView navigation = (BottomNavigationView) root.findViewById(R.id.note_navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -57,21 +57,16 @@ public class DocNoteFragment extends Fragment {
     /**
      * 获取文章对应的笔记
      */
-    private void getNoteByDocId(String id) {
-        if (null == id) {
-            Log.e(Conf.LOG_TAG, "getNoteByDocId null == id");
-            return;
-        }
-
-        boolean isInt = NumberUtil.isInteger(id);
+    private void getCurrentPageNote() {
+        boolean isInt = NumberUtil.isInteger(TasksFragment.currentPageNum);
         if (!isInt) {
             /** 当前文章编号不是整型,比如index,返回*/
-            Log.e(Conf.LOG_TAG, " getNoteByDocId isInt false");
+            Log.e(Conf.LOG_TAG, " getCurrentPageNote isInt false");
             return;
         }
 
         RequestQueue queue = Volley.newRequestQueue(this.getContext());
-        String url = Conf.URL_LOG_TAG + "?page=" + id;
+        String url = Conf.URL_LOG_TAG + "?page=" + TasksFragment.currentPageNum;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -98,6 +93,7 @@ public class DocNoteFragment extends Fragment {
 
             @Override
             public void onErrorResponse(VolleyError error) {
+                Log.e(Conf.LOG_TAG, error.fillInStackTrace().toString());
             }
         });
         queue.add(stringRequest);

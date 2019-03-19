@@ -78,4 +78,7 @@
     <string name="doc_note_add_cancle">取消</string>
     <string name="doc_note_add_send">发送</string>
     <string name="note_input_text">请输入笔记内容</string>
+    <string name="note_text_too_long">请输入字数少于</string>
+    <string name="note_send_success">发送成功</string>
+    <string name="note_check_net_connect">请检查网络</string>
 </resources>

@@ -78,4 +78,7 @@
     <string name="doc_note_add_cancle">Cancel</string>
     <string name="doc_note_add_send">Send</string>
     <string name="note_input_text">Please input your note here.</string>
+    <string name="note_text_too_long">Please input letter less than</string>
+    <string name="note_send_success">Send success</string>
+    <string name="note_check_net_connect">Please check your net connection</string>
 </resources>
