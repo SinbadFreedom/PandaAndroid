@@ -73,4 +73,9 @@
     <string name="dialog_cancel">取消</string>
     <string name="dialog_downloading">正在下载</string>
     <string name="dialog_try_again">没有找到下载文件,请重新下载</string>
+    <string name="doc_note_back">返回</string>
+    <string name="doc_note_add">编辑</string>
+    <string name="doc_note_add_cancle">取消</string>
+    <string name="doc_note_add_send">发送</string>
+    <string name="note_input_text">请输入笔记内容</string>
 </resources>

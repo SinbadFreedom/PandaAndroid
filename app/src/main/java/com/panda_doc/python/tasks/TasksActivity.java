@@ -34,6 +34,7 @@ import com.android.volley.toolbox.Volley;
 import com.panda_doc.python.R;
 import com.panda_doc.python.conf.Conf;
 import com.panda_doc.python.http.NetworkFragment;
+import com.panda_doc.python.note.DocNoteAddFragment;
 import com.panda_doc.python.note.DocNoteFragment;
 import com.panda_doc.python.note.Title;
 import com.panda_doc.python.version.CheckVersionDialogFragment;
@@ -65,7 +66,7 @@ public class TasksActivity extends FragmentActivity {
 
     public static String versionName = "";
 
-    NavHostFragment navHostFragment;
+    private NavHostFragment navHostFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,8 +118,6 @@ public class TasksActivity extends FragmentActivity {
         });
 
         navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.garden_nav_fragment);
-
-
         versionCheck();
     }
 
@@ -149,6 +148,8 @@ public class TasksActivity extends FragmentActivity {
 
         Fragment fragment = navHostFragment.getChildFragmentManager().getPrimaryNavigationFragment();
         if (fragment instanceof DocNoteFragment) {
+            navHostFragment.findNavController(fragment).navigateUp();
+        } else if (fragment instanceof DocNoteAddFragment) {
             navHostFragment.findNavController(fragment).navigateUp();
         }
     }

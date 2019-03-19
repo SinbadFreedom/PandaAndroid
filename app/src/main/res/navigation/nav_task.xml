@@ -9,7 +9,15 @@
         android:id="@+id/doc_note"
         android:name="com.panda_doc.python.note.DocNoteFragment"
         android:label="fragment_doc_note"
-        tools:layout="@layout/fragment_doc_note"></fragment>
+        tools:layout="@layout/fragment_doc_note">
+        <action
+            android:id="@+id/action_doc_note_to_docNoteAddFragment3"
+            app:destination="@id/docNoteAddFragment3"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
 
     <fragment
         android:id="@+id/tasksFragment3"
@@ -24,5 +32,11 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
     </fragment>
+
+    <fragment
+        android:id="@+id/docNoteAddFragment3"
+        android:name="com.panda_doc.python.note.DocNoteAddFragment"
+        android:label="fragment_doc_note_add"
+        tools:layout="@layout/fragment_doc_note_add" />
 
 </navigation>

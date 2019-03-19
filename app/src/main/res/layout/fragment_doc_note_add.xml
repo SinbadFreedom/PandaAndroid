@@ -4,13 +4,13 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ListView
-        android:id="@+id/note_list"
+    <EditText
+        android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@null"
-        android:dividerHeight="0dp"
-        android:visibility="visible" />
+        android:gravity="top|left"
+        android:hint="@string/note_input_text"
+        android:padding="@dimen/web_view_padding" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/note_navigation"
@@ -20,6 +20,6 @@
         android:background="@color/colorBluePrimaryCenter"
         app:itemIconTint="@color/white"
         app:itemTextColor="@color/white"
-        app:menu="@menu/doc_note" />
+        app:menu="@menu/doc_note_add" />
 
 </FrameLayout>

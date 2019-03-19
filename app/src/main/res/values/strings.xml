@@ -73,4 +73,9 @@
     <string name="dialog_cancel">cancel</string>
     <string name="dialog_downloading">Downloading</string>
     <string name="dialog_try_again">Please try again</string>
+    <string name="doc_note_back">return</string>
+    <string name="doc_note_add">add</string>
+    <string name="doc_note_add_cancle">Cancel</string>
+    <string name="doc_note_add_send">Send</string>
+    <string name="note_input_text">Please input your note here.</string>
 </resources>

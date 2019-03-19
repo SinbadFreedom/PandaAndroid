@@ -3,6 +3,7 @@ package com.panda_doc.python.note;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -13,6 +14,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.panda_doc.python.R;
 import com.panda_doc.python.conf.Conf;
 import com.panda_doc.python.tasks.TasksActivity;
@@ -28,6 +30,7 @@ import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 public class DocNoteFragment extends Fragment {
 
@@ -42,6 +45,9 @@ public class DocNoteFragment extends Fragment {
         ListView listView = (ListView) root.findViewById(R.id.note_list);
         listView.setAdapter(noteAdapter);
         this.getNoteByDocId(TasksFragment.currentPageNum);
+
+        BottomNavigationView navigation = (BottomNavigationView) root.findViewById(R.id.note_navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         /** 关闭手势滑动*/
         ((TasksActivity) getActivity()).closeSlide();
@@ -96,4 +102,22 @@ public class DocNoteFragment extends Fragment {
         });
         queue.add(stringRequest);
     }
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.doc_note_back:
+                    /** 返回*/
+                    NavHostFragment.findNavController(DocNoteFragment.this).navigateUp();
+                    return true;
+                case R.id.doc_note_add_note:
+                    /** 记笔记*/
+                    NavHostFragment.findNavController(DocNoteFragment.this).navigate(R.id.action_doc_note_to_docNoteAddFragment3);
+                    return true;
+            }
+            return false;
+        }
+    };
 }
