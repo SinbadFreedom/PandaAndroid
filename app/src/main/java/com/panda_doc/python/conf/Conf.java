@@ -23,7 +23,7 @@ public class Conf {
 
     public static final String FOLDER_APK = "python3";
 
-    public static final String URL_LOG_TAG = "https://dashidan.com/php/getNote.php";
+    public static final String URL_GET_NOTE = "https://dashidan.com/php/getNote.php?num=";
     public static final String URL_ADD_NOTE = "https://dashidan.com/php/addNote.php";
 
     public static final int NOTE_MAX_LENGTH = 500;

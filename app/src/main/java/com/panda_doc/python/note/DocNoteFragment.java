@@ -66,24 +66,28 @@ public class DocNoteFragment extends Fragment {
         }
 
         RequestQueue queue = Volley.newRequestQueue(this.getContext());
-        String url = Conf.URL_LOG_TAG + "?page=" + TasksFragment.currentPageNum;
+        String url = Conf.URL_GET_NOTE + TasksFragment.currentPageNum;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        if (response.equals("")) {
+                            return;
+                        }
+
                         try {
                             JSONArray jsonObject = new JSONArray(response);
                             ArrayList<Note> notes = new ArrayList<>();
                             for (int i = 0; i < jsonObject.length(); i++) {
                                 JSONObject noteObj = (JSONObject) jsonObject.get(i);
-                                String userIconUrl = noteObj.getString(Conf.KEY_USER_ICON);
-                                String userName = noteObj.getString(Conf.KEY_USER_NAME);
+//                                String userIconUrl = noteObj.getString(Conf.KEY_USER_ICON);
+//                                String userName = noteObj.getString(Conf.KEY_USER_NAME);
                                 String noteText = noteObj.getString(Conf.KEY_NOTE_INFO);
 
-                                Note note = new Note(userIconUrl, userName, noteText);
+                                Note note = new Note("", "", noteText);
                                 notes.add(note);
                             }
-                            noteAdapter.setAllTitles(notes);
+                            noteAdapter.setNoteList(notes);
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Log.e(Conf.LOG_TAG, " response " + response);

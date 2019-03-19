@@ -12,16 +12,16 @@ import java.util.ArrayList;
 
 public class NoteAdapter extends BaseAdapter {
 
-    ArrayList<Note> allTitles = new ArrayList<>();
+    ArrayList<Note> noteList = new ArrayList<>();
 
     @Override
     public int getCount() {
-        return allTitles.size();
+        return noteList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return allTitles.get(position);
+        return noteList.get(position);
     }
 
     @Override
@@ -46,8 +46,8 @@ public class NoteAdapter extends BaseAdapter {
         return rowView;
     }
 
-    public void setAllTitles(ArrayList<Note> allTitles) {
-        this.allTitles = allTitles;
+    public void setNoteList(ArrayList<Note> noteList) {
+        this.noteList = noteList;
         this.notifyDataSetChanged();
     }
 }
