@@ -26,15 +26,33 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.AdapterView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.panda_doc.python.MainActivity;
 import com.panda_doc.python.R;
 import com.panda_doc.python.conf.Conf;
+import com.panda_doc.python.note.Title;
+
+import java.io.UnsupportedEncodingException;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -46,19 +64,53 @@ public class TasksFragment extends Fragment {
     public static String currentPageNum;
     private static String anchor;
 
-    public TasksFragment() {
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+    private DrawerLayout mDrawerLayout;
+    public static TaskAdapter taskAdapter;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.tasks_frag, container, false);
+        View root = inflater.inflate(R.layout.tasks_act, container, false);
+
+        mDrawerLayout = (DrawerLayout) root.findViewById(R.id.drawer_layout);
+        mDrawerLayout.setStatusBarBackground(R.color.colorPrimaryDark);
+        taskAdapter = new TaskAdapter(this.getContext());
+
+        ListView listView = (ListView) root.findViewById(R.id.tasks_list);
+        listView.setAdapter(taskAdapter);
+        /** 点击标题事件*/
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (view instanceof LinearLayout) {
+                    TextView textView = (TextView) ((LinearLayout) view).getChildAt(0);
+                    String str = (String) textView.getText();
+                    str = str.trim();
+                    String[] numArr = str.split("\\.");
+                    if (numArr.length > 0) {
+                        /** 获取文章编号*/
+                        String num = numArr[0];
+                        /** 获取完整标题*/
+                        Title title = taskAdapter.getItem(position);
+                        /**
+                         * 获取标题id
+                         * 与showdown转化的html标题id规则统一，目前是去掉了空格和“.”， 变小写
+                         * 有可能有特殊字符过滤，后续添加。
+                         */
+                        String anchor = title.getFullTitle().trim().split(" " + "")[0];
+                        /** 切换文章内容*/
+                        showWebPage(num, anchor);
+                    } else {
+                        Log.e(Conf.LOG_TAG, " numArr.length == 0 " + str);
+                    }
+                } else {
+                    Log.e(Conf.LOG_TAG, "view instanceof LinearLayout false position " + position);
+                }
+                closeTaskDrawer();
+            }
+        });
+
 
         mWebView = root.findViewById(R.id.task_web_view);
         /** 设置webview不缓存*/
@@ -109,23 +161,22 @@ public class TasksFragment extends Fragment {
         popupMenu.getMenuInflater().inflate(R.menu.language, popupMenu.getMenu());
         initPopMenuEvent();
 
-        /** 开启手势滑动*/
-        ((TasksActivity) getActivity()).openSlide();
+        getCatalog();
         return root;
     }
 
-    public void showWebPage(String pageNum, String anc) {
+    private void showWebPage(String pageNum, String anc) {
         if (null == pageNum) {
             Log.e(Conf.LOG_TAG, "showWebPage pageNum == null");
             return;
         }
         anchor = anc;
         String url = null;
-        switch (TasksActivity.languageState) {
-            case TasksActivity.LAN_ZH_CN:
+        switch (MainActivity.languageState) {
+            case MainActivity.LAN_ZH_CN:
                 url = Conf.URL_DOC_CONTENT_PRE + pageNum + ".cn.html";
                 break;
-            case TasksActivity.LAN_EN:
+            case MainActivity.LAN_EN:
                 url = Conf.URL_DOC_CONTENT_PRE + pageNum + ".html";
                 break;
         }
@@ -144,7 +195,7 @@ public class TasksFragment extends Fragment {
             switch (item.getItemId()) {
                 case R.id.navigation_about:
                     /** 关于*/
-                    Toast.makeText(TasksFragment.this.getContext(), TasksActivity.versionName, Toast.LENGTH_LONG).show();
+                    Toast.makeText(TasksFragment.this.getContext(), MainActivity.versionName, Toast.LENGTH_LONG).show();
                     return true;
                 case R.id.navigation_note:
                     /** 笔记*/
@@ -170,21 +221,19 @@ public class TasksFragment extends Fragment {
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                // 控件每一个item的点击事件
-                String catalogUrl = null;
+                /** 控件每一个item的点击事件*/
+                int lastLanaguage = MainActivity.languageState;
                 switch (item.getItemId()) {
                     case R.id.popupmenu_ch_cn:
-                        catalogUrl = Conf.URL_DOC_CONTENT_PRE + Conf.URL_CATALOG_CN;
-                        TasksActivity.languageState = TasksActivity.LAN_ZH_CN;
+                        MainActivity.languageState = MainActivity.LAN_ZH_CN;
                         break;
                     case R.id.popupmenu_en:
-                        catalogUrl = Conf.URL_DOC_CONTENT_PRE + Conf.URL_CATALOG;
-                        TasksActivity.languageState = TasksActivity.LAN_EN;
+                        MainActivity.languageState = MainActivity.LAN_EN;
                         break;
                 }
 
-                if (catalogUrl != null) {
-                    TasksActivity.mNetworkFragment.startDownload(catalogUrl);
+                if (lastLanaguage != MainActivity.languageState) {
+                    getCatalog();
                 }
 
                 updateCharset();
@@ -195,9 +244,70 @@ public class TasksFragment extends Fragment {
         popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
             @Override
             public void onDismiss(PopupMenu menu) {
-                // 控件消失时的事件
+                /** 控件消失时的事件*/
             }
         });
+    }
+
+    /**
+     * 按返回键时如果开启了滑动屏，则关闭
+     */
+    public void closeTaskDrawer() {
+        if (mDrawerLayout.isDrawerVisible(GravityCompat.START)) {
+            mDrawerLayout.closeDrawers();
+        }
+    }
+
+    /**
+     * 初始化目录内容
+     */
+    private void getCatalog() {
+        RequestQueue queue = Volley.newRequestQueue(this.getContext());
+
+        String catalogUrl = null;
+        switch (MainActivity.languageState) {
+            case MainActivity.LAN_ZH_CN:
+                catalogUrl = Conf.URL_DOC_CONTENT_PRE + Conf.URL_CATALOG_CN;
+                break;
+            case MainActivity.LAN_EN:
+                catalogUrl = Conf.URL_DOC_CONTENT_PRE + Conf.URL_CATALOG;
+                break;
+        }
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, catalogUrl,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if (response.equals("")) {
+                            return;
+                        }
+                        String[] titles = response.split("\n");
+                        taskAdapter.initContents(titles);
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(Conf.LOG_TAG, error.fillInStackTrace().toString());
+            }
+        }) {
+
+            /** 解决 Volley utf-8 乱码*/
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                String parsed;
+                try {
+                    parsed = new String(response.data, "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    // Since minSdkVersion = 8, we can't call
+                    // new String(response.data, Charset.defaultCharset())
+                    // So suppress the warning instead.
+                    parsed = new String(response.data);
+                }
+                return Response.success(parsed, HttpHeaderParser.parseCacheHeaders(response));
+            }
+        };
+        queue.add(stringRequest);
     }
 
 }

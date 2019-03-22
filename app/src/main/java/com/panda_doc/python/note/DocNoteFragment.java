@@ -17,7 +17,6 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.panda_doc.python.R;
 import com.panda_doc.python.conf.Conf;
-import com.panda_doc.python.tasks.TasksActivity;
 import com.panda_doc.python.tasks.TasksFragment;
 import com.panda_doc.python.util.NumberUtil;
 
@@ -49,8 +48,6 @@ public class DocNoteFragment extends Fragment {
         BottomNavigationView navigation = (BottomNavigationView) root.findViewById(R.id.note_navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        /** 关闭手势滑动*/
-        ((TasksActivity) getActivity()).closeSlide();
         return root;
     }
 
@@ -79,11 +76,9 @@ public class DocNoteFragment extends Fragment {
                             JSONArray jsonObject = new JSONArray(response);
                             ArrayList<Note> notes = new ArrayList<>();
                             for (int i = 0; i < jsonObject.length(); i++) {
+                                //TODO 笔记内容，头像，昵称
                                 JSONObject noteObj = (JSONObject) jsonObject.get(i);
-//                                String userIconUrl = noteObj.getString(Conf.KEY_USER_ICON);
-//                                String userName = noteObj.getString(Conf.KEY_USER_NAME);
                                 String noteText = noteObj.getString(Conf.KEY_NOTE_INFO);
-
                                 Note note = new Note("", "", noteText);
                                 notes.add(note);
                             }
