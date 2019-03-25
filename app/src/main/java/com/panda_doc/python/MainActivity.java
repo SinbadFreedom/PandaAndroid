@@ -26,18 +26,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.panda_doc.python.conf.Conf;
-import com.panda_doc.python.note.DocNoteAddFragment;
-import com.panda_doc.python.note.DocNoteFragment;
-import com.panda_doc.python.tasks.TasksFragment;
 import com.panda_doc.python.version.CheckVersionDialogFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.navigation.fragment.NavHostFragment;
+import androidx.fragment.app.FragmentTransaction;
 
 public class MainActivity extends FragmentActivity {
     /**
@@ -51,32 +46,11 @@ public class MainActivity extends FragmentActivity {
 
     public static String versionName = "";
 
-    public static FragmentManager fragmentManager;
-    private NavHostFragment navHostFragment;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.main);
-        fragmentManager = getSupportFragmentManager();
-        navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.garden_nav_fragment);
         versionCheck();
-    }
-
-    /**
-     * 后退键处理,按一次出提示文字，再按一次退出
-     */
-    @Override
-    public void onBackPressed() {
-        Fragment fragment = navHostFragment.getChildFragmentManager().getPrimaryNavigationFragment();
-        if (fragment instanceof DocNoteFragment) {
-            navHostFragment.findNavController(fragment).navigateUp();
-        } else if (fragment instanceof DocNoteAddFragment) {
-            navHostFragment.findNavController(fragment).navigateUp();
-        } else if (fragment instanceof TasksFragment) {
-            ((TasksFragment) (fragment)).closeTaskDrawer();
-        }
     }
 
     /**
@@ -99,7 +73,6 @@ public class MainActivity extends FragmentActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        System.out.println(" response " + response);
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             String version = jsonObject.getString(Conf.KEY_VERSION);
@@ -130,7 +103,11 @@ public class MainActivity extends FragmentActivity {
     private void showUpdateUI(String apkUrl, String apkName) {
         CheckVersionDialogFragment fragment = new CheckVersionDialogFragment();
         fragment.setApkUrl(this, apkUrl, apkName);
-        fragment.showNow(getSupportFragmentManager(), TAG_DIALOG);
+
+        /** 替换 fr.showNowe()方法, 原方法会报异常*/
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.add(fragment, TAG_DIALOG);
+        ft.commitAllowingStateLoss();
     }
 
 }

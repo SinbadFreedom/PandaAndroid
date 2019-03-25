@@ -3,21 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_task"
-    app:startDestination="@id/doc_login">
-
-    <fragment
-        android:id="@+id/doc_login"
-        android:name="com.panda_doc.python.login.LoginFragment"
-        android:label="nav_login_frag"
-        tools:layout="@layout/login">
-        <action
-            android:id="@+id/action_doc_login_to_tasksFragment3"
-            app:destination="@id/tasksFragment3"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-    </fragment>
+    app:startDestination="@id/tasksFragment3">
 
     <fragment
         android:id="@+id/tasksFragment3"
