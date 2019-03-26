@@ -7,9 +7,14 @@
     <item
         android:id="@+id/navigation_about"
         android:icon="@drawable/ic_info_black_24dp"
-        android:title="@string/nav_about" />
+        android:title="@string/home_page" />
     <item
         android:id="@+id/navigation_note"
         android:icon="@drawable/ic_edit_black_24dp"
+        android:title="@string/nav_about" />
+
+    <item
+        android:id="@+id/navigation_ranking_list"
+        android:icon="@drawable/ic_insert_chart_black_24dp"
         android:title="@string/nav_about" />
 </menu>

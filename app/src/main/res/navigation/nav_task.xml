@@ -17,6 +17,13 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_tasksFragment3_to_rankListFragment"
+            app:destination="@id/rankListFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment
@@ -38,5 +45,10 @@
         android:name="com.panda_doc.python.note.DocNoteAddFragment"
         android:label="nav_fragment_doc_note_add"
         tools:layout="@layout/fragment_doc_note_add" />
+    <fragment
+        android:id="@+id/rankListFragment"
+        android:name="com.panda_doc.python.rank_list.RankListFragment"
+        android:label="fragment_rank_list"
+        tools:layout="@layout/fragment_rank_list" />
 
 </navigation>

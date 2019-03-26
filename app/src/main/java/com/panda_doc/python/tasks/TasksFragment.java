@@ -293,6 +293,10 @@ public class TasksFragment extends Fragment {
                     /** 切换语言状态*/
                     popupMenu.show();
                     return true;
+                case R.id.navigation_ranking_list:
+                    /** 排行榜*/
+                    NavHostFragment.findNavController(TasksFragment.this).navigate(R.id.action_tasksFragment3_to_rankListFragment);
+                    break;
             }
             return false;
         }

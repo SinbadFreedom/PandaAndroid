@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.panda_doc.python.note.DocNoteAddFragment;
 import com.panda_doc.python.note.DocNoteFragment;
+import com.panda_doc.python.rank_list.RankListFragment;
 import com.panda_doc.python.tasks.TasksFragment;
 import com.panda_doc.python.uikit.NetworkUtil;
 import com.panda_doc.python.view_model.UserInfoViewModel;
@@ -59,7 +60,7 @@ public class DocActivity extends FragmentActivity {
         scope = intent.getStringExtra("scope");
 
         fragmentManager = getSupportFragmentManager();
-        navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.garden_nav_fragment);
+        navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.doc_nav_fragment);
 
         userInfoViewModel = ViewModelProviders.of(this).get(UserInfoViewModel.class);
 
@@ -77,17 +78,15 @@ public class DocActivity extends FragmentActivity {
      */
     @Override
     public void onBackPressed() {
-        if (null == navHostFragment) {
-            return;
-        }
-
         Fragment fragment = navHostFragment.getChildFragmentManager().getPrimaryNavigationFragment();
         if (fragment instanceof DocNoteFragment) {
-            navHostFragment.findNavController(fragment).navigateUp();
+            NavHostFragment.findNavController(fragment).navigateUp();
         } else if (fragment instanceof DocNoteAddFragment) {
-            navHostFragment.findNavController(fragment).navigateUp();
+            NavHostFragment.findNavController(fragment).navigateUp();
         } else if (fragment instanceof TasksFragment) {
             ((TasksFragment) (fragment)).closeTaskDrawer();
+        } else if (fragment instanceof RankListFragment) {
+            NavHostFragment.findNavController(fragment).navigateUp();
         }
     }
 
