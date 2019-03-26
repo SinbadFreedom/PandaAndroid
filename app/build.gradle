@@ -9,6 +9,9 @@ android {
             storePassword 'ljhdhr'
         }
     }
+    dataBinding {
+        enabled = true
+    }
     compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
         applicationId "com.panda_doc.python"
@@ -65,6 +68,10 @@ android {
             events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 /*
@@ -72,6 +79,7 @@ android {
  all versions in a single place. This improves readability and helps managing project complexity.
  */
 dependencies {
+    def lifecycle_version = "2.0.0"
 
     // App dependencies
     implementation "androidx.appcompat:appcompat:$appCompatVersion"
@@ -116,4 +124,25 @@ dependencies {
     implementation 'com.android.volley:volley:1.1.1'
     implementation 'android.arch.navigation:navigation-fragment:1.0.0'
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.3.1'
+
+    // ViewModel and LiveData
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+
+    // alternatively - just ViewModel
+
+    // alternatively - just LiveData
+    implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
+
+    // alternatively - Lifecycles only (no ViewModel or LiveData). Some UI
+
+    //     AndroidX libraries use this lightweight import for Lifecycle
+    implementation "androidx.lifecycle:lifecycle-runtime:$lifecycle_version"
+
+    // alternately - if using Java8, use the following instead of lifecycle-compiler
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
+
+    // optional - ReactiveStreams support for LiveData
+
+    // optional - Test helpers for LiveData
+    testImplementation "androidx.arch.core:core-testing:$lifecycle_version"
 }
