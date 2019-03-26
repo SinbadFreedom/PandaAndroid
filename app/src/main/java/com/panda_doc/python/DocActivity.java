@@ -8,14 +8,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.panda_doc.python.note.DocNoteAddFragment;
 import com.panda_doc.python.note.DocNoteFragment;
 import com.panda_doc.python.tasks.TasksFragment;
 import com.panda_doc.python.uikit.NetworkUtil;
+import com.panda_doc.python.view_model.UserInfoViewModel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,6 +26,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.fragment.NavHostFragment;
 
 public class DocActivity extends FragmentActivity {
@@ -40,7 +40,10 @@ public class DocActivity extends FragmentActivity {
     private static String openId;
     private static String accessToken;
     private static String scope;
+
     private static MyHandler handler;
+
+    private UserInfoViewModel userInfoViewModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,6 +61,8 @@ public class DocActivity extends FragmentActivity {
         fragmentManager = getSupportFragmentManager();
         navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.garden_nav_fragment);
 
+        userInfoViewModel = ViewModelProviders.of(this).get(UserInfoViewModel.class);
+
         /** 获取用户信息和头像*/
         if (accessToken != null && openId != null) {
             NetworkUtil.sendWxAPI(handler, String.format("https://api.weixin.qq.com/sns/auth?" +
@@ -72,6 +77,10 @@ public class DocActivity extends FragmentActivity {
      */
     @Override
     public void onBackPressed() {
+        if (null == navHostFragment) {
+            return;
+        }
+
         Fragment fragment = navHostFragment.getChildFragmentManager().getPrimaryNavigationFragment();
         if (fragment instanceof DocNoteFragment) {
             navHostFragment.findNavController(fragment).navigateUp();
@@ -82,7 +91,7 @@ public class DocActivity extends FragmentActivity {
         }
     }
 
-    private static class MyHandler extends Handler {
+    private class MyHandler extends Handler {
         private final WeakReference<DocActivity> userInfoActivityWR;
 
         public MyHandler(DocActivity userInfoActivity) {
@@ -139,13 +148,12 @@ public class DocActivity extends FragmentActivity {
                         city = json.getString("city");
                         country = json.getString("country");
 
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                /** 设置用户名*/
-                                ((TextView) userInfoActivityWR.get().findViewById(R.id.user_name)).setText(nickname);
-                            }
-                        });
+                        userInfoViewModel.setNickname(nickname);
+                        userInfoViewModel.setHeadimgurl(headimgurl);
+                        userInfoViewModel.setSex(sex);
+                        userInfoViewModel.setCountry(country);
+                        userInfoViewModel.setProvince(province);
+                        userInfoViewModel.setCity(city);
                     } catch (JSONException e) {
                         Log.e(TAG, e.getMessage());
                     } catch (UnsupportedEncodingException e) {
@@ -163,13 +171,7 @@ public class DocActivity extends FragmentActivity {
                         showToast(userInfoActivityWR.get(), "头像图片获取失败");
                     }
 
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            /** 设置微信头像*/
-                            ((ImageView) userInfoActivityWR.get().findViewById(R.id.img_header_icon)).setImageBitmap(bitmap);
-                        }
-                    });
+                    userInfoViewModel.setHeadBitmap(bitmap);
                     break;
                 }
             }

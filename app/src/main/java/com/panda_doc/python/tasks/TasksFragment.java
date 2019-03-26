@@ -16,6 +16,7 @@
 
 package com.panda_doc.python.tasks;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -45,6 +47,7 @@ import com.panda_doc.python.MainActivity;
 import com.panda_doc.python.R;
 import com.panda_doc.python.conf.Conf;
 import com.panda_doc.python.note.Title;
+import com.panda_doc.python.view_model.UserInfoViewModel;
 
 import java.io.UnsupportedEncodingException;
 
@@ -52,14 +55,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.core.view.GravityCompat;
+import androidx.databinding.Observable;
+import androidx.databinding.ObservableField;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.fragment.NavHostFragment;
 
 public class TasksFragment extends Fragment {
 
     private WebView mWebView;
     private PopupMenu popupMenu;
+
+    private TextView viewNickName;
+    private ImageView viewHeadImage;
 
     public static String currentPageNum;
     private static String anchor;
@@ -111,7 +120,6 @@ public class TasksFragment extends Fragment {
             }
         });
 
-
         mWebView = root.findViewById(R.id.task_web_view);
         /** 设置webview不缓存*/
         mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
@@ -161,7 +169,41 @@ public class TasksFragment extends Fragment {
         popupMenu.getMenuInflater().inflate(R.menu.language, popupMenu.getMenu());
         initPopMenuEvent();
 
+        /** 名字和头像*/
+        viewNickName = root.findViewById(R.id.user_name);
+        viewHeadImage = root.findViewById(R.id.img_header_icon);
+
         getCatalog();
+
+        UserInfoViewModel viewModel = ViewModelProviders.of(this.getActivity()).get(UserInfoViewModel.class);
+        if (null != viewModel.getNickname() && viewModel.getNickname().length() > 0) {
+            /** 导航切换回来，初始化 设置名称*/
+            viewNickName.setText(viewModel.getNickname());
+        }
+
+        if (null != viewModel.getHeadBitmap()) {
+            /** 导航切换回来，初始化 设置名称*/
+            viewHeadImage.setImageBitmap(viewModel.getHeadBitmap());
+        }
+
+        /** 首次开启应用 注册 名字和头像变化事件 */
+        viewModel.getNicknameObserver().addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable sender, int propertyId) {
+                String nameStr = ((ObservableField<String>) sender).get();
+                viewNickName.setText(nameStr);
+                Log.i(Conf.LOG_TAG, " " + propertyId);
+            }
+        });
+
+        viewModel.getHeadBitmapObserver().addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable sender, int propertyId) {
+                Bitmap bitmap = ((ObservableField<Bitmap>) sender).get();
+                viewHeadImage.setImageBitmap(bitmap);
+            }
+        });
+
         return root;
     }
 
