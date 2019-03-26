@@ -17,8 +17,8 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.panda_doc.python.R;
 import com.panda_doc.python.conf.Conf;
-import com.panda_doc.python.tasks.TasksFragment;
 import com.panda_doc.python.util.NumberUtil;
+import com.panda_doc.python.view_model.UserInfoViewModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.fragment.NavHostFragment;
 
 public class DocNoteFragment extends Fragment {
@@ -55,7 +56,9 @@ public class DocNoteFragment extends Fragment {
      * 获取文章对应的笔记
      */
     private void getCurrentPageNote() {
-        boolean isInt = NumberUtil.isInteger(TasksFragment.currentPageNum);
+        UserInfoViewModel viewModel = ViewModelProviders.of(this.getActivity()).get(UserInfoViewModel.class);
+
+        boolean isInt = NumberUtil.isInteger(viewModel.getCurrentPageNum().get());
         if (!isInt) {
             /** 当前文章编号不是整型,比如index,返回*/
             Log.e(Conf.LOG_TAG, " getCurrentPageNote isInt false");
@@ -63,7 +66,7 @@ public class DocNoteFragment extends Fragment {
         }
 
         RequestQueue queue = Volley.newRequestQueue(this.getContext());
-        String url = Conf.URL_GET_NOTE + TasksFragment.currentPageNum;
+        String url = Conf.URL_GET_NOTE + viewModel.getCurrentPageNum().get();
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override

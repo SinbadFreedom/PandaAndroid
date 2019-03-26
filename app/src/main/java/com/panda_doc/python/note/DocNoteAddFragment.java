@@ -19,8 +19,8 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.panda_doc.python.R;
 import com.panda_doc.python.conf.Conf;
-import com.panda_doc.python.tasks.TasksFragment;
 import com.panda_doc.python.util.NumberUtil;
+import com.panda_doc.python.view_model.UserInfoViewModel;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +28,7 @@ import java.util.Map;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.fragment.NavHostFragment;
 
 public class DocNoteAddFragment extends Fragment {
@@ -41,6 +42,8 @@ public class DocNoteAddFragment extends Fragment {
      */
     boolean isSending;
 
+    UserInfoViewModel viewModel;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -52,6 +55,9 @@ public class DocNoteAddFragment extends Fragment {
 
         BottomNavigationView navigation = (BottomNavigationView) root.findViewById(R.id.note_navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        viewModel = ViewModelProviders.of(this.getActivity()).get(UserInfoViewModel.class);
+
         return root;
     }
 
@@ -90,7 +96,7 @@ public class DocNoteAddFragment extends Fragment {
      */
     private void sendNote(final String note) {
         /** 检测当前文章id是否可以加笔记*/
-        boolean isInt = NumberUtil.isInteger(TasksFragment.currentPageNum);
+        boolean isInt = NumberUtil.isInteger(viewModel.getCurrentPageNum().get());
         if (!isInt) {
             /** 当前文章编号不是整型,比如index,返回*/
             Log.e(Conf.LOG_TAG, " getNoteByDocId isInt false");
@@ -132,7 +138,7 @@ public class DocNoteAddFragment extends Fragment {
                 // 请求参数
                 Map<String, String> map = new HashMap<>();
                 //new 一个Map  参数放到Map中
-                map.put("num", TasksFragment.currentPageNum);
+                map.put("num", viewModel.getCurrentPageNum().get());
                 map.put("note", note);
                 return map;
             }

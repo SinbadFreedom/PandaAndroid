@@ -2,7 +2,11 @@ package com.panda_doc.python.view_model;
 
 import android.graphics.Bitmap;
 
+import java.util.ArrayList;
+
+import androidx.databinding.ObservableArrayList;
 import androidx.databinding.ObservableField;
+import androidx.databinding.ObservableInt;
 import androidx.lifecycle.ViewModel;
 
 public class UserInfoViewModel extends ViewModel {
@@ -14,6 +18,17 @@ public class UserInfoViewModel extends ViewModel {
     private final ObservableField<String> country = new ObservableField<>();
     private final ObservableField<String> headimgurl = new ObservableField<>();
     private final ObservableField<Bitmap> headBitmap = new ObservableField<>();
+
+    private final ObservableArrayList<String> titles = new ObservableArrayList<>();
+    private final ObservableField<String> currentPageNum = new ObservableField<>();
+    private final ObservableField<String> anchor = new ObservableField<>();
+
+    /**
+     * 语言状态
+     */
+    public static final int LAN_ZH_CN = 1;
+    public static final int LAN_EN = 2;
+    private ObservableInt languageState = new ObservableInt();
 
     public String getNickname() {
         return nickname.get();
@@ -27,40 +42,21 @@ public class UserInfoViewModel extends ViewModel {
         this.nickname.set(nickname);
     }
 
-    public ObservableField<String> getSex() {
-        return sex;
-    }
-
     public void setSex(String sex) {
         this.sex.set(sex);
-    }
-
-    public ObservableField<String> getProvince() {
-        return province;
     }
 
     public void setProvince(String province) {
         this.province.set(province);
     }
 
-    public ObservableField<String> getCity() {
-        return city;
-    }
 
     public void setCity(String city) {
         this.city.set(city);
     }
 
-    public ObservableField<String> getCountry() {
-        return country;
-    }
-
     public void setCountry(String country) {
         this.country.set(country);
-    }
-
-    public String getHeadimgurl() {
-        return headimgurl.get();
     }
 
     public void setHeadimgurl(String headimgurl) {
@@ -77,5 +73,38 @@ public class UserInfoViewModel extends ViewModel {
 
     public ObservableField<Bitmap> getHeadBitmapObserver() {
         return headBitmap;
+    }
+
+    public ObservableArrayList<String> getTitles() {
+        return titles;
+    }
+
+    public void updateTitles(ArrayList<String> strings) {
+        this.titles.clear();
+        this.titles.addAll(strings);
+    }
+
+    public ObservableInt getLanguageState() {
+        return languageState;
+    }
+
+    public void setLanguageState(int languageState) {
+        this.languageState.set(languageState);
+    }
+
+    public ObservableField<String> getCurrentPageNum() {
+        return currentPageNum;
+    }
+
+    public void setCurrentPageNum(String pageNum) {
+        currentPageNum.set(pageNum);
+    }
+
+    public ObservableField<String> getAnchor() {
+        return anchor;
+    }
+
+    public void setAnchor(String anchor) {
+        this.anchor.set(anchor);
     }
 }

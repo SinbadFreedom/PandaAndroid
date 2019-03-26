@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import androidx.core.content.ContextCompat;
+import androidx.databinding.ObservableList;
 
 public class TaskAdapter extends BaseAdapter {
 
@@ -28,7 +29,7 @@ public class TaskAdapter extends BaseAdapter {
         this.context = context;
     }
 
-    public void initContents(String[] contents) {
+    public void initContents(ObservableList<String> contents) {
         /** 当前显示的标题，包括 主标题和 点开的主标题对应的子标题，初始化只有主标题*/
         allTitles.clear();
         for (final String str : contents) {

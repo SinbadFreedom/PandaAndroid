@@ -50,6 +50,8 @@ import com.panda_doc.python.note.Title;
 import com.panda_doc.python.view_model.UserInfoViewModel;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -57,6 +59,8 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.core.view.GravityCompat;
 import androidx.databinding.Observable;
 import androidx.databinding.ObservableField;
+import androidx.databinding.ObservableInt;
+import androidx.databinding.ObservableList;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -70,11 +74,10 @@ public class TasksFragment extends Fragment {
     private TextView viewNickName;
     private ImageView viewHeadImage;
 
-    public static String currentPageNum;
-    private static String anchor;
-
     private DrawerLayout mDrawerLayout;
-    public static TaskAdapter taskAdapter;
+    private TaskAdapter taskAdapter;
+
+    private UserInfoViewModel viewModel;
 
     @Nullable
     @Override
@@ -132,40 +135,21 @@ public class TasksFragment extends Fragment {
             public void onPageFinished(WebView view, String url) {
                 if (!url.contains(Conf.URL_DOC_CONTENT_PRE)) {
                     /** 非api文章返回，置空 currentPageNum*/
-                    currentPageNum = null;
-                    anchor = null;
+                    viewModel.setCurrentPageNum(null);
+                    viewModel.setAnchor(null);
                     return;
                 }
-
-                String docName = url.replace(Conf.URL_DOC_CONTENT_PRE, "");
-                String[] arr = docName.split("\\.");
-                if (arr.length > 0) {
-                    String index = arr[0];
-                    currentPageNum = index;
-                    anchor = null;
-                } else {
-                    Log.e(Conf.LOG_TAG, "arr.length == 0 url " + url);
-                }
             }
-
         });
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setDomStorageEnabled(true);
 
-        /** currentPageNum 为空 显示Index主页, 不为空 显示当前页， 用在从笔记页面切换回来的时候*/
-        if (null == currentPageNum) {
-            this.showWebPage(Conf.URL_INDEX, anchor);
-        } else {
-            this.showWebPage(currentPageNum, anchor);
-        }
-
         BottomNavigationView navigation = (BottomNavigationView) root.findViewById(R.id.bottom_navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        // 这里的view代表popupMenu需要依附的view
+        /** 语言选择弹窗*/
         popupMenu = new PopupMenu(this.getContext(), root.findViewById(R.id.navigation_translate));
-        // 获取布局文件
         popupMenu.getMenuInflater().inflate(R.menu.language, popupMenu.getMenu());
         initPopMenuEvent();
 
@@ -173,36 +157,95 @@ public class TasksFragment extends Fragment {
         viewNickName = root.findViewById(R.id.user_name);
         viewHeadImage = root.findViewById(R.id.img_header_icon);
 
-        getCatalog();
 
-        UserInfoViewModel viewModel = ViewModelProviders.of(this.getActivity()).get(UserInfoViewModel.class);
-        if (null != viewModel.getNickname() && viewModel.getNickname().length() > 0) {
+        viewModel = ViewModelProviders.of(this.getActivity()).get(UserInfoViewModel.class);
+        if (null != viewModel.getNickname()) {
             /** 导航切换回来，初始化 设置名称*/
             viewNickName.setText(viewModel.getNickname());
+        } else {
+            /** 首次开启应用 注册 名字和头像变化事件 */
+            viewModel.getNicknameObserver().addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+                @Override
+                public void onPropertyChanged(Observable sender, int propertyId) {
+                    String nameStr = ((ObservableField<String>) sender).get();
+                    viewNickName.setText(nameStr);
+                    Log.i(Conf.LOG_TAG, " " + propertyId);
+                }
+            });
         }
 
         if (null != viewModel.getHeadBitmap()) {
             /** 导航切换回来，初始化 设置名称*/
             viewHeadImage.setImageBitmap(viewModel.getHeadBitmap());
+        } else {
+            viewModel.getHeadBitmapObserver().addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+                @Override
+                public void onPropertyChanged(Observable sender, int propertyId) {
+                    Bitmap bitmap = ((ObservableField<Bitmap>) sender).get();
+                    viewHeadImage.setImageBitmap(bitmap);
+                }
+            });
         }
 
-        /** 首次开启应用 注册 名字和头像变化事件 */
-        viewModel.getNicknameObserver().addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
-            @Override
-            public void onPropertyChanged(Observable sender, int propertyId) {
-                String nameStr = ((ObservableField<String>) sender).get();
-                viewNickName.setText(nameStr);
-                Log.i(Conf.LOG_TAG, " " + propertyId);
-            }
-        });
+        /** 语言状态*/
+        if (viewModel.getLanguageState().get() == 0) {
+            viewModel.setLanguageState(UserInfoViewModel.LAN_ZH_CN);
+            /** 切换语言*/
+            viewModel.getLanguageState().addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+                @Override
+                public void onPropertyChanged(Observable sender, int propertyId) {
+                    int lan = ((ObservableInt) sender).get();
+                    /** 当前页面数据更新*/
+                    showWebPage(viewModel.getCurrentPageNum().get(), viewModel.getAnchor().get());
+                    /** 目录数据更新*/
+                    getCatalog();
+                }
+            });
+        }
 
-        viewModel.getHeadBitmapObserver().addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
-            @Override
-            public void onPropertyChanged(Observable sender, int propertyId) {
-                Bitmap bitmap = ((ObservableField<Bitmap>) sender).get();
-                viewHeadImage.setImageBitmap(bitmap);
-            }
-        });
+        /** 目录数据*/
+        if (viewModel.getTitles().size() != 0) {
+            taskAdapter.initContents(viewModel.getTitles());
+        } else {
+            /** 目录数据初始化*/
+            getCatalog();
+
+            viewModel.getTitles().addOnListChangedCallback(new ObservableList.OnListChangedCallback<ObservableList<String>>() {
+
+                @Override
+                public void onChanged(ObservableList<String> sender) {
+
+                }
+
+                @Override
+                public void onItemRangeChanged(ObservableList<String> sender, int positionStart, int itemCount) {
+
+                }
+
+                @Override
+                public void onItemRangeInserted(ObservableList<String> sender, int positionStart, int itemCount) {
+                    /** 初始化目录数据*/
+                    taskAdapter.initContents(sender);
+                }
+
+                @Override
+                public void onItemRangeMoved(ObservableList<String> sender, int fromPosition, int toPosition, int itemCount) {
+
+                }
+
+                @Override
+                public void onItemRangeRemoved(ObservableList<String> sender, int positionStart, int itemCount) {
+
+                }
+            });
+        }
+
+        /** currentPageNum 为空 显示Index主页, 不为空 显示当前页， 用在从笔记页面切换回来的时候*/
+        if (viewModel.getCurrentPageNum().get() == null) {
+            this.showWebPage(Conf.URL_INDEX, null);
+        } else {
+            this.showWebPage(viewModel.getCurrentPageNum().get(), viewModel.getAnchor().get());
+        }
 
         return root;
     }
@@ -212,20 +255,23 @@ public class TasksFragment extends Fragment {
             Log.e(Conf.LOG_TAG, "showWebPage pageNum == null");
             return;
         }
-        anchor = anc;
+
+        viewModel.setCurrentPageNum(pageNum);
+        viewModel.setAnchor(anc);
+
         String url = null;
-        switch (MainActivity.languageState) {
-            case MainActivity.LAN_ZH_CN:
+        switch (viewModel.getLanguageState().get()) {
+            case UserInfoViewModel.LAN_ZH_CN:
                 url = Conf.URL_DOC_CONTENT_PRE + pageNum + ".cn.html";
                 break;
-            case MainActivity.LAN_EN:
+            case UserInfoViewModel.LAN_EN:
                 url = Conf.URL_DOC_CONTENT_PRE + pageNum + ".html";
                 break;
         }
 
-        if (anchor != null) {
+        if (anc != null) {
             /** 跳转锚点*/
-            url = url + "#" + anchor;
+            url = url + "#" + anc;
         }
         mWebView.loadUrl(url);
     }
@@ -252,33 +298,19 @@ public class TasksFragment extends Fragment {
         }
     };
 
-    /**
-     * 切换语言状态
-     */
-    private void updateCharset() {
-        showWebPage(currentPageNum, anchor);
-    }
-
     private void initPopMenuEvent() {
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 /** 控件每一个item的点击事件*/
-                int lastLanaguage = MainActivity.languageState;
                 switch (item.getItemId()) {
                     case R.id.popupmenu_ch_cn:
-                        MainActivity.languageState = MainActivity.LAN_ZH_CN;
+                        viewModel.setLanguageState(UserInfoViewModel.LAN_ZH_CN);
                         break;
                     case R.id.popupmenu_en:
-                        MainActivity.languageState = MainActivity.LAN_EN;
+                        viewModel.setLanguageState(UserInfoViewModel.LAN_EN);
                         break;
                 }
-
-                if (lastLanaguage != MainActivity.languageState) {
-                    getCatalog();
-                }
-
-                updateCharset();
                 return true;
             }
         });
@@ -307,12 +339,15 @@ public class TasksFragment extends Fragment {
         RequestQueue queue = Volley.newRequestQueue(this.getContext());
 
         String catalogUrl = null;
-        switch (MainActivity.languageState) {
-            case MainActivity.LAN_ZH_CN:
+        switch (viewModel.getLanguageState().get()) {
+            case UserInfoViewModel.LAN_ZH_CN:
                 catalogUrl = Conf.URL_DOC_CONTENT_PRE + Conf.URL_CATALOG_CN;
                 break;
-            case MainActivity.LAN_EN:
+            case UserInfoViewModel.LAN_EN:
                 catalogUrl = Conf.URL_DOC_CONTENT_PRE + Conf.URL_CATALOG;
+                break;
+            default:
+                catalogUrl = Conf.URL_DOC_CONTENT_PRE + Conf.URL_CATALOG_CN;
                 break;
         }
 
@@ -324,7 +359,10 @@ public class TasksFragment extends Fragment {
                             return;
                         }
                         String[] titles = response.split("\n");
-                        taskAdapter.initContents(titles);
+                        ArrayList<String> titleList = new ArrayList<>();
+                        Collections.addAll(titleList, titles);
+                        /** 更新ViewModel 目录数据*/
+                        viewModel.updateTitles(titleList);
                     }
                 }, new Response.ErrorListener() {
 

@@ -35,12 +35,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 public class MainActivity extends FragmentActivity {
-    /**
-     * 语言状态
-     */
-    public static final int LAN_ZH_CN = 1;
-    public static final int LAN_EN = 2;
-    public static int languageState = LAN_ZH_CN;
+
 
     private static String TAG_DIALOG = "TASK_FRAGE";
 
@@ -59,17 +54,7 @@ public class MainActivity extends FragmentActivity {
     private void versionCheck() {
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        String url = null;
-        switch (MainActivity.languageState) {
-            case MainActivity.LAN_ZH_CN:
-                url = Conf.URL_VERSION;
-                break;
-            case MainActivity.LAN_EN:
-                url = Conf.URL_VERSION_CN;
-                break;
-        }
-
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, Conf.URL_VERSION_CN,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
