@@ -66,7 +66,7 @@ public class DocNoteFragment extends Fragment {
         }
 
         RequestQueue queue = Volley.newRequestQueue(this.getContext());
-        String url = Conf.URL_GET_NOTE + viewModel.getCurrentPageNum().get();
+        String url = Conf.URL_NOTE_GET + viewModel.getCurrentPageNum().get();
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override

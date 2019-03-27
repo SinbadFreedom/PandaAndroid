@@ -27,6 +27,7 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
 
 public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
@@ -34,8 +35,28 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 
     private IWXAPI api;
     private MyHandler handler;
+    /**
+     * token
+     */
+    private String refreshToken;
+    private String openId;
+    private String accessToken;
+    private String scope;
+    /**
+     * user info
+     */
+    private String nickname;
+    private String sex;
+    private String province;
+    private String city;
+    private String country;
+    private String headimgurl;
+    private byte[] imgdata;
 
-    private static class MyHandler extends Handler {
+    private boolean infoReady;
+    private boolean headerImgReady;
+
+    private class MyHandler extends Handler {
         private final WeakReference<WXEntryActivity> wxEntryActivityWeakReference;
 
         public MyHandler(WXEntryActivity wxEntryActivity) {
@@ -45,28 +66,107 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
         @Override
         public void handleMessage(Message msg) {
             int tag = msg.what;
+            JSONObject json;
+            Bundle data = msg.getData();
             switch (tag) {
                 case NetworkUtil.GET_TOKEN: {
-                    Bundle data = msg.getData();
-                    JSONObject json = null;
                     try {
                         json = new JSONObject(data.getString("result"));
-                        String openId, accessToken, refreshToken, scope;
-                        openId = json.getString("openid");
-                        accessToken = json.getString("access_token");
-                        refreshToken = json.getString("refresh_token");
-                        scope = json.getString("scope");
-                        Intent intent = new Intent(wxEntryActivityWeakReference.get(), DocActivity.class);
-                        intent.putExtra("openId", openId);
-                        intent.putExtra("accessToken", accessToken);
-                        intent.putExtra("refreshToken", refreshToken);
-                        intent.putExtra("scope", scope);
+                        openId = json.getString(Constants.KEY_OPENID);
+                        accessToken = json.getString(Constants.KEY_ACCESS_TOKEN);
+                        refreshToken = json.getString(Constants.KEY_REFRESH_TOKEN);
+                        scope = json.getString(Constants.KEY_SCOPE);
 
-                        wxEntryActivityWeakReference.get().startActivity(intent);
+                        if (accessToken != null && openId != null) {
+                            NetworkUtil.sendWxAPI(this, String.format("https://api.weixin.qq.com/sns/auth?" +
+                                    "access_token=%s&openid=%s", accessToken, openId), NetworkUtil.CHECK_TOKEN);
+                        } else {
+                            Toast.makeText(WXEntryActivity.this, "请先获取code", Toast.LENGTH_LONG).show();
+                        }
                     } catch (JSONException e) {
                         Log.e(TAG, e.getMessage());
                     }
+                    break;
                 }
+                case NetworkUtil.CHECK_TOKEN: {
+                    try {
+                        json = new JSONObject(data.getString("result"));
+                        int errcode = json.getInt("errcode");
+                        if (errcode == 0) {
+                            NetworkUtil.sendWxAPI(handler, String.format("https://api.weixin.qq.com/sns/userinfo?" +
+                                    "access_token=%s&openid=%s", accessToken, openId), NetworkUtil.GET_INFO);
+                        } else {
+                            NetworkUtil.sendWxAPI(handler, String.format("https://api.weixin.qq.com/sns/oauth2/refresh_token?" +
+                                            "appid=%s&grant_type=refresh_token&refresh_token=%s", Constants.WX_APP_ID, refreshToken),
+                                    NetworkUtil.REFRESH_TOKEN);
+                        }
+                    } catch (JSONException e) {
+                        Log.e(TAG, e.getMessage());
+                    }
+                    break;
+                }
+                case NetworkUtil.REFRESH_TOKEN: {
+                    try {
+                        json = new JSONObject(data.getString("result"));
+                        openId = json.getString(Constants.KEY_OPENID);
+                        accessToken = json.getString(Constants.KEY_ACCESS_TOKEN);
+                        refreshToken = json.getString(Constants.KEY_REFRESH_TOKEN);
+                        scope = json.getString(Constants.KEY_SCOPE);
+                        NetworkUtil.sendWxAPI(handler, String.format("https://api.weixin.qq.com/sns/userinfo?" +
+                                "access_token=%s&openid=%s", accessToken, openId), NetworkUtil.GET_INFO);
+                    } catch (JSONException e) {
+                        Log.e(TAG, e.getMessage());
+                    }
+                    break;
+                }
+                case NetworkUtil.GET_INFO: {
+                    try {
+                        json = new JSONObject(data.getString("result"));
+                        headimgurl = json.getString(Constants.KEY_HEADIMGURL);
+                        NetworkUtil.getImage(handler, headimgurl, NetworkUtil.GET_IMG);
+                        String encode = getcode(json.getString(Constants.KEY_NICKNAME));
+                        nickname = new String(json.getString(Constants.KEY_NICKNAME).getBytes(encode), "utf-8");
+                        sex = json.getString(Constants.KEY_SEX);
+                        province = json.getString(Constants.KEY_PROVINCE);
+                        city = json.getString(Constants.KEY_CITY);
+                        country = json.getString(Constants.KEY_COUNTRY);
+
+                        infoReady = true;
+                        updateWXLoginState();
+                    } catch (JSONException e) {
+                        Log.e(TAG, e.getMessage());
+                    } catch (UnsupportedEncodingException e) {
+                        Log.e(TAG, e.getMessage());
+                    }
+                    break;
+                }
+                case NetworkUtil.GET_IMG: {
+                    imgdata = data.getByteArray(Constants.KEY_HEAD_IMG_DATA);
+                    headerImgReady = true;
+                    updateWXLoginState();
+                    break;
+                }
+            }
+        }
+
+        private void updateWXLoginState() {
+            if (infoReady && headerImgReady) {
+                /** 传递用户数据到Doc应用*/
+                Intent intent = new Intent(wxEntryActivityWeakReference.get(), DocActivity.class);
+                intent.putExtra(Constants.KEY_OPENID, openId);
+                intent.putExtra(Constants.KEY_ACCESS_TOKEN, accessToken);
+                intent.putExtra(Constants.KEY_REFRESH_TOKEN, refreshToken);
+                intent.putExtra(Constants.KEY_SCOPE, scope);
+
+                intent.putExtra(Constants.KEY_HEADIMGURL, headimgurl);
+                intent.putExtra(Constants.KEY_NICKNAME, nickname);
+                intent.putExtra(Constants.KEY_SEX, sex);
+                intent.putExtra(Constants.KEY_PROVINCE, province);
+                intent.putExtra(Constants.KEY_CITY, city);
+                intent.putExtra(Constants.KEY_COUNTRY, country);
+                intent.putExtra(Constants.KEY_HEAD_IMG_DATA, imgdata);
+
+                wxEntryActivityWeakReference.get().startActivity(intent);
             }
         }
     }
@@ -202,4 +302,18 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 //        startActivity(intent);
 //        finish();
 //    }
+
+    private String getcode(String str) {
+        String[] encodelist = {"GB2312", "ISO-8859-1", "UTF-8", "GBK", "Big5", "UTF-16LE", "Shift_JIS", "EUC-JP"};
+        for (String anEncodelist : encodelist) {
+            try {
+                if (str.equals(new String(str.getBytes(anEncodelist), anEncodelist))) {
+                    return anEncodelist;
+                }
+            } catch (Exception ignored) {
+
+            }
+        }
+        return "";
+    }
 }

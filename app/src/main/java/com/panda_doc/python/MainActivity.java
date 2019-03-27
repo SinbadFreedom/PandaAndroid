@@ -16,10 +16,12 @@
 
 package com.panda_doc.python;
 
+import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -37,23 +39,25 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 public class MainActivity extends FragmentActivity {
 
-
     private static String TAG_DIALOG = "TASK_FRAGE";
 
-    public static String versionName = "";
-
-    ImageButton wechatLogin;
     private IWXAPI api;
+    private ImageButton wechatLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+
+        checkPermission();
+        api = WXAPIFactory.createWXAPI(this, Constants.WX_APP_ID, false);
 
         wechatLogin = (ImageButton) findViewById(R.id.login_wechat);
         wechatLogin.setImageResource(R.drawable.icon48_wx_button);
@@ -65,6 +69,7 @@ public class MainActivity extends FragmentActivity {
             }
         });
 
+        /** 经过测试屏蔽这个regToWx方法，没有影响，能够正确获取用户信息，暂时先保留该方法*/
         regToWx();
         versionCheck();
     }
@@ -85,12 +90,11 @@ public class MainActivity extends FragmentActivity {
                             String apk_url = jsonObject.getString(Conf.KEY_APK_URL);
                             String apk_name = jsonObject.getString(Conf.KEY_APK_NAME);
 
-                            versionName = MainActivity.this.getPackageManager().
+                            String packageVersionName = MainActivity.this.getPackageManager().
                                     getPackageInfo(MainActivity.this.getPackageName(), 0).versionName;
-                            if (!version.equals(versionName)) {
+                            if (!version.equals(packageVersionName)) {
                                 showUpdateUI(apk_url, apk_name);
                             }
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         } catch (PackageManager.NameNotFoundException e) {
@@ -121,7 +125,6 @@ public class MainActivity extends FragmentActivity {
      */
     private void regToWx() {
         /** 通过WXAPIFactory工厂，获取IWXAPI的实例*/
-        api = WXAPIFactory.createWXAPI(this, Constants.WX_APP_ID, false);
         /** 将应用的appId注册到微信*/
         api.registerApp(Constants.WX_APP_ID);
     }
@@ -136,5 +139,28 @@ public class MainActivity extends FragmentActivity {
         api.sendReq(req);
     }
 
+    private void checkPermission() {
+        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    Constants.PERMISSIONS_REQUEST_STORAGE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case Constants.PERMISSIONS_REQUEST_STORAGE: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                } else {
+                    Toast.makeText(MainActivity.this, "Please give me storage permission!", Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
+        }
+    }
 }
 

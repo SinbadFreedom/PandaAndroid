@@ -24,10 +24,11 @@ public class Conf {
 
     public static final String FOLDER_APK = "python3";
 
-    public static final String URL_GET_NOTE = "https://dashidan.com/php/note_get.php?num=";
-    public static final String URL_ADD_NOTE = "https://dashidan.com/php/note_add.php";
+    public static final String URL_NOTE_GET = "https://dashidan.com/php/note_get.php?num=";
+    public static final String URL_NOTE_ADD = "https://dashidan.com/php/note_add.php";
     public static final String URL_RANK_LIST = "https://dashidan.com/php/rank_list.php?p=python";
     public static final String URL_MORE_APP = "https://dashidan.com/php/more_app_list.php?p=python";
+    public static final String URL_USER_LOGIN = "https://dashidan.com/php/user_login.php";
 
 
     public static final int NOTE_MAX_LENGTH = 500;

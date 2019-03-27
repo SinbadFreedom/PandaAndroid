@@ -110,7 +110,7 @@ public class DocNoteAddFragment extends Fragment {
         isSending = true;
 
         RequestQueue queue = Volley.newRequestQueue(this.getContext());
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Conf.URL_ADD_NOTE,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Conf.URL_NOTE_ADD,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
