@@ -157,12 +157,12 @@ public class TasksFragment extends Fragment {
 
 
         viewModel = ViewModelProviders.of(this.getActivity()).get(UserInfoViewModel.class);
-        if (null != viewModel.getNickname()) {
+        if (null != viewModel.getNickname().get()) {
             /** 导航切换回来，初始化 设置名称*/
-            viewNickName.setText(viewModel.getNickname());
+            viewNickName.setText(viewModel.getNickname().get());
         } else {
             /** 首次开启应用 注册 名字和头像变化事件 */
-            viewModel.getNicknameObserver().addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            viewModel.getNickname().addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
                 @Override
                 public void onPropertyChanged(Observable sender, int propertyId) {
                     String nameStr = ((ObservableField<String>) sender).get();

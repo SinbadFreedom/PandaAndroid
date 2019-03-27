@@ -11,6 +11,11 @@ import androidx.lifecycle.ViewModel;
 
 public class UserInfoViewModel extends ViewModel {
 
+    private String openId;
+    private String accessToken;
+    private String refreshToken;
+    private String scope;
+
     private final ObservableField<String> nickname = new ObservableField<>();
     private final ObservableField<String> sex = new ObservableField<>();
     private final ObservableField<String> province = new ObservableField<>();
@@ -30,11 +35,7 @@ public class UserInfoViewModel extends ViewModel {
     public static final int LAN_EN = 2;
     private ObservableInt languageState = new ObservableInt();
 
-    public String getNickname() {
-        return nickname.get();
-    }
-
-    public ObservableField<String> getNicknameObserver() {
+    public ObservableField<String> getNickname() {
         return nickname;
     }
 
@@ -49,7 +50,6 @@ public class UserInfoViewModel extends ViewModel {
     public void setProvince(String province) {
         this.province.set(province);
     }
-
 
     public void setCity(String city) {
         this.city.set(city);
@@ -106,5 +106,57 @@ public class UserInfoViewModel extends ViewModel {
 
     public void setAnchor(String anchor) {
         this.anchor.set(anchor);
+    }
+
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
+    public String getScope() {
+        return scope;
+    }
+
+    public void setScope(String scope) {
+        this.scope = scope;
+    }
+
+    public ObservableField<String> getSex() {
+        return sex;
+    }
+
+    public ObservableField<String> getProvince() {
+        return province;
+    }
+
+    public ObservableField<String> getCity() {
+        return city;
+    }
+
+    public ObservableField<String> getCountry() {
+        return country;
+    }
+
+    public ObservableField<String> getHeadimgurl() {
+        return headimgurl;
     }
 }

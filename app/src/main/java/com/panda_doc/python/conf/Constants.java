@@ -18,6 +18,9 @@ public class Constants {
     public static final String KEY_COUNTRY = "country";
     public static final String KEY_HEAD_IMG_DATA = "imgdata";
 
+    public static final String KEY_CHANNEL = "channel";
+    public static final String CHANNEL_APP_PYTHON = "app_python";
+
     public static final int PERMISSIONS_REQUEST_STORAGE = 1;
 }
 
