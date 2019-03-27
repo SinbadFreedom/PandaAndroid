@@ -32,7 +32,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -43,7 +42,6 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.panda_doc.python.MainActivity;
 import com.panda_doc.python.R;
 import com.panda_doc.python.conf.Conf;
 import com.panda_doc.python.note.Title;
@@ -283,7 +281,7 @@ public class TasksFragment extends Fragment {
             switch (item.getItemId()) {
                 case R.id.navigation_about:
                     /** 关于*/
-                    Toast.makeText(TasksFragment.this.getContext(), MainActivity.versionName, Toast.LENGTH_LONG).show();
+                    NavHostFragment.findNavController(TasksFragment.this).navigate(R.id.action_tasksFragment3_to_about);
                     return true;
                 case R.id.navigation_note:
                     /** 笔记*/

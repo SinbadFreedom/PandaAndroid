@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/doc_note_add_back"
+        android:id="@+id/menu_more_app"
         android:icon="@drawable/ic_arrow_back_black_24dp"
         android:title="@string/doc_note_back" />
-    <item
-        android:id="@+id/doc_note_add_send"
-        android:icon="@drawable/ic_check_black_24dp"
-        android:title="@string/dialog_ok" />
 </menu>

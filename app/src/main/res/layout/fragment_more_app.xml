@@ -5,17 +5,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <WebView
-        android:id="@+id/rank_list"
+        android:id="@+id/web_view_about"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/rank_list_navigation"
+        android:id="@+id/navigation_more_app"
         android:layout_width="match_parent"
         android:layout_height="@dimen/bottom_nav_height"
         android:layout_gravity="bottom"
         android:background="@color/colorBluePrimaryCenter"
         app:itemIconTint="@color/white"
         app:itemTextColor="@color/white"
-        app:menu="@menu/menu_rank_list" />
+        app:menu="@menu/menu_more_app" />
 </FrameLayout>
