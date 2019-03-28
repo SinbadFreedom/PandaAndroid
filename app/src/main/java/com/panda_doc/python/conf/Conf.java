@@ -29,6 +29,7 @@ public class Conf {
     public static final String URL_RANK_LIST = "https://dashidan.com/php/rank_list.php?p=python";
     public static final String URL_MORE_APP = "https://dashidan.com/php/more_app_list.php?p=python";
     public static final String URL_USER_LOGIN = "https://dashidan.com/php/user_login.php";
+    public static final String URL_UPLOAD_IMG = "https://dashidan.com/php/upload_img.php";
 
 
     public static final int NOTE_MAX_LENGTH = 500;
