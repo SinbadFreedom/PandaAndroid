@@ -99,11 +99,16 @@ public class DocNoteAddFragment extends Fragment {
         boolean isInt = NumberUtil.isInteger(viewModel.getCurrentPageNum().get());
         if (!isInt) {
             /** 当前文章编号不是整型,比如index,返回*/
-            Log.e(Conf.LOG_TAG, " getNoteByDocId isInt false");
+            Log.e(Conf.DOMAIN, " getNoteByDocId isInt false");
             return;
         }
 
         if (isSending) {
+            return;
+        }
+
+        if (viewModel.getUserId() == null) {
+            Toast.makeText(DocNoteAddFragment.this.getContext(), "请先登录", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -116,7 +121,7 @@ public class DocNoteAddFragment extends Fragment {
                     public void onResponse(String response) {
                         /** 重置标记*/
                         isSending = false;
-                        Log.i(Conf.LOG_TAG, " sendNote onResponse " + response);
+                        Log.i(Conf.DOMAIN, " sendNote onResponse " + response);
                         Toast.makeText(DocNoteAddFragment.this.getContext(), getString(R.string.note_send_success), Toast.LENGTH_LONG).show();
                         /** 返回上一级导航*/
                         NavHostFragment.findNavController(DocNoteAddFragment.this).navigateUp();
@@ -126,7 +131,7 @@ public class DocNoteAddFragment extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 isSending = false;
                 Toast.makeText(DocNoteAddFragment.this.getContext(), getString(R.string.note_check_net_connect), Toast.LENGTH_LONG).show();
-                Log.e(Conf.LOG_TAG, error.fillInStackTrace().toString());
+                Log.e(Conf.DOMAIN, error.fillInStackTrace().toString());
             }
 
         }) {
@@ -140,9 +145,13 @@ public class DocNoteAddFragment extends Fragment {
                 //new 一个Map  参数放到Map中
                 map.put("num", viewModel.getCurrentPageNum().get());
                 map.put("note", note);
+                map.put("openid", viewModel.getOpenId());
+                map.put("name", viewModel.getNickname().get());
+                map.put("userid", viewModel.getUserId());
                 return map;
             }
         };
+
         queue.add(stringRequest);
     }
 

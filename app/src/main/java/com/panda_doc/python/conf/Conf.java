@@ -1,14 +1,9 @@
 package com.panda_doc.python.conf;
 
 public class Conf {
-    public static final String LOG_TAG = "dashidan.com";
-    public static final String URL_DOC_CONTENT_PRE = "https://dashidan.com/and_doc/python3/";
-    public static final String URL_CATALOG = "catalog.txt";
-    public static final String URL_CATALOG_CN = "catalog.cn.txt";
+    public static final String DOMAIN = "https://dashidan.com";
+    //    public static final String DOMAIN = "http://192.168.18.4";
     public static final String URL_INDEX = "index";
-    public static final String URL_VERSION = URL_DOC_CONTENT_PRE + "version.json";
-    public static final String URL_VERSION_CN = URL_DOC_CONTENT_PRE + "version.cn.json";
-
     /**
      * version check
      */
@@ -24,14 +19,18 @@ public class Conf {
 
     public static final String FOLDER_APK = "python3";
 
-    public static final String URL_NOTE_GET = "https://dashidan.com/php/note_get.php?num=";
-    public static final String URL_NOTE_ADD = "https://dashidan.com/php/note_add.php";
-    public static final String URL_RANK_LIST = "https://dashidan.com/php/rank_list.php?p=python";
-    public static final String URL_MORE_APP = "https://dashidan.com/php/more_app_list.php?p=python";
-    public static final String URL_USER_LOGIN = "https://dashidan.com/php/user_login.php";
-    public static final String URL_UPLOAD_IMG = "https://dashidan.com/php/upload_img.php";
+    public static final String URL_DOC_CONTENT_PRE = DOMAIN + "/and_doc/python3/";
+    public static final String URL_VERSION = URL_DOC_CONTENT_PRE + "version.json";
+    public static final String URL_VERSION_CN = URL_DOC_CONTENT_PRE + "version.cn.json";
+    public static final String URL_CATALOG = URL_DOC_CONTENT_PRE + "catalog.txt";
+    public static final String URL_CATALOG_CN = URL_DOC_CONTENT_PRE + "catalog.cn.txt";
 
+    public static final String URL_NOTE_GET = DOMAIN + "/php/note_get.php?num=";
+    public static final String URL_NOTE_ADD = DOMAIN + "/php/note_add.php";
+    public static final String URL_RANK_LIST = DOMAIN + "/php/rank_list.php?p=python";
+    public static final String URL_MORE_APP = DOMAIN + "/php/more_app_list.php?p=python";
+    public static final String URL_USER_LOGIN = DOMAIN + "/php/user_login.php";
+    public static final String URL_UPLOAD_IMG = DOMAIN + "/php/upload_img.php";
 
     public static final int NOTE_MAX_LENGTH = 500;
-
 }

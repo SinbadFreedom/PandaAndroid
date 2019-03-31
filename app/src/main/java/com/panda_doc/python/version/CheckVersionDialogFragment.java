@@ -90,14 +90,14 @@ public class CheckVersionDialogFragment extends DialogFragment {
                     if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                         downLoadApk();
                     } else {
-                        Log.e(Conf.LOG_TAG, " onRequestPermissionsResult " + requestCode + " grantResults[0] " + grantResults[0]);
+                        Log.e(Conf.DOMAIN, " onRequestPermissionsResult " + requestCode + " grantResults[0] " + grantResults[0]);
                     }
                 } else {
-                    Log.e(Conf.LOG_TAG, " onRequestPermissionsResult " + requestCode + " grantResults " + grantResults.length);
+                    Log.e(Conf.DOMAIN, " onRequestPermissionsResult " + requestCode + " grantResults " + grantResults.length);
                 }
                 break;
             default:
-                Log.e(Conf.LOG_TAG, " onRequestPermissionsResult " + requestCode);
+                Log.e(Conf.DOMAIN, " onRequestPermissionsResult " + requestCode);
                 break;
         }
     }
@@ -125,7 +125,7 @@ public class CheckVersionDialogFragment extends DialogFragment {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Log.e(Conf.LOG_TAG, e.toString());
+                    Log.e(Conf.DOMAIN, e.toString());
                 }
             }
         }).start();

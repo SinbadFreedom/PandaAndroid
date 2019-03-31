@@ -15,6 +15,7 @@ public class UserInfoViewModel extends ViewModel {
     private String accessToken;
     private String refreshToken;
     private String scope;
+    private String userId;
 
     private final ObservableField<String> nickname = new ObservableField<>();
     private final ObservableField<String> sex = new ObservableField<>();
@@ -158,5 +159,13 @@ public class UserInfoViewModel extends ViewModel {
 
     public ObservableField<String> getHeadimgurl() {
         return headimgurl;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

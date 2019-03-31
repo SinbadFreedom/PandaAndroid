@@ -112,10 +112,10 @@ public class TasksFragment extends Fragment {
                         /** 切换文章内容*/
                         showWebPage(num, anchor);
                     } else {
-                        Log.e(Conf.LOG_TAG, " numArr.length == 0 " + str);
+                        Log.e(Conf.DOMAIN, " numArr.length == 0 " + str);
                     }
                 } else {
-                    Log.e(Conf.LOG_TAG, "view instanceof LinearLayout false position " + position);
+                    Log.e(Conf.DOMAIN, "view instanceof LinearLayout false position " + position);
                 }
                 closeTaskDrawer();
             }
@@ -167,7 +167,7 @@ public class TasksFragment extends Fragment {
                 public void onPropertyChanged(Observable sender, int propertyId) {
                     String nameStr = ((ObservableField<String>) sender).get();
                     viewNickName.setText(nameStr);
-                    Log.i(Conf.LOG_TAG, " " + propertyId);
+                    Log.i(Conf.DOMAIN, " " + propertyId);
                 }
             });
         }
@@ -250,7 +250,7 @@ public class TasksFragment extends Fragment {
 
     private void showWebPage(String pageNum, String anc) {
         if (null == pageNum) {
-            Log.e(Conf.LOG_TAG, "showWebPage pageNum == null");
+            Log.e(Conf.DOMAIN, "showWebPage pageNum == null");
             return;
         }
 
@@ -343,13 +343,13 @@ public class TasksFragment extends Fragment {
         String catalogUrl = null;
         switch (viewModel.getLanguageState().get()) {
             case UserInfoViewModel.LAN_ZH_CN:
-                catalogUrl = Conf.URL_DOC_CONTENT_PRE + Conf.URL_CATALOG_CN;
+                catalogUrl = Conf.URL_CATALOG_CN;
                 break;
             case UserInfoViewModel.LAN_EN:
-                catalogUrl = Conf.URL_DOC_CONTENT_PRE + Conf.URL_CATALOG;
+                catalogUrl = Conf.URL_CATALOG;
                 break;
             default:
-                catalogUrl = Conf.URL_DOC_CONTENT_PRE + Conf.URL_CATALOG_CN;
+                catalogUrl = Conf.URL_CATALOG_CN;
                 break;
         }
 
@@ -370,7 +370,7 @@ public class TasksFragment extends Fragment {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e(Conf.LOG_TAG, error.fillInStackTrace().toString());
+                Log.e(Conf.DOMAIN, error.fillInStackTrace().toString());
             }
         }) {
 

@@ -122,10 +122,11 @@ public class DocActivity extends FragmentActivity {
                             JSONObject jsonObject = new JSONObject(response);
                             String userId = jsonObject.getString("user_id");
                             boolean isNew = jsonObject.getBoolean("is_new");
+                            userInfoViewModel.setUserId(userId);
                             if (isNew) {
                                 uploadHeadImg();
                             }
-                            Log.i(Conf.LOG_TAG, "userLogin success userId " + userId + " isNew " + isNew);
+                            Log.i(Conf.DOMAIN, "userLogin success userId " + userId + " isNew " + isNew);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -134,7 +135,7 @@ public class DocActivity extends FragmentActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(DocActivity.this, getString(R.string.note_check_net_connect), Toast.LENGTH_LONG).show();
-                Log.e(Conf.LOG_TAG, error.fillInStackTrace().toString());
+                Log.e(Conf.DOMAIN, error.fillInStackTrace().toString());
             }
         }) {
             /**
@@ -168,13 +169,13 @@ public class DocActivity extends FragmentActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i(Conf.LOG_TAG, "uploadHeadImg response " + response);
+                        Log.i(Conf.DOMAIN, "uploadHeadImg response " + response);
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(DocActivity.this, getString(R.string.note_check_net_connect), Toast.LENGTH_LONG).show();
-                Log.e(Conf.LOG_TAG, error.fillInStackTrace().toString());
+                Log.e(Conf.DOMAIN, error.fillInStackTrace().toString());
             }
         }) {
             /**

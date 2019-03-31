@@ -6,25 +6,13 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
+import android.webkit.WebView;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.panda_doc.python.R;
 import com.panda_doc.python.conf.Conf;
 import com.panda_doc.python.util.NumberUtil;
 import com.panda_doc.python.view_model.UserInfoViewModel;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,7 +22,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 public class DocNoteFragment extends Fragment {
 
-    NoteAdapter noteAdapter = new NoteAdapter();
+    WebView webView;
 
     @Nullable
     @Override
@@ -42,8 +30,7 @@ public class DocNoteFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_doc_note, container, false);
 
         /** 笔记列表*/
-        ListView listView = (ListView) root.findViewById(R.id.note_list);
-        listView.setAdapter(noteAdapter);
+        webView = (WebView) root.findViewById(R.id.doc_note_web_view);
         this.getCurrentPageNote();
 
         BottomNavigationView navigation = (BottomNavigationView) root.findViewById(R.id.note_navigation);
@@ -61,44 +48,11 @@ public class DocNoteFragment extends Fragment {
         boolean isInt = NumberUtil.isInteger(viewModel.getCurrentPageNum().get());
         if (!isInt) {
             /** 当前文章编号不是整型,比如index,返回*/
-            Log.e(Conf.LOG_TAG, " getCurrentPageNote isInt false");
+            Log.e(Conf.DOMAIN, " getCurrentPageNote isInt false");
             return;
         }
-
-        RequestQueue queue = Volley.newRequestQueue(this.getContext());
         String url = Conf.URL_NOTE_GET + viewModel.getCurrentPageNum().get();
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        if (response.equals("")) {
-                            return;
-                        }
-
-                        try {
-                            JSONArray jsonObject = new JSONArray(response);
-                            ArrayList<Note> notes = new ArrayList<>();
-                            for (int i = 0; i < jsonObject.length(); i++) {
-                                //TODO 笔记内容，头像，昵称
-                                JSONObject noteObj = (JSONObject) jsonObject.get(i);
-                                String noteText = noteObj.getString(Conf.KEY_NOTE_INFO);
-                                Note note = new Note("", "", noteText);
-                                notes.add(note);
-                            }
-                            noteAdapter.setNoteList(notes);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Log.e(Conf.LOG_TAG, " response " + response);
-                        }
-                    }
-                }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(Conf.LOG_TAG, error.fillInStackTrace().toString());
-            }
-        });
-        queue.add(stringRequest);
+        webView.loadUrl(url);
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener

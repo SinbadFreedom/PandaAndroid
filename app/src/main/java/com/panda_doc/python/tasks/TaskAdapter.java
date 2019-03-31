@@ -46,13 +46,13 @@ public class TaskAdapter extends BaseAdapter {
                 if (temp.length == 2) {
                     titleNum = temp[0] + titleNum;
                 } else {
-                    Log.e(Conf.LOG_TAG, " temp.length != 2 str " + str + " titleNum " + titleNum);
+                    Log.e(Conf.DOMAIN, " temp.length != 2 str " + str + " titleNum " + titleNum);
                 }
                 String titleContent = str.replace(titleNum + " ", "");
                 Title title = new Title(titleNum, titleContent, str);
                 this.allTitles.add(title);
             } else {
-                Log.e(Conf.LOG_TAG, "initContents strarr.length == 0 str " + str);
+                Log.e(Conf.DOMAIN, "initContents strarr.length == 0 str " + str);
             }
         }
         /** 更新目录内容*/
