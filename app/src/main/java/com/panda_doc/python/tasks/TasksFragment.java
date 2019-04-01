@@ -23,8 +23,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
@@ -45,6 +43,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.panda_doc.python.R;
 import com.panda_doc.python.conf.Conf;
 import com.panda_doc.python.note.Title;
+import com.panda_doc.python.uikit.NetworkUtil;
 import com.panda_doc.python.view_model.UserInfoViewModel;
 
 import java.io.UnsupportedEncodingException;
@@ -122,12 +121,9 @@ public class TasksFragment extends Fragment {
         });
 
         mWebView = root.findViewById(R.id.task_web_view);
-        /** 设置webview不缓存*/
-        mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
-
-        /** 修复webview 加载的网页中包含的js不生效*/
-        mWebView.setWebChromeClient(new WebChromeClient());
-        /** 修复加载外部css和js不生效的问题*/
+        /** 统一初始化WebView设置*/
+        NetworkUtil.initWebView(mWebView);
+        /** 修复加载外部css和js不生效的问题 重置当前页面的信息和锚点信息*/
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
@@ -139,9 +135,6 @@ public class TasksFragment extends Fragment {
                 }
             }
         });
-        WebSettings webSettings = mWebView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-        webSettings.setDomStorageEnabled(true);
 
         BottomNavigationView navigation = (BottomNavigationView) root.findViewById(R.id.bottom_navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);

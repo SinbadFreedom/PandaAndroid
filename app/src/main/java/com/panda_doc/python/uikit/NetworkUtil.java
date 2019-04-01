@@ -4,6 +4,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -133,5 +137,21 @@ public class NetworkUtil {
             inStream.close();
             return data;
         }
+    }
+
+    /**
+     * 初始化WebView设置，修正在本页打开页面，不调用外部浏览器
+     */
+    public static void initWebView(WebView webView) {
+        /** 设置webview不缓存*/
+        webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+        /** 修复webview 加载的网页中包含的js不生效*/
+        webView.setWebChromeClient(new WebChromeClient());
+        /** 修复加载外部css和js不生效的问题*/
+        webView.setWebViewClient(new WebViewClient() {
+        });
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setDomStorageEnabled(true);
     }
 }

@@ -10,6 +10,7 @@ import android.webkit.WebView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.panda_doc.python.R;
 import com.panda_doc.python.conf.Conf;
+import com.panda_doc.python.uikit.NetworkUtil;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,11 +27,12 @@ public class MoreApp extends Fragment {
         View root = inflater.inflate(R.layout.fragment_more_app, container, false);
 
         /** 排行榜*/
-        webView = (WebView) root.findViewById(R.id.web_view_about);
+        webView = (WebView) root.findViewById(R.id.web_view_more);
 
         BottomNavigationView navigation = (BottomNavigationView) root.findViewById(R.id.navigation_more_app);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
+        /** 统一初始化WebView设置*/
+        NetworkUtil.initWebView(webView);
         webView.loadUrl(Conf.URL_MORE_APP);
         return root;
     }
