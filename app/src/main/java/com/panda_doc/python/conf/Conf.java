@@ -10,12 +10,6 @@ public class Conf {
     public static final String KEY_VERSION = "v";
     public static final String KEY_APK_URL = "apk_url";
     public static final String KEY_APK_NAME = "apk_name";
-    /**
-     * note
-     */
-    public static final String KEY_USER_ICON = "icon";
-    public static final String KEY_USER_NAME = "name";
-    public static final String KEY_NOTE_INFO = "note";
 
     public static final String FOLDER_APK = "python3";
 
