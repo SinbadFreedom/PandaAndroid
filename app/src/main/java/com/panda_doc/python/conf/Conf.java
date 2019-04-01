@@ -18,11 +18,11 @@ public class Conf {
     public static final String URL_VERSION_CN = URL_DOC_CONTENT_PRE + "version.cn.json";
     public static final String URL_CATALOG = URL_DOC_CONTENT_PRE + "catalog.txt";
     public static final String URL_CATALOG_CN = URL_DOC_CONTENT_PRE + "catalog.cn.txt";
+    public static final String URL_MORE_APP = DOMAIN + "/more.html";
 
     public static final String URL_NOTE_GET = DOMAIN + "/php/note_get.php?num=";
     public static final String URL_NOTE_ADD = DOMAIN + "/php/note_add.php";
     public static final String URL_RANK_LIST = DOMAIN + "/php/rank_list.php?p=python";
-    public static final String URL_MORE_APP = DOMAIN + "/php/more_app_list.php?p=python";
     public static final String URL_USER_LOGIN = DOMAIN + "/php/user_login.php";
     public static final String URL_UPLOAD_IMG = DOMAIN + "/php/upload_img.php";
 
