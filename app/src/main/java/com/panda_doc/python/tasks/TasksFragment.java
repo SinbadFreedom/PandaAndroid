@@ -44,6 +44,7 @@ import com.panda_doc.python.R;
 import com.panda_doc.python.conf.Conf;
 import com.panda_doc.python.note.Title;
 import com.panda_doc.python.uikit.NetworkUtil;
+import com.panda_doc.python.util.NumberUtil;
 import com.panda_doc.python.view_model.UserInfoViewModel;
 
 import java.io.UnsupportedEncodingException;
@@ -70,6 +71,8 @@ public class TasksFragment extends Fragment {
 
     private TextView viewNickName;
     private ImageView viewHeadImage;
+    private TextView textViewLevel;
+    private TextView textViewExp;
 
     private DrawerLayout mDrawerLayout;
     private TaskAdapter taskAdapter;
@@ -131,7 +134,6 @@ public class TasksFragment extends Fragment {
                     /** 非api文章返回，置空 currentPageNum*/
                     viewModel.setCurrentPageNum(null);
                     viewModel.setAnchor(null);
-                    return;
                 }
             }
         });
@@ -144,10 +146,11 @@ public class TasksFragment extends Fragment {
         popupMenu.getMenuInflater().inflate(R.menu.language, popupMenu.getMenu());
         initPopMenuEvent();
 
-        /** 名字和头像*/
+        /** 名字，头像，经验，等级*/
         viewNickName = root.findViewById(R.id.user_name);
         viewHeadImage = root.findViewById(R.id.img_header_icon);
-
+        textViewLevel = (TextView) root.findViewById(R.id.info_level);
+        textViewExp = (TextView) root.findViewById(R.id.info_exp);
 
         viewModel = ViewModelProviders.of(this.getActivity()).get(UserInfoViewModel.class);
         if (null != viewModel.getNickname().get()) {
@@ -166,7 +169,7 @@ public class TasksFragment extends Fragment {
         }
 
         if (null != viewModel.getHeadBitmap()) {
-            /** 导航切换回来，初始化 设置名称*/
+            /** 导航切换回来，初始化 设置头像*/
             viewHeadImage.setImageBitmap(viewModel.getHeadBitmap());
         } else {
             viewModel.getHeadBitmapObserver().addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
@@ -174,6 +177,29 @@ public class TasksFragment extends Fragment {
                 public void onPropertyChanged(Observable sender, int propertyId) {
                     Bitmap bitmap = ((ObservableField<Bitmap>) sender).get();
                     viewHeadImage.setImageBitmap(bitmap);
+                }
+            });
+        }
+
+        if (null != viewModel.getExp().get()) {
+            /** 导航切换回来，初始化 设置等级和经验*/
+            int levelIndex = NumberUtil.getLevelByExp(viewModel.getExp().get(), viewModel.getExpArr());
+            /** 等级*/
+            String levelTxt = (levelIndex + 1) + "";
+            textViewLevel.setText(levelTxt);
+            /** 经验*/
+            textViewExp.setText(viewModel.getExp().get() + "/" + NumberUtil.getTotalExpByLevel(levelIndex, viewModel.getExpArr()));
+        } else {
+            viewModel.getExp().addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+                @Override
+                public void onPropertyChanged(Observable sender, int propertyId) {
+                    Integer exp = ((ObservableField<Integer>) sender).get();
+                    int levelIndex = NumberUtil.getLevelByExp(exp, viewModel.getExpArr());
+                    /** 更新等级*/
+                    String levelTxt = (levelIndex + 1) + "";
+                    textViewLevel.setText(levelTxt);
+                    /** 更新经验*/
+                    textViewExp.setText(viewModel.getExp().get() + "/" + NumberUtil.getTotalExpByLevel(levelIndex, viewModel.getExpArr()));
                 }
             });
         }

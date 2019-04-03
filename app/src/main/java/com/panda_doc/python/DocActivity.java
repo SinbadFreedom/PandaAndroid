@@ -23,8 +23,10 @@ import com.panda_doc.python.note.DocNoteAddFragment;
 import com.panda_doc.python.note.DocNoteFragment;
 import com.panda_doc.python.rank_list.RankListFragment;
 import com.panda_doc.python.tasks.TasksFragment;
+import com.panda_doc.python.tasks.UpdateExp;
 import com.panda_doc.python.view_model.UserInfoViewModel;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -89,7 +91,8 @@ public class DocActivity extends FragmentActivity {
         fragmentManager = getSupportFragmentManager();
         navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.doc_nav_fragment);
 
-        this.userLogin();
+        this.getConf();
+        this.startUpdateExpThread();
     }
 
     /**
@@ -110,6 +113,39 @@ public class DocActivity extends FragmentActivity {
     }
 
     /**
+     * 读取配置文件
+     */
+    private void getConf() {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, Conf.URL_CONF,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            /** 初始化配置*/
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray jsonArr = jsonObject.getJSONArray(Conf.KEY_EXP_CONF);
+                            int[] expArr = new int[jsonArr.length()];
+                            for (int i = 0; i < jsonArr.length(); i++) {
+                                expArr[i] = (int) jsonArr.get(i);
+                            }
+                            userInfoViewModel.setExpArr(expArr);
+                            /** 登陆*/
+                            userLogin();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+        queue.add(stringRequest);
+    }
+
+    /**
      * 本地数据初始化
      */
     private void userLogin() {
@@ -122,7 +158,9 @@ public class DocActivity extends FragmentActivity {
                             JSONObject jsonObject = new JSONObject(response);
                             String userId = jsonObject.getString("user_id");
                             boolean isNew = jsonObject.getBoolean("is_new");
+                            int exp = jsonObject.getInt("exp");
                             userInfoViewModel.setUserId(userId);
+                            userInfoViewModel.setExp(exp);
                             if (isNew) {
                                 uploadHeadImg();
                             }
@@ -206,5 +244,10 @@ public class DocActivity extends FragmentActivity {
         byte[] imageBytes = baos.toByteArray();
         String string = Base64.encodeToString(imageBytes, Base64.DEFAULT);
         return string;
+    }
+
+    private void startUpdateExpThread() {
+        UpdateExp updateExp = new UpdateExp(this, userInfoViewModel);
+        updateExp.start();
     }
 }

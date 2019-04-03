@@ -17,8 +17,11 @@ public class UserInfoViewModel extends ViewModel {
     private String scope;
     private String userId;
 
+    private int[] expArr;
+
     private final ObservableField<String> nickname = new ObservableField<>();
     private final ObservableField<String> sex = new ObservableField<>();
+    private final ObservableField<Integer> exp = new ObservableField<>();
     private final ObservableField<String> province = new ObservableField<>();
     private final ObservableField<String> city = new ObservableField<>();
     private final ObservableField<String> country = new ObservableField<>();
@@ -167,5 +170,21 @@ public class UserInfoViewModel extends ViewModel {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public int[] getExpArr() {
+        return expArr;
+    }
+
+    public void setExpArr(int[] expArr) {
+        this.expArr = expArr;
+    }
+
+    public ObservableField<Integer> getExp() {
+        return exp;
+    }
+
+    public void setExp(int exp) {
+        this.exp.set(exp);
     }
 }
