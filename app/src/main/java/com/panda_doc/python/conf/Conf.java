@@ -23,7 +23,7 @@ public class Conf {
     public static final String URL_CATALOG_CN = URL_DOC_CONTENT_PRE + "catalog.cn.txt";
     public static final String URL_MORE_APP = URL_DOC_CONTENT_PRE + "index.html";
 
-    public static final String URL_NOTE_GET = DOMAIN + "/php/note_get.php?num=";
+    public static final String URL_NOTE_GET = DOMAIN + "/php/note_get.php";
     public static final String URL_NOTE_ADD = DOMAIN + "/php/note_add.php";
     public static final String URL_RANK_LIST = DOMAIN + "/php/rank_list.php?p=python";
     public static final String URL_USER_LOGIN = DOMAIN + "/php/user_login.php";

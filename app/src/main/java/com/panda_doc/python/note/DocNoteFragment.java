@@ -23,19 +23,20 @@ import androidx.navigation.fragment.NavHostFragment;
 public class DocNoteFragment extends Fragment {
 
     WebView webView;
+    UserInfoViewModel userInfoViewModel;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_doc_note, container, false);
+        userInfoViewModel = ViewModelProviders.of(this.getActivity()).get(UserInfoViewModel.class);
 
+        View root = inflater.inflate(R.layout.fragment_doc_note, container, false);
         /** 笔记列表*/
         webView = (WebView) root.findViewById(R.id.doc_note_web_view);
         this.getCurrentPageNote();
 
         BottomNavigationView navigation = (BottomNavigationView) root.findViewById(R.id.note_navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
         return root;
     }
 
@@ -43,15 +44,15 @@ public class DocNoteFragment extends Fragment {
      * 获取文章对应的笔记
      */
     private void getCurrentPageNote() {
-        UserInfoViewModel viewModel = ViewModelProviders.of(this.getActivity()).get(UserInfoViewModel.class);
-
-        boolean isInt = NumberUtil.isInteger(viewModel.getCurrentPageNum().get());
+        boolean isInt = NumberUtil.isInteger(userInfoViewModel.getCurrentPageNum().get());
         if (!isInt) {
             /** 当前文章编号不是整型,比如index,返回*/
             Log.e(Conf.DOMAIN, " getCurrentPageNote isInt false");
             return;
         }
-        String url = Conf.URL_NOTE_GET + viewModel.getCurrentPageNum().get();
+        String openId = userInfoViewModel.getOpenId();
+        String userId = userInfoViewModel.getUserId();
+        String url = Conf.URL_NOTE_GET + "?num=" + userInfoViewModel.getCurrentPageNum().get() + "&openid=" + openId + "&userid=" + userId;
         webView.loadUrl(url);
     }
 
