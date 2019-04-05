@@ -2,7 +2,7 @@ package com.panda_doc.python.conf;
 
 public class Conf {
     public static final String DOMAIN = "https://dashidan.com";
-    //    public static final String DOMAIN = "http://192.168.18.4";
+    //        public static final String DOMAIN = "http://192.168.18.4";
     public static final String URL_INDEX = "index";
     /**
      * version check
@@ -25,7 +25,7 @@ public class Conf {
 
     public static final String URL_NOTE_GET = DOMAIN + "/php/note_get.php";
     public static final String URL_NOTE_ADD = DOMAIN + "/php/note_add.php";
-    public static final String URL_RANK_LIST = DOMAIN + "/php/rank_list.php?p=python";
+    public static final String URL_RANK_LIST = DOMAIN + "/php/rank_list.php";
     public static final String URL_USER_LOGIN = DOMAIN + "/php/user_login.php";
     public static final String URL_UPLOAD_IMG = DOMAIN + "/php/upload_img.php";
 

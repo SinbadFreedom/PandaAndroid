@@ -140,6 +140,7 @@ public class DocActivity extends FragmentActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
             }
         });
         queue.add(stringRequest);
