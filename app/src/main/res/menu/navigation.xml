@@ -10,7 +10,7 @@
         android:title="@string/home_page" />
     <item
         android:id="@+id/navigation_note"
-        android:icon="@drawable/ic_edit_black_24dp"
+        android:icon="@drawable/ic_comment_black_24dp"
         android:title="@string/nav_about" />
 
     <item

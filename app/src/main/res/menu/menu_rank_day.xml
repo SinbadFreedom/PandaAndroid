@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/rank_today"
+        android:title="@string/rank_today" />
+    <item
+        android:id="@+id/rank_yesterday"
+        android:title="@string/rank_yesterday" />
+</menu>

@@ -14,14 +14,18 @@ import com.panda_doc.python.view_model.UserInfoViewModel;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.fragment.NavHostFragment;
 
 public class RankListFragment extends Fragment {
 
-    private WebView webView;
+    WebView webView;
     UserInfoViewModel userInfoViewModel;
+    PopupMenu rankMenuDay;
+    PopupMenu rankMenuWeek;
+    PopupMenu rankMenuMonth;
 
     @Nullable
     @Override
@@ -39,6 +43,22 @@ public class RankListFragment extends Fragment {
         String userId = userInfoViewModel.getUserId();
         String url = Conf.URL_RANK_LIST + "?openid=" + openId + "&userid=" + userId + "&type=" + 1;
         webView.loadUrl(url);
+
+        /** 日榜弹出窗口*/
+        rankMenuDay = new PopupMenu(this.getContext(), root.findViewById(R.id.rank_day));
+        rankMenuDay.getMenuInflater().inflate(R.menu.menu_rank_day, rankMenuDay.getMenu());
+        initPopMenuEventRankDay();
+
+        /** 周榜弹出窗口*/
+        rankMenuWeek = new PopupMenu(this.getContext(), root.findViewById(R.id.rank_week));
+        rankMenuWeek.getMenuInflater().inflate(R.menu.menu_rank_week, rankMenuWeek.getMenu());
+        initPopMenuEventRankWeek();
+
+        /** 月榜弹出窗口*/
+        rankMenuMonth = new PopupMenu(this.getContext(), root.findViewById(R.id.rank_month));
+        rankMenuMonth.getMenuInflater().inflate(R.menu.menu_rank_month, rankMenuMonth.getMenu());
+        initPopMenuEventRankMonth();
+
         return root;
     }
 
@@ -50,8 +70,71 @@ public class RankListFragment extends Fragment {
                 case R.id.rank_list_back:
                     NavHostFragment.findNavController(RankListFragment.this).navigateUp();
                     return true;
+                case R.id.rank_day:
+                    /** 日排行榜*/
+                    rankMenuDay.show();
+                    break;
+                case R.id.rank_week:
+                    /** 周排行榜*/
+                    rankMenuWeek.show();
+                    break;
+                case R.id.rank_month:
+                    /** 月排行榜*/
+                    rankMenuMonth.show();
+                    break;
+                case R.id.rank_all:
+                    /** 总排行榜*/
+                    break;
             }
             return false;
         }
     };
+
+    private void initPopMenuEventRankDay() {
+        rankMenuDay.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                /** 控件每一个item的点击事件*/
+                switch (item.getItemId()) {
+                    case R.id.rank_today:
+                        break;
+                    case R.id.rank_yesterday:
+                        break;
+                }
+                return true;
+            }
+        });
+    }
+
+    private void initPopMenuEventRankWeek() {
+        rankMenuWeek.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                /** 控件每一个item的点击事件*/
+                switch (item.getItemId()) {
+                    case R.id.rank_this_week:
+                        break;
+                    case R.id.rank_last_week:
+                        break;
+                }
+                return true;
+            }
+        });
+    }
+
+    private void initPopMenuEventRankMonth() {
+        rankMenuMonth.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                /** 控件每一个item的点击事件*/
+                switch (item.getItemId()) {
+                    case R.id.rank_this_month:
+                        break;
+                    case R.id.rank_last_month:
+                        break;
+                }
+                return true;
+            }
+        });
+    }
 }

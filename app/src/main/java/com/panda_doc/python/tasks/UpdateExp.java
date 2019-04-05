@@ -54,11 +54,13 @@ public class UpdateExp extends Thread {
                         /** 更新经验返回结果*/
                         try {
                             JSONObject jsonObject = new JSONObject(response);
-                            int state = jsonObject.getInt(Conf.KEY_STATE);
-                            if (state == 0) {
-                                int exp = jsonObject.getInt(Conf.KEY_EXP);
-                                userInfoViewModel.setExp(exp);
-                                Toast.makeText(context, "+1 Exp: " + exp, Toast.LENGTH_LONG).show();
+                            if (jsonObject.has(Conf.KEY_STATE)) {
+                                int state = jsonObject.getInt(Conf.KEY_STATE);
+                                if (state == 0) {
+                                    int exp = jsonObject.getInt(Conf.KEY_EXP);
+                                    userInfoViewModel.setExp(exp);
+                                    Toast.makeText(context, "+1 Exp: " + exp, Toast.LENGTH_LONG).show();
+                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

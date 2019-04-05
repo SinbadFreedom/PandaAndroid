@@ -90,4 +90,18 @@
 
     <string name="info_rank">Rank</string>
     <string name="info_exp">Exp</string>
+
+    <string name="rank_now">Now</string>
+    <string name="rank_history">History</string>
+    <string name="rank_day">Day</string>
+    <string name="rank_week">Week</string>
+    <string name="rank_month">Month</string>
+    <string name="rank_all">All</string>
+
+    <string name="rank_today">Today</string>
+    <string name="rank_yesterday">Yesterday</string>
+    <string name="rank_this_week">This Week</string>
+    <string name="rank_last_week">Last Week</string>
+    <string name="rank_this_month">Last Month</string>
+    <string name="rank_last_month">Last Month</string>
 </resources>

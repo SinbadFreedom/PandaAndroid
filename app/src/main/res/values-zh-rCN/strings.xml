@@ -90,4 +90,18 @@
 
     <string name="info_rank">等级</string>
     <string name="info_exp">Exp</string>
+
+    <string name="rank_now">最新排名</string>
+    <string name="rank_history">历史排名</string>
+    <string name="rank_day">日</string>
+    <string name="rank_week">周</string>
+    <string name="rank_month">月</string>
+    <string name="rank_all">全部</string>
+
+    <string name="rank_today">今日</string>
+    <string name="rank_yesterday">昨日</string>
+    <string name="rank_this_week">本周</string>
+    <string name="rank_last_week">上周</string>
+    <string name="rank_this_month">本月</string>
+    <string name="rank_last_month">上月</string>
 </resources>

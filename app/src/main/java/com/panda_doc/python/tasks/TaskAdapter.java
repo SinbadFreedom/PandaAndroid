@@ -115,5 +115,3 @@ public class TaskAdapter extends BaseAdapter {
         }
     }
 }
-
-
