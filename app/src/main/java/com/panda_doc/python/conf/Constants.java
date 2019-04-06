@@ -22,5 +22,14 @@ public class Constants {
     public static final String CHANNEL_APP_PYTHON = "app_python";
 
     public static final int PERMISSIONS_REQUEST_STORAGE = 1;
+
+    public static final int TYPE_TODAY = 1;
+    public static final int TYPE_YESTERDAY = 2;
+    public static final int TYPE_WEEK = 3;
+    public static final int TYPE_WEEK_LAST = 4;
+    public static final int TYPE_MONTH = 5;
+    public static final int TYPE_MONTH_LAST = 6;
+    public static final int TYPE_ALL = 7;
+
 }
 

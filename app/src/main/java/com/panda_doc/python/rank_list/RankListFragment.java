@@ -10,6 +10,7 @@ import android.webkit.WebView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.panda_doc.python.R;
 import com.panda_doc.python.conf.Conf;
+import com.panda_doc.python.conf.Constants;
 import com.panda_doc.python.view_model.UserInfoViewModel;
 
 import androidx.annotation.NonNull;
@@ -84,6 +85,8 @@ public class RankListFragment extends Fragment {
                     break;
                 case R.id.rank_all:
                     /** 总排行榜*/
+                    String url = Conf.URL_RANK_LIST + "?type=" + Constants.TYPE_ALL;
+                    webView.loadUrl(url);
                     break;
             }
             return false;
@@ -97,8 +100,12 @@ public class RankListFragment extends Fragment {
                 /** 控件每一个item的点击事件*/
                 switch (item.getItemId()) {
                     case R.id.rank_today:
+                        String url = Conf.URL_RANK_LIST + "?type=" + Constants.TYPE_TODAY;
+                        webView.loadUrl(url);
                         break;
                     case R.id.rank_yesterday:
+                        url = Conf.URL_RANK_LIST + "?type=" + Constants.TYPE_YESTERDAY;
+                        webView.loadUrl(url);
                         break;
                 }
                 return true;
@@ -113,8 +120,12 @@ public class RankListFragment extends Fragment {
                 /** 控件每一个item的点击事件*/
                 switch (item.getItemId()) {
                     case R.id.rank_this_week:
+                        String url = Conf.URL_RANK_LIST + "?type=" + Constants.TYPE_WEEK;
+                        webView.loadUrl(url);
                         break;
                     case R.id.rank_last_week:
+                        url = Conf.URL_RANK_LIST + "?type=" + Constants.TYPE_WEEK_LAST;
+                        webView.loadUrl(url);
                         break;
                 }
                 return true;
@@ -129,8 +140,12 @@ public class RankListFragment extends Fragment {
                 /** 控件每一个item的点击事件*/
                 switch (item.getItemId()) {
                     case R.id.rank_this_month:
+                        String url = Conf.URL_RANK_LIST + "?type=" + Constants.TYPE_MONTH;
+                        webView.loadUrl(url);
                         break;
                     case R.id.rank_last_month:
+                        url = Conf.URL_RANK_LIST + "?type=" + Constants.TYPE_MONTH_LAST;
+                        webView.loadUrl(url);
                         break;
                 }
                 return true;
