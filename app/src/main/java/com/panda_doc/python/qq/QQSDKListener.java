@@ -123,17 +123,14 @@ public class QQSDKListener implements IUiListener {
     @Override
     public void onComplete(Object response) {
         if (null == response) {
-            Util.showResultDialog(activity, "返回为空", "登录失败");
             Log.e(TAG, "返回为空 登录失败 null == response");
             return;
         }
         JSONObject jsonResponse = (JSONObject) response;
         if (null != jsonResponse && jsonResponse.length() == 0) {
             Log.e(TAG, "返回为空 登录失败 jsonResponse.length() == 0");
-            Util.showResultDialog(activity, "返回为空", "登录失败");
             return;
         }
-        Util.showResultDialog(activity, response.toString(), "登录成功");
 
         Log.d("SDKQQAgentPref", "AuthorSwitch_SDK:" + SystemClock.elapsedRealtime());
         initOpenidAndToken(jsonResponse);
