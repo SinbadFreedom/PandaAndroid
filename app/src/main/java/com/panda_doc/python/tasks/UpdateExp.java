@@ -11,6 +11,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.panda_doc.python.R;
 import com.panda_doc.python.conf.Conf;
 import com.panda_doc.python.view_model.UserInfoViewModel;
 
@@ -24,6 +25,7 @@ public class UpdateExp extends Thread {
     Context context;
     UserInfoViewModel userInfoViewModel;
 
+
     public UpdateExp(Context context, UserInfoViewModel userInfoViewModel) {
         this.context = context;
         this.userInfoViewModel = userInfoViewModel;
@@ -32,6 +34,9 @@ public class UpdateExp extends Thread {
 
     @Override
     public void run() {
+        /** 启动应用线程后先执行一次更新经验，然后再定时更新*/
+        updateExp();
+
         while (true) {
             try {
                 Thread.sleep(Conf.UPDATE_EXP_TIME);
@@ -42,7 +47,7 @@ public class UpdateExp extends Thread {
         }
     }
 
-    public void updateExp() {
+    private void updateExp() {
         if (userInfoViewModel.getOpenId() == null) {
             return;
         }
@@ -59,7 +64,7 @@ public class UpdateExp extends Thread {
                                 if (state == 0) {
                                     int exp = jsonObject.getInt(Conf.KEY_EXP);
                                     userInfoViewModel.setExp(exp);
-                                    Toast.makeText(context, "+1 Exp: " + exp, Toast.LENGTH_LONG).show();
+                                    Toast.makeText(context, context.getString(R.string.exp_add_1) + exp, Toast.LENGTH_LONG).show();
                                 }
                             }
                         } catch (JSONException e) {

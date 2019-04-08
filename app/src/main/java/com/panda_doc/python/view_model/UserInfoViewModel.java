@@ -41,7 +41,7 @@ public class UserInfoViewModel extends ViewModel {
      */
     public static final int LOGIN_WECHAT = 1;
     public static final int LOGIN_QQ = 2;
-    private int loginType =  0;
+    private int loginType = 0;
 
     public ObservableField<String> getNickname() {
         return nickname;

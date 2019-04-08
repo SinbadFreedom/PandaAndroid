@@ -104,4 +104,7 @@
     <string name="rank_last_week">上周</string>
     <string name="rank_this_month">本月</string>
     <string name="rank_last_month">上月</string>
+
+    <string name="can_not_add_note">只有目录列表中的页面才可以添加或者查看笔记.</string>
+    <string name="exp_add_1">Exp +1 当前经验 : </string>
 </resources>

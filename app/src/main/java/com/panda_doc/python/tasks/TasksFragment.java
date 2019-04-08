@@ -30,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -77,7 +78,7 @@ public class TasksFragment extends Fragment {
     private DrawerLayout mDrawerLayout;
     private TaskAdapter taskAdapter;
 
-    private UserInfoViewModel viewModel;
+    private UserInfoViewModel userInfoViewModel;
 
     @Nullable
     @Override
@@ -132,8 +133,8 @@ public class TasksFragment extends Fragment {
             public void onPageFinished(WebView view, String url) {
                 if (!url.contains(Conf.URL_DOC_CONTENT_PRE)) {
                     /** 非api文章返回，置空 currentPageNum*/
-                    viewModel.setCurrentPageNum(null);
-                    viewModel.setAnchor(null);
+                    userInfoViewModel.setCurrentPageNum(null);
+                    userInfoViewModel.setAnchor(null);
                 }
             }
         });
@@ -152,13 +153,13 @@ public class TasksFragment extends Fragment {
         textViewLevel = (TextView) root.findViewById(R.id.info_level);
         textViewExp = (TextView) root.findViewById(R.id.info_exp);
 
-        viewModel = ViewModelProviders.of(this.getActivity()).get(UserInfoViewModel.class);
-        if (null != viewModel.getNickname().get()) {
+        userInfoViewModel = ViewModelProviders.of(this.getActivity()).get(UserInfoViewModel.class);
+        if (null != userInfoViewModel.getNickname().get()) {
             /** 导航切换回来，初始化 设置名称*/
-            viewNickName.setText(viewModel.getNickname().get());
+            viewNickName.setText(userInfoViewModel.getNickname().get());
         } else {
             /** 首次开启应用 注册 名字和头像变化事件 */
-            viewModel.getNickname().addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            userInfoViewModel.getNickname().addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
                 @Override
                 public void onPropertyChanged(Observable sender, int propertyId) {
                     String nameStr = ((ObservableField<String>) sender).get();
@@ -168,11 +169,11 @@ public class TasksFragment extends Fragment {
             });
         }
 
-        if (null != viewModel.getHeadBitmap()) {
+        if (null != userInfoViewModel.getHeadBitmap()) {
             /** 导航切换回来，初始化 设置头像*/
-            viewHeadImage.setImageBitmap(viewModel.getHeadBitmap());
+            viewHeadImage.setImageBitmap(userInfoViewModel.getHeadBitmap());
         } else {
-            viewModel.getHeadBitmapObserver().addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            userInfoViewModel.getHeadBitmapObserver().addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
                 @Override
                 public void onPropertyChanged(Observable sender, int propertyId) {
                     Bitmap bitmap = ((ObservableField<Bitmap>) sender).get();
@@ -181,39 +182,39 @@ public class TasksFragment extends Fragment {
             });
         }
 
-        if (null != viewModel.getExp().get()) {
+        if (null != userInfoViewModel.getExp().get()) {
             /** 导航切换回来，初始化 设置等级和经验*/
-            int levelIndex = NumberUtil.getLevelByExp(viewModel.getExp().get(), viewModel.getExpArr());
+            int levelIndex = NumberUtil.getLevelByExp(userInfoViewModel.getExp().get(), userInfoViewModel.getExpArr());
             /** 等级*/
             String levelTxt = (levelIndex + 1) + "";
             textViewLevel.setText(levelTxt);
             /** 经验*/
-            textViewExp.setText(viewModel.getExp().get() + "/" + NumberUtil.getTotalExpByLevel(levelIndex, viewModel.getExpArr()));
+            textViewExp.setText(userInfoViewModel.getExp().get() + "/" + NumberUtil.getTotalExpByLevel(levelIndex, userInfoViewModel.getExpArr()));
         } else {
-            viewModel.getExp().addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            userInfoViewModel.getExp().addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
                 @Override
                 public void onPropertyChanged(Observable sender, int propertyId) {
                     Integer exp = ((ObservableField<Integer>) sender).get();
-                    int levelIndex = NumberUtil.getLevelByExp(exp, viewModel.getExpArr());
+                    int levelIndex = NumberUtil.getLevelByExp(exp, userInfoViewModel.getExpArr());
                     /** 更新等级*/
                     String levelTxt = (levelIndex + 1) + "";
                     textViewLevel.setText(levelTxt);
                     /** 更新经验*/
-                    textViewExp.setText(viewModel.getExp().get() + "/" + NumberUtil.getTotalExpByLevel(levelIndex, viewModel.getExpArr()));
+                    textViewExp.setText(userInfoViewModel.getExp().get() + "/" + NumberUtil.getTotalExpByLevel(levelIndex, userInfoViewModel.getExpArr()));
                 }
             });
         }
 
         /** 语言状态*/
-        if (viewModel.getLanguageState().get() == 0) {
-            viewModel.setLanguageState(UserInfoViewModel.LAN_ZH_CN);
+        if (userInfoViewModel.getLanguageState().get() == 0) {
+            userInfoViewModel.setLanguageState(UserInfoViewModel.LAN_ZH_CN);
             /** 切换语言*/
-            viewModel.getLanguageState().addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            userInfoViewModel.getLanguageState().addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
                 @Override
                 public void onPropertyChanged(Observable sender, int propertyId) {
                     int lan = ((ObservableInt) sender).get();
                     /** 当前页面数据更新*/
-                    showWebPage(viewModel.getCurrentPageNum().get(), viewModel.getAnchor().get());
+                    showWebPage(userInfoViewModel.getCurrentPageNum().get(), userInfoViewModel.getAnchor().get());
                     /** 目录数据更新*/
                     getCatalog();
                 }
@@ -221,13 +222,13 @@ public class TasksFragment extends Fragment {
         }
 
         /** 目录数据*/
-        if (viewModel.getTitles().size() != 0) {
-            taskAdapter.initContents(viewModel.getTitles());
+        if (userInfoViewModel.getTitles().size() != 0) {
+            taskAdapter.initContents(userInfoViewModel.getTitles());
         } else {
             /** 目录数据初始化*/
             getCatalog();
 
-            viewModel.getTitles().addOnListChangedCallback(new ObservableList.OnListChangedCallback<ObservableList<String>>() {
+            userInfoViewModel.getTitles().addOnListChangedCallback(new ObservableList.OnListChangedCallback<ObservableList<String>>() {
 
                 @Override
                 public void onChanged(ObservableList<String> sender) {
@@ -258,10 +259,10 @@ public class TasksFragment extends Fragment {
         }
 
         /** currentPageNum 为空 显示Index主页, 不为空 显示当前页， 用在从笔记页面切换回来的时候*/
-        if (viewModel.getCurrentPageNum().get() == null) {
+        if (userInfoViewModel.getCurrentPageNum().get() == null) {
             this.showWebPage(Conf.URL_INDEX, null);
         } else {
-            this.showWebPage(viewModel.getCurrentPageNum().get(), viewModel.getAnchor().get());
+            this.showWebPage(userInfoViewModel.getCurrentPageNum().get(), userInfoViewModel.getAnchor().get());
         }
 
         return root;
@@ -273,11 +274,11 @@ public class TasksFragment extends Fragment {
             return;
         }
 
-        viewModel.setCurrentPageNum(pageNum);
-        viewModel.setAnchor(anc);
+        userInfoViewModel.setCurrentPageNum(pageNum);
+        userInfoViewModel.setAnchor(anc);
 
         String url = null;
-        switch (viewModel.getLanguageState().get()) {
+        switch (userInfoViewModel.getLanguageState().get()) {
             case UserInfoViewModel.LAN_ZH_CN:
                 url = Conf.URL_DOC_CONTENT_PRE + pageNum + ".cn.html";
                 break;
@@ -304,7 +305,13 @@ public class TasksFragment extends Fragment {
                     return true;
                 case R.id.navigation_note:
                     /** 笔记*/
-                    NavHostFragment.findNavController(TasksFragment.this).navigate(R.id.action_tasksFragment3_to_doc_note2);
+                    boolean isInt = NumberUtil.isInteger(userInfoViewModel.getCurrentPageNum().get());
+                    if (isInt) {
+                        NavHostFragment.findNavController(TasksFragment.this).navigate(R.id.action_tasksFragment3_to_doc_note2);
+                    } else {
+                        /** 当前文章编号不是整型,比如index,返回*/
+                        Toast.makeText(TasksFragment.this.getContext(), getString(R.string.can_not_add_note), Toast.LENGTH_LONG).show();
+                    }
                     return true;
                 case R.id.navigation_translate:
                     /** 切换语言状态*/
@@ -326,10 +333,10 @@ public class TasksFragment extends Fragment {
                 /** 控件每一个item的点击事件*/
                 switch (item.getItemId()) {
                     case R.id.popupmenu_ch_cn:
-                        viewModel.setLanguageState(UserInfoViewModel.LAN_ZH_CN);
+                        userInfoViewModel.setLanguageState(UserInfoViewModel.LAN_ZH_CN);
                         break;
                     case R.id.popupmenu_en:
-                        viewModel.setLanguageState(UserInfoViewModel.LAN_EN);
+                        userInfoViewModel.setLanguageState(UserInfoViewModel.LAN_EN);
                         break;
                 }
                 return true;
@@ -360,7 +367,7 @@ public class TasksFragment extends Fragment {
         RequestQueue queue = Volley.newRequestQueue(this.getContext());
 
         String catalogUrl = null;
-        switch (viewModel.getLanguageState().get()) {
+        switch (userInfoViewModel.getLanguageState().get()) {
             case UserInfoViewModel.LAN_ZH_CN:
                 catalogUrl = Conf.URL_CATALOG_CN;
                 break;
@@ -383,7 +390,7 @@ public class TasksFragment extends Fragment {
                         ArrayList<String> titleList = new ArrayList<>();
                         Collections.addAll(titleList, titles);
                         /** 更新ViewModel 目录数据*/
-                        viewModel.updateTitles(titleList);
+                        userInfoViewModel.updateTitles(titleList);
                     }
                 }, new Response.ErrorListener() {
 

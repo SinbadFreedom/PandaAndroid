@@ -16,10 +16,11 @@
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:supportsRtl="true">
+
         <activity
+            android:theme="@style/AppTheme"
+            android:launchMode="singleTask"
             android:name="com.panda_doc.python.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -29,19 +30,25 @@
         </activity>
 
         <activity
+            android:theme="@style/AppTheme"
+            android:name="com.panda_doc.python.DocActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask" />
+
+        <activity
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:launchMode="singleTask"
-            android:taskAffinity="com.panda_doc.python"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity
-            android:name="com.panda_doc.python.DocActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"
+            android:taskAffinity="com.panda_doc.python" />
 
         <activity
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -54,10 +61,10 @@
         </activity>
 
         <activity
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
             android:name="com.tencent.connect.common.AssistActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="behind"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
 
     </application>
 
