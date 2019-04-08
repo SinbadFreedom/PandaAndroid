@@ -99,6 +99,7 @@ public class MainActivity extends FragmentActivity {
      * 版本检测
      */
     private void versionCheck() {
+        //TODO 整合为1个Activity后，这里的硬编码 en需要改掉 从userInfoViewModule中读取
         String moreUrl = Conf.URL_DOC_CONTENT_PRE + "en/" + Conf.URL_VERSION;
         RequestQueue queue = Volley.newRequestQueue(this);
 
