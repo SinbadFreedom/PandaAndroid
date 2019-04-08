@@ -35,9 +35,7 @@ import com.panda_doc.python.conf.Conf;
 import com.panda_doc.python.conf.Constants;
 import com.panda_doc.python.qq.QQSDKListener;
 import com.panda_doc.python.version.CheckVersionDialogFragment;
-import com.tencent.mm.opensdk.modelmsg.SendAuth;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.panda_doc.python.wechat.WeChatSdk;
 import com.tencent.tauth.Tencent;
 
 import org.json.JSONException;
@@ -56,8 +54,8 @@ public class MainActivity extends FragmentActivity {
     /**
      * wechat
      */
-    private IWXAPI api;
     private ImageButton wechatLogin;
+    WeChatSdk weChatSdk;
     /**
      * QQ
      */
@@ -67,9 +65,8 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login);
 
-        checkPermission();
+        setContentView(R.layout.login);
 
         /** 微信登陆*/
         wechatLogin = (ImageButton) findViewById(R.id.login_wechat);
@@ -77,11 +74,9 @@ public class MainActivity extends FragmentActivity {
         wechatLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                weChatSdk = new WeChatSdk(MainActivity.this);
                 /** 微信登陆*/
-                api = WXAPIFactory.createWXAPI(MainActivity.this, Constants.WX_APP_ID, false);
-                /** 经过测试屏蔽这个regToWx方法，没有影响，能够正确获取用户信息，暂时先保留该方法*/
-                regToWx();
-                getWxUserInfo();
+                weChatSdk.loginWeChat();
             }
         });
 
@@ -96,6 +91,7 @@ public class MainActivity extends FragmentActivity {
             }
         });
 
+        checkPermission();
         versionCheck();
     }
 
@@ -143,25 +139,6 @@ public class MainActivity extends FragmentActivity {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.add(fragment, TAG_DIALOG);
         ft.commitAllowingStateLoss();
-    }
-
-    /**
-     * app注册到微信
-     */
-    private void regToWx() {
-        /** 通过WXAPIFactory工厂，获取IWXAPI的实例*/
-        /** 将应用的appId注册到微信*/
-        api.registerApp(Constants.WX_APP_ID);
-    }
-
-    /**
-     * 获取用户信息
-     */
-    private void getWxUserInfo() {
-        final SendAuth.Req req = new SendAuth.Req();
-        req.scope = "snsapi_userinfo";
-        req.state = "python_doc_android_state";
-        api.sendReq(req);
     }
 
     private void checkPermission() {

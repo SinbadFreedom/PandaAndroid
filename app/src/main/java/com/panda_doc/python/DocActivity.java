@@ -242,6 +242,8 @@ public class DocActivity extends FragmentActivity {
 
     private void startUpdateExpThread() {
         UpdateExp updateExp = new UpdateExp(this, userInfoViewModel);
+        /** 启动应用县执行以此，然后再启动线程更新*/
+        updateExp.updateExp();
         updateExp.start();
     }
 }

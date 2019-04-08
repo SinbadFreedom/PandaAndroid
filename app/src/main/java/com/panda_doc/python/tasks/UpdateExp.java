@@ -42,7 +42,7 @@ public class UpdateExp extends Thread {
         }
     }
 
-    private void updateExp() {
+    public void updateExp() {
         if (userInfoViewModel.getOpenId() == null) {
             return;
         }
