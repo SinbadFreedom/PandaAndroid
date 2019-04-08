@@ -99,9 +99,10 @@ public class MainActivity extends FragmentActivity {
      * 版本检测
      */
     private void versionCheck() {
+        String moreUrl = Conf.URL_DOC_CONTENT_PRE + "en/" + Conf.URL_VERSION;
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, Conf.URL_VERSION_CN,
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, moreUrl,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

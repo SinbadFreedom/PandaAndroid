@@ -32,9 +32,9 @@ public class UserInfoViewModel extends ViewModel {
     /**
      * 语言状态
      */
-    public static final int LAN_ZH_CN = 1;
-    public static final int LAN_EN = 2;
-    private ObservableInt languageState = new ObservableInt();
+    public static final String LAN_ZH_CN = "zh_cn";
+    public static final String LAN_EN = "en";
+    private ObservableField<String> languageState = new ObservableField();
 
     /**
      * 用户登录方式
@@ -88,11 +88,11 @@ public class UserInfoViewModel extends ViewModel {
         this.titles.addAll(strings);
     }
 
-    public ObservableInt getLanguageState() {
+    public ObservableField<String> getLanguageState() {
         return languageState;
     }
 
-    public void setLanguageState(int languageState) {
+    public void setLanguageState(String languageState) {
         this.languageState.set(languageState);
     }
 

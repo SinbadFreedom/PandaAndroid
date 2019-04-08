@@ -84,6 +84,8 @@ public class TasksFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        userInfoViewModel = ViewModelProviders.of(this.getActivity()).get(UserInfoViewModel.class);
+
         View root = inflater.inflate(R.layout.tasks_act, container, false);
 
         mDrawerLayout = (DrawerLayout) root.findViewById(R.id.drawer_layout);
@@ -153,7 +155,6 @@ public class TasksFragment extends Fragment {
         textViewLevel = (TextView) root.findViewById(R.id.info_level);
         textViewExp = (TextView) root.findViewById(R.id.info_exp);
 
-        userInfoViewModel = ViewModelProviders.of(this.getActivity()).get(UserInfoViewModel.class);
         if (null != userInfoViewModel.getNickname().get()) {
             /** 导航切换回来，初始化 设置名称*/
             viewNickName.setText(userInfoViewModel.getNickname().get());
@@ -206,13 +207,12 @@ public class TasksFragment extends Fragment {
         }
 
         /** 语言状态*/
-        if (userInfoViewModel.getLanguageState().get() == 0) {
+        if (userInfoViewModel.getLanguageState().get() == null) {
             userInfoViewModel.setLanguageState(UserInfoViewModel.LAN_ZH_CN);
             /** 切换语言*/
             userInfoViewModel.getLanguageState().addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
                 @Override
                 public void onPropertyChanged(Observable sender, int propertyId) {
-                    int lan = ((ObservableInt) sender).get();
                     /** 当前页面数据更新*/
                     showWebPage(userInfoViewModel.getCurrentPageNum().get(), userInfoViewModel.getAnchor().get());
                     /** 目录数据更新*/
@@ -277,15 +277,7 @@ public class TasksFragment extends Fragment {
         userInfoViewModel.setCurrentPageNum(pageNum);
         userInfoViewModel.setAnchor(anc);
 
-        String url = null;
-        switch (userInfoViewModel.getLanguageState().get()) {
-            case UserInfoViewModel.LAN_ZH_CN:
-                url = Conf.URL_DOC_CONTENT_PRE + pageNum + ".cn.html";
-                break;
-            case UserInfoViewModel.LAN_EN:
-                url = Conf.URL_DOC_CONTENT_PRE + pageNum + ".html";
-                break;
-        }
+        String url = Conf.URL_DOC_CONTENT_PRE + userInfoViewModel.getLanguageState().get() + "/" + pageNum + ".html";
 
         if (anc != null) {
             /** 跳转锚点*/
@@ -365,20 +357,7 @@ public class TasksFragment extends Fragment {
      */
     private void getCatalog() {
         RequestQueue queue = Volley.newRequestQueue(this.getContext());
-
-        String catalogUrl = null;
-        switch (userInfoViewModel.getLanguageState().get()) {
-            case UserInfoViewModel.LAN_ZH_CN:
-                catalogUrl = Conf.URL_CATALOG_CN;
-                break;
-            case UserInfoViewModel.LAN_EN:
-                catalogUrl = Conf.URL_CATALOG;
-                break;
-            default:
-                catalogUrl = Conf.URL_CATALOG_CN;
-                break;
-        }
-
+        String catalogUrl = Conf.URL_DOC_CONTENT_PRE + userInfoViewModel.getLanguageState().get() + "/" + Conf.URL_CATALOG;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, catalogUrl,
                 new Response.Listener<String>() {
                     @Override
