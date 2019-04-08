@@ -17,8 +17,10 @@
 package com.panda_doc.python;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -31,10 +33,12 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.panda_doc.python.conf.Conf;
 import com.panda_doc.python.conf.Constants;
+import com.panda_doc.python.qq.QQSDKListener;
 import com.panda_doc.python.version.CheckVersionDialogFragment;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.tencent.tauth.Tencent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,8 +52,17 @@ public class MainActivity extends FragmentActivity {
 
     private static String TAG_DIALOG = "TASK_FRAGE";
 
+    private static final String TAG = MainActivity.class.getName();
+    /**
+     * wechat
+     */
     private IWXAPI api;
     private ImageButton wechatLogin;
+    /**
+     * QQ
+     */
+    private ImageButton qqLogin;
+    QQSDKListener qqsdkListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,20 +70,32 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.login);
 
         checkPermission();
-        api = WXAPIFactory.createWXAPI(this, Constants.WX_APP_ID, false);
 
+        /** 微信登陆*/
         wechatLogin = (ImageButton) findViewById(R.id.login_wechat);
         wechatLogin.setImageResource(R.drawable.icon48_wx_button);
         wechatLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 /** 微信登陆*/
+                api = WXAPIFactory.createWXAPI(MainActivity.this, Constants.WX_APP_ID, false);
+                /** 经过测试屏蔽这个regToWx方法，没有影响，能够正确获取用户信息，暂时先保留该方法*/
+                regToWx();
                 getWxUserInfo();
             }
         });
 
-        /** 经过测试屏蔽这个regToWx方法，没有影响，能够正确获取用户信息，暂时先保留该方法*/
-        regToWx();
+        /** QQ登录*/
+        qqLogin = (ImageButton) findViewById(R.id.login_qq);
+        qqLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /** QQ登录*/
+                qqsdkListener = new QQSDKListener(MainActivity.this);
+                qqsdkListener.loginQQ();
+            }
+        });
+
         versionCheck();
     }
 
@@ -149,18 +174,31 @@ public class MainActivity extends FragmentActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
-            case Constants.PERMISSIONS_REQUEST_STORAGE: {
+            case Constants.PERMISSIONS_REQUEST_STORAGE:
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 } else {
                     Toast.makeText(MainActivity.this, "Please give me storage permission!", Toast.LENGTH_LONG).show();
                 }
-                return;
-            }
+                break;
         }
     }
+
+    /**
+     * QQ登陆回调
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(TAG, "-->onActivityResult " + requestCode + " resultCode=" + resultCode);
+        if (requestCode == com.tencent.connect.common.Constants.REQUEST_LOGIN ||
+                requestCode == com.tencent.connect.common.Constants.REQUEST_APPBAR) {
+            Tencent.onActivityResultData(requestCode, resultCode, data, qqsdkListener);
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }
+
 

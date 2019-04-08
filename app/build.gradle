@@ -66,4 +66,6 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.ext.constraintLayoutVersion"
     implementation "com.android.volley:volley:$rootProject.ext.volleyVersion"
     implementation "com.tencent.mm.opensdk:wechat-sdk-android-with-mta:$rootProject.ext.wechatSdkVersion"
+
+    implementation fileTree(include: '*.jar', dir: 'libs')
 }

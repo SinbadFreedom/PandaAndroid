@@ -15,7 +15,6 @@ public class Constants {
     public static final String KEY_SEX = "sex";
     public static final String KEY_PROVINCE = "province";
     public static final String KEY_CITY = "city";
-    public static final String KEY_COUNTRY = "country";
     public static final String KEY_HEAD_IMG_DATA = "imgdata";
 
     public static final String KEY_CHANNEL = "channel";
@@ -31,5 +30,9 @@ public class Constants {
     public static final int TYPE_MONTH_LAST = 6;
     public static final int TYPE_ALL = 7;
 
+    /**
+     * QQ APP id
+     */
+    public static final String APP_ID_QQ = "1106522434";
 }
 

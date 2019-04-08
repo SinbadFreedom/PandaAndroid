@@ -13,8 +13,6 @@ public class UserInfoViewModel extends ViewModel {
 
     private String openId;
     private String accessToken;
-    private String refreshToken;
-    private String scope;
     private String userId;
 
     private int[] expArr;
@@ -24,7 +22,6 @@ public class UserInfoViewModel extends ViewModel {
     private final ObservableField<Integer> exp = new ObservableField<>();
     private final ObservableField<String> province = new ObservableField<>();
     private final ObservableField<String> city = new ObservableField<>();
-    private final ObservableField<String> country = new ObservableField<>();
     private final ObservableField<String> headimgurl = new ObservableField<>();
     private final ObservableField<Bitmap> headBitmap = new ObservableField<>();
 
@@ -57,10 +54,6 @@ public class UserInfoViewModel extends ViewModel {
 
     public void setCity(String city) {
         this.city.set(city);
-    }
-
-    public void setCountry(String country) {
-        this.country.set(country);
     }
 
     public void setHeadimgurl(String headimgurl) {
@@ -120,28 +113,8 @@ public class UserInfoViewModel extends ViewModel {
         this.openId = openId;
     }
 
-    public String getAccessToken() {
-        return accessToken;
-    }
-
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
-    }
-
-    public String getRefreshToken() {
-        return refreshToken;
-    }
-
-    public void setRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
-    }
-
-    public String getScope() {
-        return scope;
-    }
-
-    public void setScope(String scope) {
-        this.scope = scope;
     }
 
     public ObservableField<String> getSex() {
@@ -154,10 +127,6 @@ public class UserInfoViewModel extends ViewModel {
 
     public ObservableField<String> getCity() {
         return city;
-    }
-
-    public ObservableField<String> getCountry() {
-        return country;
     }
 
     public ObservableField<String> getHeadimgurl() {

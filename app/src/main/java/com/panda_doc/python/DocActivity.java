@@ -56,13 +56,10 @@ public class DocActivity extends FragmentActivity {
         Intent intent = getIntent();
         String openId = intent.getStringExtra(Constants.KEY_OPENID);
         String accessToken = intent.getStringExtra(Constants.KEY_ACCESS_TOKEN);
-        String refreshToken = intent.getStringExtra(Constants.KEY_REFRESH_TOKEN);
-        String scope = intent.getStringExtra(Constants.KEY_SCOPE);
 
         String headimgurl = intent.getStringExtra(Constants.KEY_HEADIMGURL);
         String nickname = intent.getStringExtra(Constants.KEY_NICKNAME);
         String sex = intent.getStringExtra(Constants.KEY_SEX);
-        String country = intent.getStringExtra(Constants.KEY_COUNTRY);
         String province = intent.getStringExtra(Constants.KEY_PROVINCE);
         String city = intent.getStringExtra(Constants.KEY_CITY);
         byte[] imgdata = intent.getByteArrayExtra(Constants.KEY_HEAD_IMG_DATA);
@@ -71,13 +68,10 @@ public class DocActivity extends FragmentActivity {
 
         userInfoViewModel.setOpenId(openId);
         userInfoViewModel.setAccessToken(accessToken);
-        userInfoViewModel.setRefreshToken(refreshToken);
-        userInfoViewModel.setScope(scope);
 
         userInfoViewModel.setHeadimgurl(headimgurl);
         userInfoViewModel.setNickname(nickname);
         userInfoViewModel.setSex(sex);
-        userInfoViewModel.setCountry(country);
         userInfoViewModel.setProvince(province);
         userInfoViewModel.setCity(city);
 
@@ -193,7 +187,6 @@ public class DocActivity extends FragmentActivity {
                 map.put(Constants.KEY_SEX, userInfoViewModel.getSex().get());
                 map.put(Constants.KEY_PROVINCE, userInfoViewModel.getProvince().get());
                 map.put(Constants.KEY_CITY, userInfoViewModel.getCity().get());
-                map.put(Constants.KEY_COUNTRY, userInfoViewModel.getCountry().get());
 
                 map.put(Constants.KEY_CHANNEL, Constants.CHANNEL_APP_PYTHON);
                 return map;

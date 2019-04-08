@@ -49,7 +49,6 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     private String sex;
     private String province;
     private String city;
-    private String country;
     private String headimgurl;
     private byte[] imgdata;
 
@@ -129,7 +128,6 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                         sex = json.getString(Constants.KEY_SEX);
                         province = json.getString(Constants.KEY_PROVINCE);
                         city = json.getString(Constants.KEY_CITY);
-                        country = json.getString(Constants.KEY_COUNTRY);
 
                         infoReady = true;
                         updateWXLoginState();
@@ -163,7 +161,6 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                 intent.putExtra(Constants.KEY_SEX, sex);
                 intent.putExtra(Constants.KEY_PROVINCE, province);
                 intent.putExtra(Constants.KEY_CITY, city);
-                intent.putExtra(Constants.KEY_COUNTRY, country);
                 intent.putExtra(Constants.KEY_HEAD_IMG_DATA, imgdata);
 
                 wxEntryActivityWeakReference.get().startActivity(intent);
@@ -211,7 +208,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 
     @Override
     public void onResp(BaseResp resp) {
-        int result = 0;
+        int result;
         switch (resp.errCode) {
             case BaseResp.ErrCode.ERR_OK:
                 result = R.string.errcode_success;
@@ -230,8 +227,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                 break;
         }
 
-        /** TODO 调试阶段开启，release 注释掉 Toast*/
-        Toast.makeText(this, getString(result) + ", type=" + resp.getType(), Toast.LENGTH_SHORT).show();
+        Log.i(TAG, "onResp " + result);
 
         if (resp.getType() == ConstantsAPI.COMMAND_SUBSCRIBE_MESSAGE) {
             SubscribeMessage.Resp subscribeMsgResp = (SubscribeMessage.Resp) resp;
