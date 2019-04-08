@@ -36,6 +36,13 @@ public class UserInfoViewModel extends ViewModel {
     public static final int LAN_EN = 2;
     private ObservableInt languageState = new ObservableInt();
 
+    /**
+     * 用户登录方式
+     */
+    public static final int LOGIN_WECHAT = 1;
+    public static final int LOGIN_QQ = 2;
+    private int loginType =  0;
+
     public ObservableField<String> getNickname() {
         return nickname;
     }
@@ -155,5 +162,13 @@ public class UserInfoViewModel extends ViewModel {
 
     public void setExp(int exp) {
         this.exp.set(exp);
+    }
+
+    public int getLoginType() {
+        return loginType;
+    }
+
+    public void setLoginType(int loginType) {
+        this.loginType = loginType;
     }
 }

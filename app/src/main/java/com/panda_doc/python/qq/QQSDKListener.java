@@ -11,6 +11,7 @@ import android.util.Log;
 import com.panda_doc.python.DocActivity;
 import com.panda_doc.python.MainActivity;
 import com.panda_doc.python.conf.Constants;
+import com.panda_doc.python.view_model.UserInfoViewModel;
 import com.tencent.connect.UserInfo;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
@@ -226,7 +227,7 @@ public class QQSDKListener implements IUiListener {
             intent.putExtra(Constants.KEY_PROVINCE, province);
             intent.putExtra(Constants.KEY_CITY, city);
             intent.putExtra(Constants.KEY_HEAD_IMG_DATA, imgdata);
-
+            intent.putExtra(Constants.KEY_LOGIN_TYPE, UserInfoViewModel.LOGIN_QQ);
             activity.startActivity(intent);
         }
     }

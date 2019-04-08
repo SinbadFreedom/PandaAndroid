@@ -16,6 +16,7 @@ public class Constants {
     public static final String KEY_PROVINCE = "province";
     public static final String KEY_CITY = "city";
     public static final String KEY_HEAD_IMG_DATA = "imgdata";
+    public static final String KEY_LOGIN_TYPE = "logintype";
 
     public static final String KEY_CHANNEL = "channel";
     public static final String CHANNEL_APP_PYTHON = "app_python";

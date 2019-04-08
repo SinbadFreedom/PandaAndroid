@@ -12,6 +12,7 @@ import com.panda_doc.python.DocActivity;
 import com.panda_doc.python.R;
 import com.panda_doc.python.conf.Constants;
 import com.panda_doc.python.uikit.NetworkUtil;
+import com.panda_doc.python.view_model.UserInfoViewModel;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
@@ -162,6 +163,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                 intent.putExtra(Constants.KEY_PROVINCE, province);
                 intent.putExtra(Constants.KEY_CITY, city);
                 intent.putExtra(Constants.KEY_HEAD_IMG_DATA, imgdata);
+                intent.putExtra(Constants.KEY_LOGIN_TYPE, UserInfoViewModel.LOGIN_WECHAT);
 
                 wxEntryActivityWeakReference.get().startActivity(intent);
             }

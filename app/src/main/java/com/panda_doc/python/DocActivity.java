@@ -63,6 +63,7 @@ public class DocActivity extends FragmentActivity {
         String province = intent.getStringExtra(Constants.KEY_PROVINCE);
         String city = intent.getStringExtra(Constants.KEY_CITY);
         byte[] imgdata = intent.getByteArrayExtra(Constants.KEY_HEAD_IMG_DATA);
+        int loginType = (int) intent.getIntExtra(Constants.KEY_LOGIN_TYPE, 0);
 
         userInfoViewModel = ViewModelProviders.of(this).get(UserInfoViewModel.class);
 
@@ -74,6 +75,7 @@ public class DocActivity extends FragmentActivity {
         userInfoViewModel.setSex(sex);
         userInfoViewModel.setProvince(province);
         userInfoViewModel.setCity(city);
+        userInfoViewModel.setLoginType(loginType);
 
         if (imgdata != null) {
             Bitmap bitmap = BitmapFactory.decodeByteArray(imgdata, 0, imgdata.length);
@@ -187,6 +189,7 @@ public class DocActivity extends FragmentActivity {
                 map.put(Constants.KEY_SEX, userInfoViewModel.getSex().get());
                 map.put(Constants.KEY_PROVINCE, userInfoViewModel.getProvince().get());
                 map.put(Constants.KEY_CITY, userInfoViewModel.getCity().get());
+                map.put(Constants.KEY_LOGIN_TYPE, userInfoViewModel.getLoginType() + "");
 
                 map.put(Constants.KEY_CHANNEL, Constants.CHANNEL_APP_PYTHON);
                 return map;
