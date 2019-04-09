@@ -65,7 +65,7 @@
     <color name="colorTextIcon">#ffffff</color>
     <color name="colorPrimaryText">#212121</color>
     <color name="colorSecondText">#727272</color>
-    <color name="colorBackground">#eaeaea</color>
+    <color name="colorBackground">#EAEAEA</color>
     <color name="colorHint">#999999</color>
     <color name="colorBackgroundAccent">#ffffff</color>
     <!--blue-->

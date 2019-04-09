@@ -33,6 +33,19 @@
         android:layout_gravity="start"
         android:background="@color/colorBluePrimaryDark">
 
+        <TextView
+            android:id="@+id/info_exp"
+            android:layout_width="wrap_content"
+            android:layout_height="12dp"
+            android:layout_marginEnd="8dp"
+            android:text="1111111/999999999"
+            android:textColor="@color/colorBackground"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toTopOf="@+id/progressBar"
+            app:layout_constraintEnd_toEndOf="@+id/progressBar"
+            app:layout_constraintHorizontal_bias="0.518"
+            app:layout_constraintStart_toStartOf="@+id/progressBar" />
+
         <ImageView
             android:id="@+id/img_header_icon"
             android:layout_width="64dp"
@@ -60,12 +73,13 @@
         <TextView
             android:id="@+id/textView4"
             android:layout_width="38dp"
-            android:layout_height="18dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginTop="48dp"
             android:fontFamily="@font/droidsansfallback"
             android:text="@string/info_rank"
             android:textColor="@color/colorHint"
+            android:textSize="12sp"
             app:layout_constraintStart_toEndOf="@+id/img_header_icon"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -79,37 +93,41 @@
             app:layout_constraintStart_toEndOf="@+id/textView4"
             app:layout_constraintTop_toTopOf="@+id/textView4" />
 
-        <TextView
-            android:id="@+id/info_exp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="92dp"
-            android:layout_marginTop="1dp"
-            android:text="1/99"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@+id/progressBar"
-            app:layout_constraintTop_toTopOf="@+id/progressBar" />
-
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="38dp"
-            android:layout_height="17dp"
-            android:fontFamily="@font/droidsansfallback"
-            android:text="@string/info_exp"
-            android:textColor="@color/colorHint"
-            app:layout_constraintStart_toStartOf="@+id/textView4"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        <!--<TextView-->
+            <!--android:id="@+id/info_exp"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginEnd="8dp"-->
+            <!--android:text="1/99"-->
+            <!--android:textColor="@color/colorBackground"-->
+            <!--android:textSize="12sp"-->
+            <!--app:layout_constraintEnd_toEndOf="@+id/progressBar"-->
+            <!--app:layout_constraintHorizontal_bias="0.528"-->
+            <!--app:layout_constraintStart_toStartOf="@+id/progressBar"-->
+            <!--app:layout_constraintTop_toTopOf="@+id/progressBar" />-->
 
         <ProgressBar
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="0dp"
-            android:layout_height="18dp"
+            android:layout_height="12dp"
+            android:layout_marginTop="4dp"
             android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/textView6"
             app:layout_constraintTop_toTopOf="@+id/textView6" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="38dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/droidsansfallback"
+            android:text="@string/info_exp"
+            android:textColor="@color/colorHint"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@+id/textView4"
+            app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
         <ListView
             android:id="@+id/tasks_list"

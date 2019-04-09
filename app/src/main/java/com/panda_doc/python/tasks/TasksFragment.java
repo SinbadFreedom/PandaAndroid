@@ -29,6 +29,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,6 +75,7 @@ public class TasksFragment extends Fragment {
     private ImageView viewHeadImage;
     private TextView textViewLevel;
     private TextView textViewExp;
+    private ProgressBar progressBar;
 
     private DrawerLayout mDrawerLayout;
     private TaskAdapter taskAdapter;
@@ -154,6 +156,7 @@ public class TasksFragment extends Fragment {
         viewHeadImage = root.findViewById(R.id.img_header_icon);
         textViewLevel = (TextView) root.findViewById(R.id.info_level);
         textViewExp = (TextView) root.findViewById(R.id.info_exp);
+        progressBar = (ProgressBar) root.findViewById(R.id.progressBar);
 
         if (null != userInfoViewModel.getNickname().get()) {
             /** 导航切换回来，初始化 设置名称*/
@@ -185,23 +188,32 @@ public class TasksFragment extends Fragment {
 
         if (null != userInfoViewModel.getExp().get()) {
             /** 导航切换回来，初始化 设置等级和经验*/
-            int levelIndex = NumberUtil.getLevelByExp(userInfoViewModel.getExp().get(), userInfoViewModel.getExpArr());
+            int exp = userInfoViewModel.getExp().get();
+            int levelIndex = NumberUtil.getLevelByExp(exp, userInfoViewModel.getExpArr());
+            int expMax = NumberUtil.getTotalExpByLevel(levelIndex, userInfoViewModel.getExpArr());
             /** 等级*/
             String levelTxt = (levelIndex + 1) + "";
             textViewLevel.setText(levelTxt);
             /** 经验*/
-            textViewExp.setText(userInfoViewModel.getExp().get() + "/" + NumberUtil.getTotalExpByLevel(levelIndex, userInfoViewModel.getExpArr()));
+            textViewExp.setText(exp + "/" + expMax);
+            /** 经验条*/
+            progressBar.setProgress(exp);
+            progressBar.setMax(expMax);
         } else {
             userInfoViewModel.getExp().addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
                 @Override
                 public void onPropertyChanged(Observable sender, int propertyId) {
                     Integer exp = ((ObservableField<Integer>) sender).get();
                     int levelIndex = NumberUtil.getLevelByExp(exp, userInfoViewModel.getExpArr());
+                    int expMax = NumberUtil.getTotalExpByLevel(levelIndex, userInfoViewModel.getExpArr());
                     /** 更新等级*/
                     String levelTxt = (levelIndex + 1) + "";
                     textViewLevel.setText(levelTxt);
                     /** 更新经验*/
-                    textViewExp.setText(userInfoViewModel.getExp().get() + "/" + NumberUtil.getTotalExpByLevel(levelIndex, userInfoViewModel.getExpArr()));
+                    textViewExp.setText(exp + "/" + expMax);
+                    /** 经验条*/
+                    progressBar.setProgress(exp);
+                    progressBar.setMax(expMax);
                 }
             });
         }
