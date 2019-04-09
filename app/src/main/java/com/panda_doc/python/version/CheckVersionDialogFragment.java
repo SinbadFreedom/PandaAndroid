@@ -174,7 +174,7 @@ public class CheckVersionDialogFragment extends DialogFragment {
      */
     private void installApk(File file) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        /** TODO 暂时注掉7.0的 启动应用的方法， 华为7.0测试正常，回头测试一下 oppo, vivo*/
+        // TODO 暂时注掉7.0的 启动应用的方法， 华为7.0测试正常，回头测试一下 oppo, vivo
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 //            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 //            String authority = "com.dashidan.fileprovider";

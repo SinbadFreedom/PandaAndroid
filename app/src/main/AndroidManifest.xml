@@ -15,8 +15,9 @@
 
     <application
         android:allowBackup="false"
-        android:icon="@mipmap/ic_launcher"
-        android:supportsRtl="true">
+        android:icon="@mipmap/icon_python"
+        android:supportsRtl="true"
+        android:label="@string/app_name">
 
         <activity
             android:theme="@style/AppTheme"
