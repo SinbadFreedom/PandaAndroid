@@ -1,7 +1,7 @@
 package com.panda_doc.python.conf;
 
 public class Conf {
-    public static final String DOMAIN = "https://dashidan.com";
+    public static final String DOMAIN = "https://panda-doc.com";
     //    public static final String DOMAIN = "http://192.168.18.4";
     public static final String URL_INDEX = "index";
     /**
@@ -16,7 +16,8 @@ public class Conf {
 
     public static final String FOLDER_APK = "python3";
 
-    public static final String URL_DOC_CONTENT_PRE = DOMAIN + "/and_doc/python3/";
+    public static final String URL_DOC_CONTENT_PRE = DOMAIN + "/python" +
+            "3/";
     public static final String URL_VERSION = "version.json";
     public static final String URL_CATALOG = "catalog.txt";
     public static final String URL_MORE_APP = "more.html";
