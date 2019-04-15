@@ -14,10 +14,8 @@ public class Conf {
     public static final String KEY_STATE = "state";
     public static final String KEY_EXP_CONF = "exp_conf";
 
-    public static final String FOLDER_APK = "python3";
-
-    public static final String URL_DOC_CONTENT_PRE = DOMAIN + "/python" +
-            "3/";
+    public static final String DOC_NAME = "python3";
+    public static final String URL_DOC_CONTENT_PRE = DOMAIN + "/" + DOC_NAME + "/";
     public static final String URL_VERSION = "version.json";
     public static final String URL_CATALOG = "catalog.txt";
     public static final String URL_MORE_APP = "more.html";
