@@ -1,8 +1,8 @@
 package com.panda_doc.python.conf;
 
 public class Conf {
-    //    public static final String DOMAIN = "https://panda-doc.com";
-    public static final String DOMAIN = "http://192.168.18.3";
+    public static final String DOMAIN = "https://panda-doc.com";
+//    public static final String DOMAIN = "http://192.168.18.3";
     public static final String URL_INDEX = "index";
     /**
      * version check
