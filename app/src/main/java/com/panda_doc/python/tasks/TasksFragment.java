@@ -59,7 +59,6 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.core.view.GravityCompat;
 import androidx.databinding.Observable;
 import androidx.databinding.ObservableField;
-import androidx.databinding.ObservableInt;
 import androidx.databinding.ObservableList;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;

@@ -94,7 +94,7 @@ public class DocNoteAddFragment extends Fragment {
     /**
      * 上传笔记
      */
-    private void sendNote(final String note) {
+    private void sendNote(final String content) {
         /** 检测当前文章id是否可以加笔记*/
         boolean isInt = NumberUtil.isInteger(viewModel.getCurrentPageNum().get());
         if (!isInt) {
@@ -115,7 +115,7 @@ public class DocNoteAddFragment extends Fragment {
         isSending = true;
 
         RequestQueue queue = Volley.newRequestQueue(this.getContext());
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Conf.URL_NOTE_ADD,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Conf.URL_CONTENT_ADD,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -143,9 +143,9 @@ public class DocNoteAddFragment extends Fragment {
                 // 请求参数
                 Map<String, String> map = new HashMap<>();
                 //new 一个Map  参数放到Map中
+                map.put("tag", Conf.DOC_TAG);
                 map.put("num", viewModel.getCurrentPageNum().get());
-                map.put("note", note);
-                map.put("openid", viewModel.getOpenId());
+                map.put("content", content);
                 map.put("name", viewModel.getNickname().get());
                 map.put("userid", viewModel.getUserId());
                 return map;

@@ -93,19 +93,6 @@
             app:layout_constraintStart_toEndOf="@+id/textView4"
             app:layout_constraintTop_toTopOf="@+id/textView4" />
 
-        <!--<TextView-->
-            <!--android:id="@+id/info_exp"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginEnd="8dp"-->
-            <!--android:text="1/99"-->
-            <!--android:textColor="@color/colorBackground"-->
-            <!--android:textSize="12sp"-->
-            <!--app:layout_constraintEnd_toEndOf="@+id/progressBar"-->
-            <!--app:layout_constraintHorizontal_bias="0.528"-->
-            <!--app:layout_constraintStart_toStartOf="@+id/progressBar"-->
-            <!--app:layout_constraintTop_toTopOf="@+id/progressBar" />-->
-
         <ProgressBar
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyleHorizontal"

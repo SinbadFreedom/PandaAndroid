@@ -21,22 +21,19 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UpdateExp extends Thread {
+public class UpdateExp implements Runnable {
     Context context;
     UserInfoViewModel userInfoViewModel;
-
 
     public UpdateExp(Context context, UserInfoViewModel userInfoViewModel) {
         this.context = context;
         this.userInfoViewModel = userInfoViewModel;
     }
 
-
     @Override
     public void run() {
         /** 启动应用线程后先执行一次更新经验，然后再定时更新*/
-        updateExp();
-
+        this.updateExp();
         while (true) {
             try {
                 Thread.sleep(Conf.UPDATE_EXP_TIME);
@@ -86,7 +83,6 @@ public class UpdateExp extends Thread {
                 // 请求参数
                 Map<String, String> map = new HashMap<>();
                 //new 一个Map  参数放到Map中
-                map.put("openid", userInfoViewModel.getOpenId());
                 map.put("userid", userInfoViewModel.getUserId());
                 return map;
             }

@@ -158,10 +158,12 @@ public class DocActivity extends FragmentActivity {
                             userInfoViewModel.setUserId(userId);
                             userInfoViewModel.setExp(exp);
                             /** 登录成功，获取user_id后，更新经验*/
-                            startUpdateExpThread();
                             if (isNew) {
                                 uploadHeadImg();
                             }
+
+                            /** 启动更新经验线程*/
+                            startUpdateExpThread();
                             Log.i(Conf.DOMAIN, "userLogin success userId " + userId + " isNew " + isNew);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -199,6 +201,9 @@ public class DocActivity extends FragmentActivity {
         queue.add(stringRequest);
     }
 
+    /**
+     * TODO 改成线程执行上传
+     */
     private void uploadHeadImg() {
         RequestQueue queue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Conf.URL_UPLOAD_IMG,
@@ -219,11 +224,10 @@ public class DocActivity extends FragmentActivity {
              */
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-
                 String imageStr = getStringImage(userInfoViewModel.getHeadBitmap());
 
                 Map<String, String> map = new HashMap<>();
-                map.put(Constants.KEY_OPENID, userInfoViewModel.getOpenId());
+                map.put(Constants.KEY_USERID, userInfoViewModel.getUserId());
                 map.put(Constants.KEY_HEAD_IMG_DATA, imageStr);
                 return map;
             }
@@ -244,8 +248,11 @@ public class DocActivity extends FragmentActivity {
         return string;
     }
 
+    /**
+     * 启动更新经验线程
+     */
     private void startUpdateExpThread() {
         UpdateExp updateExp = new UpdateExp(this, userInfoViewModel);
-        updateExp.start();
+        new Thread(updateExp).start();
     }
 }

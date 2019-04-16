@@ -140,7 +140,7 @@ public class CheckVersionDialogFragment extends DialogFragment {
             // 获取到文件的大小
             pd.setMax(conn.getContentLength());
             InputStream is = conn.getInputStream();
-            String fileName = Environment.getExternalStorageDirectory() + "/" + Conf.DOC_NAME + "/" + apkName;
+            String fileName = Environment.getExternalStorageDirectory() + "/" + Conf.DOC_TAG + "/" + apkName;
 
             File file = new File(fileName);
             // 目录不存在创建目录

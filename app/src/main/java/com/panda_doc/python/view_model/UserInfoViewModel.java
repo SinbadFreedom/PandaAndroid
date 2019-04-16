@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import androidx.databinding.ObservableArrayList;
 import androidx.databinding.ObservableField;
-import androidx.databinding.ObservableInt;
 import androidx.lifecycle.ViewModel;
 
 public class UserInfoViewModel extends ViewModel {

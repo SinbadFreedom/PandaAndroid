@@ -1,8 +1,8 @@
 package com.panda_doc.python.conf;
 
 public class Conf {
-    public static final String DOMAIN = "https://panda-doc.com";
-    //    public static final String DOMAIN = "http://192.168.18.4";
+    //    public static final String DOMAIN = "https://panda-doc.com";
+    public static final String DOMAIN = "http://192.168.18.3";
     public static final String URL_INDEX = "index";
     /**
      * version check
@@ -14,14 +14,14 @@ public class Conf {
     public static final String KEY_STATE = "state";
     public static final String KEY_EXP_CONF = "exp_conf";
 
-    public static final String DOC_NAME = "python3";
-    public static final String URL_DOC_CONTENT_PRE = DOMAIN + "/" + DOC_NAME + "/";
+    public static final String DOC_TAG = "python3.7.2";
+    public static final String URL_DOC_CONTENT_PRE = DOMAIN + "/" + DOC_TAG + "/";
     public static final String URL_VERSION = "version.json";
     public static final String URL_CATALOG = "catalog.txt";
     public static final String URL_MORE_APP = "more.html";
 
-    public static final String URL_NOTE_GET = DOMAIN + "/php/note_get.php";
-    public static final String URL_NOTE_ADD = DOMAIN + "/php/note_add.php";
+    public static final String URL_CONTENT_GET = DOMAIN + "/php/forum/content_get.php";
+    public static final String URL_CONTENT_ADD = DOMAIN + "/php/forum/content_add.php";
     public static final String URL_RANK_LIST = DOMAIN + "/php/rank_list.php";
     public static final String URL_USER_LOGIN = DOMAIN + "/php/user_login.php";
     public static final String URL_UPLOAD_IMG = DOMAIN + "/php/upload_img.php";
