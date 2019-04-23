@@ -52,7 +52,7 @@ public class DocNoteFragment extends Fragment {
         }
         String openId = userInfoViewModel.getOpenId();
         String userId = userInfoViewModel.getUserId();
-        String url = Conf.URL_CONTENT_GET + "?tag=" + Conf.DOC_TAG + "&num=" + userInfoViewModel.getCurrentPageNum().get();
+        String url = Conf.URL_CONTENT_GET + "?tag=" + Conf.DOC_TAG + "&contentid=" + userInfoViewModel.getCurrentPageNum().get();
         webView.loadUrl(url);
     }
 

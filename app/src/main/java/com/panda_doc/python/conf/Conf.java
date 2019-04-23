@@ -3,7 +3,8 @@ package com.panda_doc.python.conf;
 public class Conf {
     public static final String DOMAIN = "https://panda-doc.com";
 //    public static final String DOMAIN = "http://192.168.18.3";
-    public static final String URL_INDEX = "index";
+//    public static final String URL_INDEX = "index";
+    public static final String PANDA_DOC = "panda_doc";
     /**
      * version check
      */
@@ -25,6 +26,7 @@ public class Conf {
     public static final String URL_RANK_LIST = DOMAIN + "/php/rank_list.php";
     public static final String URL_USER_LOGIN = DOMAIN + "/php/user_login.php";
     public static final String URL_UPLOAD_IMG = DOMAIN + "/php/upload_img.php";
+    public static final String URL_FORUM_INDEX = DOMAIN + "/php/forum/index.php";
 
     public static final String URL_CONF = DOMAIN + "/php/conf.php";
     public static final String URL_UPDATE_EXP = DOMAIN + "/php/update_exp.php";

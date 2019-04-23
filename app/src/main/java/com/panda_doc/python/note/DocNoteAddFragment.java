@@ -144,7 +144,7 @@ public class DocNoteAddFragment extends Fragment {
                 Map<String, String> map = new HashMap<>();
                 //new 一个Map  参数放到Map中
                 map.put("tag", Conf.DOC_TAG);
-                map.put("num", viewModel.getCurrentPageNum().get());
+                map.put("contentid", viewModel.getCurrentPageNum().get());
                 map.put("content", content);
                 map.put("name", viewModel.getNickname().get());
                 map.put("userid", viewModel.getUserId());

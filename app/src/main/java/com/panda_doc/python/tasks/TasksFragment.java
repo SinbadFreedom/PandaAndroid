@@ -271,7 +271,7 @@ public class TasksFragment extends Fragment {
 
         /** currentPageNum 为空 显示Index主页, 不为空 显示当前页， 用在从笔记页面切换回来的时候*/
         if (userInfoViewModel.getCurrentPageNum().get() == null) {
-            this.showWebPage(Conf.URL_INDEX, null);
+            mWebView.loadUrl(Conf.URL_FORUM_INDEX);
         } else {
             this.showWebPage(userInfoViewModel.getCurrentPageNum().get(), userInfoViewModel.getAnchor().get());
         }
