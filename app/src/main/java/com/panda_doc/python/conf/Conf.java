@@ -1,7 +1,7 @@
 package com.panda_doc.python.conf;
 
 public class Conf {
-    public static final String DOMAIN = "https://panda-doc.com";
+        public static final String DOMAIN = "https://panda-doc.com";
 //    public static final String DOMAIN = "http://192.168.18.3";
     public static final String PANDA_DOC = "panda_doc";
     /**
@@ -18,7 +18,7 @@ public class Conf {
     public static final String URL_DOC_CONTENT_PRE = DOMAIN + "/" + DOC_TAG + "/";
     public static final String URL_VERSION = "version.json";
     public static final String URL_CATALOG = "catalog.txt";
-//    public static final String URL_MORE_APP = "more.html";
+    public static final String URL_MORE_APP = "more.html";
 
     public static final String URL_CONTENT_GET = DOMAIN + "/php/forum/content_get.php";
     public static final String URL_CONTENT_ADD = DOMAIN + "/php/forum/content_add.php";

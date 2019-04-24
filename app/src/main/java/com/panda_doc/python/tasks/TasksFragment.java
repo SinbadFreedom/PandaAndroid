@@ -302,9 +302,9 @@ public class TasksFragment extends Fragment {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_about:
-                    /** 关于*/
-                    NavHostFragment.findNavController(TasksFragment.this).navigate(R.id.action_tasksFragment3_to_about);
+                case R.id.navigation_index:
+                    /** 论坛首页*/
+                    mWebView.loadUrl(Conf.URL_FORUM_INDEX);
                     return true;
                 case R.id.navigation_note:
                     /** 笔记*/
@@ -323,6 +323,10 @@ public class TasksFragment extends Fragment {
                 case R.id.navigation_ranking_list:
                     /** 排行榜*/
                     NavHostFragment.findNavController(TasksFragment.this).navigate(R.id.action_tasksFragment3_to_rankListFragment);
+                    break;
+                case R.id.navigation_more_app:
+                    /** 更多app*/
+                    NavHostFragment.findNavController(TasksFragment.this).navigate(R.id.action_tasksFragment3_to_about);
                     break;
             }
             return false;

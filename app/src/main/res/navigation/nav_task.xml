@@ -26,7 +26,7 @@
             app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_tasksFragment3_to_about"
-            app:destination="@id/about"
+            app:destination="@id/more_app"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -58,7 +58,7 @@
         android:label="fragment_rank_list"
         tools:layout="@layout/fragment_rank_list" />
     <fragment
-        android:id="@+id/about"
+        android:id="@+id/more_app"
         android:name="com.panda_doc.python.about.MoreApp"
         android:label="fragment_about"
         tools:layout="@layout/fragment_more_app" />

@@ -38,7 +38,8 @@ public class MoreApp extends Fragment {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         /** 统一初始化WebView设置*/
         NetworkUtil.initWebView(webView);
-        webView.loadUrl(Conf.URL_FORUM_INDEX);
+        String url = Conf.URL_DOC_CONTENT_PRE + userInfoViewModel.getLanguageState().get() + "/" + Conf.URL_MORE_APP;
+        webView.loadUrl(url);
         return root;
     }
 

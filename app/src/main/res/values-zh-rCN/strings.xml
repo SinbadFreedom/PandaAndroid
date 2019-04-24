@@ -63,6 +63,7 @@
     <string name="use_menu_button">请从目录选择想查看的文章</string>
     <string name="home_page">主页</string>
     <string name="nav_about">笔记</string>
+    <string name="nav_more_app">应用</string>
     <string name="catalog">目\n录</string>
     <string name="language_en">EN</string>
     <string name="language_zh_ch">简</string>
