@@ -102,6 +102,10 @@ public class DocActivity extends FragmentActivity {
             NavHostFragment.findNavController(fragment).navigateUp();
         } else if (fragment instanceof TasksFragment) {
             ((TasksFragment) (fragment)).closeTaskDrawer();
+            if (((TasksFragment) (fragment)).getmWebView().canGoBack()) {
+                /** 论坛，评论页面返回*/
+                ((TasksFragment) (fragment)).getmWebView().goBack();
+            }
         } else if (fragment instanceof RankListFragment) {
             NavHostFragment.findNavController(fragment).navigateUp();
         }

@@ -412,4 +412,7 @@ public class TasksFragment extends Fragment {
         queue.add(stringRequest);
     }
 
+    public WebView getmWebView() {
+        return mWebView;
+    }
 }
