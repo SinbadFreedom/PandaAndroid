@@ -36,5 +36,12 @@ public class Constants {
      * QQ APP id
      */
     public static final String APP_ID_QQ = "1106522434";
+
+    /**
+     * 语言状态
+     */
+    public static final String LAN_ZH_CN = "zh_cn";
+    public static final String LAN_EN = "en";
+
 }
 

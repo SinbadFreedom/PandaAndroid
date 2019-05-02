@@ -2,9 +2,6 @@ package com.panda_doc.python.view_model;
 
 import android.graphics.Bitmap;
 
-import java.util.ArrayList;
-
-import androidx.databinding.ObservableArrayList;
 import androidx.databinding.ObservableField;
 import androidx.lifecycle.ViewModel;
 
@@ -24,16 +21,11 @@ public class UserInfoViewModel extends ViewModel {
     private final ObservableField<String> headimgurl = new ObservableField<>();
     private final ObservableField<Bitmap> headBitmap = new ObservableField<>();
 
-    private final ObservableArrayList<String> titles = new ObservableArrayList<>();
+    //    private final ObservableArrayList<String> titles = new ObservableArrayList<>();
     private final ObservableField<String> currentPageNum = new ObservableField<>();
     private final ObservableField<String> anchor = new ObservableField<>();
 
-    /**
-     * 语言状态
-     */
-    public static final String LAN_ZH_CN = "zh_cn";
-    public static final String LAN_EN = "en";
-    private ObservableField<String> languageState = new ObservableField();
+//    private ObservableField<String> languageState = new ObservableField();
 
     /**
      * 用户登录方式
@@ -78,22 +70,22 @@ public class UserInfoViewModel extends ViewModel {
         return headBitmap;
     }
 
-    public ObservableArrayList<String> getTitles() {
-        return titles;
-    }
+//    public ObservableArrayList<String> getTitles() {
+//        return titles;
+//    }
+//
+//    public void updateTitles(ArrayList<String> strings) {
+//        this.titles.clear();
+//        this.titles.addAll(strings);
+//    }
 
-    public void updateTitles(ArrayList<String> strings) {
-        this.titles.clear();
-        this.titles.addAll(strings);
-    }
+//    public ObservableField<String> getLanguageState() {
+//        return languageState;
+//    }
 
-    public ObservableField<String> getLanguageState() {
-        return languageState;
-    }
-
-    public void setLanguageState(String languageState) {
-        this.languageState.set(languageState);
-    }
+//    public void setLanguageState(String languageState) {
+//        this.languageState.set(languageState);
+//    }
 
     public ObservableField<String> getCurrentPageNum() {
         return currentPageNum;

@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/navigation_translate"
-        android:icon="@drawable/ic_translate_black_24dp"
-        android:title="@string/translate" />
-    <item
-        android:id="@+id/navigation_index"
-        android:icon="@drawable/ic_info_black_24dp"
-        android:title="@string/home_page" />
-    <item
-        android:id="@+id/navigation_note"
-        android:icon="@drawable/ic_comment_black_24dp"
-        android:title="@string/nav_about" />
+    <!--<item-->
+        <!--android:id="@+id/navigation_translate"-->
+        <!--android:icon="@drawable/ic_translate_black_24dp"-->
+        <!--android:title="@string/translate" />-->
+    <!--<item-->
+        <!--android:id="@+id/navigation_index"-->
+        <!--android:icon="@drawable/ic_info_black_24dp"-->
+        <!--android:title="@string/home_page" />-->
+    <!--<item-->
+        <!--android:id="@+id/navigation_note"-->
+        <!--android:icon="@drawable/ic_comment_black_24dp"-->
+        <!--android:title="@string/nav_about" />-->
 
-    <item
-        android:id="@+id/navigation_ranking_list"
-        android:icon="@drawable/ic_insert_chart_black_24dp"
-        android:title="@string/nav_about" />
+    <!--<item-->
+        <!--android:id="@+id/navigation_ranking_list"-->
+        <!--android:icon="@drawable/ic_insert_chart_black_24dp"-->
+        <!--android:title="@string/nav_about" />-->
 
-    <item
-        android:id="@+id/navigation_more_app"
-        android:icon="@drawable/ic_apps_black_24dp"
-        android:title="@string/nav_more_app" />
+    <!--<item-->
+        <!--android:id="@+id/navigation_more_app"-->
+        <!--android:icon="@drawable/ic_apps_black_24dp"-->
+        <!--android:title="@string/nav_more_app" />-->
 </menu>
