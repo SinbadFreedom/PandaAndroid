@@ -14,6 +14,11 @@ import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.DialogFragment;
+
 import com.panda_doc.python.R;
 import com.panda_doc.python.conf.Conf;
 
@@ -23,11 +28,6 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.DialogFragment;
 
 public class CheckVersionDialogFragment extends DialogFragment {
 
