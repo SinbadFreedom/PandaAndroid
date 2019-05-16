@@ -29,9 +29,8 @@ public class QQSDKListener implements IUiListener {
     private UserInfo mInfo;
     private boolean isServerSideLogin = false;
 
-
-    private boolean infoReady;
-    private boolean headerImgReady;
+//    private boolean infoReady;
+//    private boolean headerImgReady;
     /**
      * token
      */
@@ -45,7 +44,7 @@ public class QQSDKListener implements IUiListener {
     private String province;
     private String city;
     private String headimgurl;
-    private byte[] imgdata;
+//    private byte[] imgdata;
 
     private Handler mHandler = new Handler() {
 
@@ -83,18 +82,19 @@ public class QQSDKListener implements IUiListener {
                     province = response.getString("province");
                     city = response.getString("city");
                     headimgurl = response.getString("figureurl");
-                    infoReady = true;
+//                    infoReady = true;
                     updateQQLoginState();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
-            } else if (msg.what == 1) {
-                /** 用户头像信息*/
-                imgdata = (byte[]) msg.obj;
-                headerImgReady = true;
-                updateQQLoginState();
             }
+            /** 屏蔽用户头像信息*/
+//            else if (msg.what == 1) {
+//                imgdata = (byte[]) msg.obj;
+//                headerImgReady = true;
+//                updateQQLoginState();
+//            }
         }
     };
 
@@ -174,25 +174,26 @@ public class QQSDKListener implements IUiListener {
                 msg.obj = response;
                 msg.what = 0;
                 mHandler.sendMessage(msg);
-                new Thread() {
-
-                    @Override
-                    public void run() {
-                        JSONObject json = (JSONObject) response;
-                        if (json.has("figureurl")) {
-                            byte[] bitmap = null;
-                            try {
-                                bitmap = Util.getbitmap(json.getString("figureurl_qq_2"));
-                            } catch (JSONException e) {
-
-                            }
-                            Message msg = new Message();
-                            msg.obj = bitmap;
-                            msg.what = 1;
-                            mHandler.sendMessage(msg);
-                        }
-                    }
-                }.start();
+                /** 屏蔽用户头像信息*/
+//                new Thread() {
+//
+//                    @Override
+//                    public void run() {
+//                        JSONObject json = (JSONObject) response;
+//                        if (json.has("figureurl")) {
+//                            byte[] bitmap = null;
+//                            try {
+//                                bitmap = Util.getbitmap(json.getString("figureurl_qq_2"));
+//                            } catch (JSONException e) {
+//
+//                            }
+//                            Message msg = new Message();
+//                            msg.obj = bitmap;
+//                            msg.what = 1;
+//                            mHandler.sendMessage(msg);
+//                        }
+//                    }
+//                }.start();
             }
 
             @Override
@@ -215,20 +216,20 @@ public class QQSDKListener implements IUiListener {
     }
 
     private void updateQQLoginState() {
-        if (infoReady && headerImgReady) {
-            /** 传递用户数据到Doc应用*/
-            Intent intent = new Intent(activity, DocActivity.class);
-            intent.putExtra(Constants.KEY_OPENID, openId);
-            intent.putExtra(Constants.KEY_ACCESS_TOKEN, accessToken);
+//        if (infoReady && headerImgReady) {
+        /** 传递用户数据到Doc应用*/
+        Intent intent = new Intent(activity, DocActivity.class);
+        intent.putExtra(Constants.KEY_OPENID, openId);
+        intent.putExtra(Constants.KEY_ACCESS_TOKEN, accessToken);
 
-            intent.putExtra(Constants.KEY_HEADIMGURL, headimgurl);
-            intent.putExtra(Constants.KEY_NICKNAME, nickname);
-            intent.putExtra(Constants.KEY_SEX, sex);
-            intent.putExtra(Constants.KEY_PROVINCE, province);
-            intent.putExtra(Constants.KEY_CITY, city);
-            intent.putExtra(Constants.KEY_HEAD_IMG_DATA, imgdata);
-            intent.putExtra(Constants.KEY_LOGIN_TYPE, UserInfoViewModel.LOGIN_QQ);
-            activity.startActivity(intent);
-        }
+        intent.putExtra(Constants.KEY_HEADIMGURL, headimgurl);
+        intent.putExtra(Constants.KEY_NICKNAME, nickname);
+        intent.putExtra(Constants.KEY_SEX, sex);
+        intent.putExtra(Constants.KEY_PROVINCE, province);
+        intent.putExtra(Constants.KEY_CITY, city);
+//            intent.putExtra(Constants.KEY_HEAD_IMG_DATA, imgdata);
+        intent.putExtra(Constants.KEY_LOGIN_TYPE, UserInfoViewModel.LOGIN_QQ);
+        activity.startActivity(intent);
+//        }
     }
 }

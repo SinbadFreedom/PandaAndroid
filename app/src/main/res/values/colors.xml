@@ -6,15 +6,7 @@
     <color name="white">#FFFFFF</color>
 
     <drawable name="completedTaskBackground">#CCCCCC</drawable>
-
     <drawable name="touchFeedback">#CFD8DC</drawable>
-
-    <!--<color name="clickTitle">#5CB85C</color>-->
-    <!--<color name="clickTitle">#1c79c0</color>-->
-
-    <!--<color name="colorPrimary">#3F51B5</color>-->
-    <!--<color name="colorPrimaryDark">#303F9F</color>-->
-    <!--<color name="colorAccent">#FF4081</color>-->
 
     <color name="white_translucent">#30FFFFFF</color>
     <color name="white_translucent_20">#20FFFFFF</color>
@@ -44,7 +36,6 @@
         <item>@color/colorBlueGreyPrimary</item>
         <item>@android:color/black</item>
     </array>
-
     <!--basic color-->
     <color name="black">#040404</color>
     <color name="colorTextIcon">#ffffff</color>
@@ -83,59 +74,49 @@
     <color name="colorTealPrimaryDark">#00796b</color>
     <color name="colorTealAccent">#FF4081</color>
     <color name="colorTealPrimaryCenter">#0c3d37</color>
-
     <!--pink-->
     <color name="colorPinkPrimary">#E91E63</color>
     <color name="colorPinkPrimaryDark">#C2185B</color>
     <color name="colorPinkAccent">#FF4081</color>
     <color name="colorPinkPrimaryCenter">#580928</color>
-
     <!--deepPurple-->
     <color name="colorDeepPurplePrimary">#673AB7</color>
     <color name="colorDeepPurplePrimaryDark">#512DA8</color>
     <color name="colorDeepPurpleAccent">#FF4081</color>
     <color name="colorDeepPurplePrimaryCenter">#240c5c</color>
-
     <!--orange-->
     <color name="colorOrangePrimary">#FF9800</color>
     <color name="colorOrangePrimaryDark">#F57C00</color>
     <color name="colorOrangeAccent">#FF4081</color>
     <color name="colorOrangePrimaryCenter">#582e03</color>
-
     <!--indigo-->
     <color name="colorIndigoPrimary">#3F51B5</color>
     <color name="colorIndigoPrimaryDark">#303F9F</color>
     <color name="colorIndigoAccent">#FF4081</color>
     <color name="colorIndigoPrimaryCenter">#0d164d</color>
-
     <!--cyan-->
     <color name="colorCyanPrimary">#00BCD4</color>
     <color name="colorCyanPrimaryDark">#0097A7</color>
     <color name="colorCyanAccent">#FF4081</color>
     <color name="colorCyanPrimaryCenter">#034148</color>
-
     <!--lightGreen-->
     <color name="colorLightGreenPrimary">#8BC34A</color>
     <color name="colorLightGreenPrimaryDark">#689F38</color>
     <color name="colorLightGreenAccent">#FF4081</color>
     <color name="colorLightGreenPrimaryCenter">#37581a</color>
-
     <!--lime-->
     <color name="colorLimePrimary">#CDDC39</color>
     <color name="colorLimePrimaryDark">#AFB42B</color>
     <color name="colorLimeAccent">#FF4081</color>
     <color name="colorLimePrimaryCenter">#52540c</color>
-
     <!--deepOrange-->
     <color name="colorDeepOrangePrimary">#FF5722</color>
     <color name="colorDeepOrangePrimaryDark">#E64A19</color>
     <color name="colorDeepOrangeAccent">#FF4081</color>
     <color name="colorDeepOrangePrimaryCenter">#5c1e0a</color>
-
     <!--blueGrey-->
     <color name="colorBlueGreyPrimary">#607D8B</color>
     <color name="colorBlueGreyPrimaryDark">#455A64</color>
     <color name="colorBlueGreyAccent">#FF4081</color>
     <color name="colorBlueGreyPrimaryCenter">#27373e</color>
-
 </resources>

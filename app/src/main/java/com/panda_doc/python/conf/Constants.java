@@ -16,13 +16,14 @@ public class Constants {
     public static final String KEY_SEX = "sex";
     public static final String KEY_PROVINCE = "province";
     public static final String KEY_CITY = "city";
-    public static final String KEY_HEAD_IMG_DATA = "imgdata";
+    //    public static final String KEY_HEAD_IMG_DATA = "imgdata";
     public static final String KEY_LOGIN_TYPE = "logintype";
 
     public static final String KEY_CHANNEL = "channel";
     public static final String CHANNEL_APP_PYTHON = "app_python";
 
     public static final int PERMISSIONS_REQUEST_STORAGE = 1;
+    public static final int PERMISSIONS_REQUEST_PHONE_STATE = 2;
 
     /**
      * QQ APP id

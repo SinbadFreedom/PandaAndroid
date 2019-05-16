@@ -9,10 +9,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.panda_doc.python.DocActivity;
-import com.panda_doc.python.R;
 import com.panda_doc.python.conf.Constants;
-import com.panda_doc.python.uikit.NetworkUtil;
 import com.panda_doc.python.view_model.UserInfoViewModel;
+import com.panda_doc.python.wechat.NetworkUtil;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
@@ -51,10 +50,10 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     private String province;
     private String city;
     private String headimgurl;
-    private byte[] imgdata;
 
-    private boolean infoReady;
-    private boolean headerImgReady;
+//    private byte[] imgdata;
+//    private boolean infoReady;
+//    private boolean headerImgReady;
 
     private class MyHandler extends Handler {
         private final WeakReference<WXEntryActivity> wxEntryActivityWeakReference;
@@ -123,14 +122,13 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                     try {
                         json = new JSONObject(data.getString("result"));
                         headimgurl = json.getString(Constants.KEY_HEADIMGURL);
-                        NetworkUtil.getImage(handler, headimgurl, NetworkUtil.GET_IMG);
+//                        NetworkUtil.getImage(handler, headimgurl, NetworkUtil.GET_IMG);
                         String encode = getcode(json.getString(Constants.KEY_NICKNAME));
                         nickname = new String(json.getString(Constants.KEY_NICKNAME).getBytes(encode), "utf-8");
                         sex = json.getString(Constants.KEY_SEX);
                         province = json.getString(Constants.KEY_PROVINCE);
                         city = json.getString(Constants.KEY_CITY);
-
-                        infoReady = true;
+//                        infoReady = true;
                         updateWXLoginState();
                     } catch (JSONException e) {
                         Log.e(TAG, e.getMessage());
@@ -139,34 +137,33 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                     }
                     break;
                 }
-                case NetworkUtil.GET_IMG: {
-                    imgdata = data.getByteArray(Constants.KEY_HEAD_IMG_DATA);
-                    headerImgReady = true;
-                    updateWXLoginState();
-                    break;
-                }
+//                case NetworkUtil.GET_IMG: {
+//                    imgdata = data.getByteArray(Constants.KEY_HEAD_IMG_DATA);
+//                    headerImgReady = true;
+//                    updateWXLoginState();
+//                    break;
+//                }
             }
         }
 
         private void updateWXLoginState() {
-            if (infoReady && headerImgReady) {
-                /** 传递用户数据到Doc应用*/
-                Intent intent = new Intent(wxEntryActivityWeakReference.get(), DocActivity.class);
-                intent.putExtra(Constants.KEY_OPENID, openId);
-                intent.putExtra(Constants.KEY_ACCESS_TOKEN, accessToken);
-                intent.putExtra(Constants.KEY_REFRESH_TOKEN, refreshToken);
-                intent.putExtra(Constants.KEY_SCOPE, scope);
+//            if (infoReady && headerImgReady) {
+            /** 传递用户数据到Doc应用*/
+            Intent intent = new Intent(wxEntryActivityWeakReference.get(), DocActivity.class);
+            intent.putExtra(Constants.KEY_OPENID, openId);
+            intent.putExtra(Constants.KEY_ACCESS_TOKEN, accessToken);
+            intent.putExtra(Constants.KEY_REFRESH_TOKEN, refreshToken);
+            intent.putExtra(Constants.KEY_SCOPE, scope);
 
-                intent.putExtra(Constants.KEY_HEADIMGURL, headimgurl);
-                intent.putExtra(Constants.KEY_NICKNAME, nickname);
-                intent.putExtra(Constants.KEY_SEX, sex);
-                intent.putExtra(Constants.KEY_PROVINCE, province);
-                intent.putExtra(Constants.KEY_CITY, city);
-                intent.putExtra(Constants.KEY_HEAD_IMG_DATA, imgdata);
-                intent.putExtra(Constants.KEY_LOGIN_TYPE, UserInfoViewModel.LOGIN_WECHAT);
-
-                wxEntryActivityWeakReference.get().startActivity(intent);
-            }
+            intent.putExtra(Constants.KEY_HEADIMGURL, headimgurl);
+            intent.putExtra(Constants.KEY_NICKNAME, nickname);
+            intent.putExtra(Constants.KEY_SEX, sex);
+            intent.putExtra(Constants.KEY_PROVINCE, province);
+            intent.putExtra(Constants.KEY_CITY, city);
+//                intent.putExtra(Constants.KEY_HEAD_IMG_DATA, imgdata);
+            intent.putExtra(Constants.KEY_LOGIN_TYPE, UserInfoViewModel.LOGIN_WECHAT);
+            wxEntryActivityWeakReference.get().startActivity(intent);
+//            }
         }
     }
 
@@ -210,24 +207,24 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 
     @Override
     public void onResp(BaseResp resp) {
-        int result;
-        switch (resp.errCode) {
-            case BaseResp.ErrCode.ERR_OK:
-                result = R.string.errcode_success;
-                break;
-            case BaseResp.ErrCode.ERR_USER_CANCEL:
-                result = R.string.errcode_cancel;
-                break;
-            case BaseResp.ErrCode.ERR_AUTH_DENIED:
-                result = R.string.errcode_deny;
-                break;
-            case BaseResp.ErrCode.ERR_UNSUPPORT:
-                result = R.string.errcode_unsupported;
-                break;
-            default:
-                result = R.string.errcode_unknown;
-                break;
-        }
+        int result = resp.errCode;
+//        switch (resp.errCode) {
+//            case BaseResp.ErrCode.ERR_OK:
+//                result = R.string.errcode_success;
+//                break;
+//            case BaseResp.ErrCode.ERR_USER_CANCEL:
+//                result = R.string.errcode_cancel;
+//                break;
+//            case BaseResp.ErrCode.ERR_AUTH_DENIED:
+//                result = R.string.errcode_deny;
+//                break;
+//            case BaseResp.ErrCode.ERR_UNSUPPORT:
+//                result = R.string.errcode_unsupported;
+//                break;
+//            default:
+//                result = R.string.errcode_unknown;
+//                break;
+//        }
 
         Log.i(TAG, "onResp " + result);
 

@@ -1,96 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Python文档</string>
-    <string name="add_task">新建 TO-DO</string>
-    <string name="edit_task">编辑 TO-DO</string>
-    <string name="task_marked_complete">Task marked complete</string>
-    <string name="task_marked_active">Task marked active</string>
-    <string name="loading_tasks_error">Error while loading tasks</string>
-    <string name="completed_tasks_cleared">Completed tasks cleared</string>
-    <string name="menu_filter">Filter</string>
-    <string name="menu_clear">Clear completed</string>
-    <string name="menu_delete_task">Delete task</string>
-    <string name="navigation_view_header_title">Python 3.7.2</string>
-    <string name="title_hint">Title</string>
-    <string name="description_hint">Enter your TO-DO here.</string>
-    <string name="empty_task_message">TO DOs cannot be empty</string>
-    <string name="successfully_saved_task_message">TO-DO saved</string>
-    <string name="list_title">TO-DO 列表</string>
-    <string name="statistics_title">Statistics</string>
-    <string name="statistics_no_tasks">You have no tasks.</string>
-    <string name="statistics_active_tasks">Active tasks:</string>
-    <string name="statistics_completed_tasks">Completed tasks:</string>
-    <string name="statistics_error">Error loading statistics.</string>
-    <string name="no_data">No data</string>
-    <string name="loading">LOADING</string>
-
-    <string-array name="list_tasks_array">
-        <item>@string/nav_all</item>
-        <item>@string/nav_active</item>
-        <item>@string/nav_completed</item>
-    </string-array>
-    <string name="nav_all">All</string>
-    <string name="nav_active">Active</string>
-    <string name="nav_completed">Completed</string>
-    <string name="label_all">All TO-DOs</string>
-    <string name="label_completed">Completed TO-DOs</string>
-    <string name="no_tasks_all">You have no TO-DOs!</string>
-    <string name="no_tasks_active">You have no active TO-DOs!</string>
-    <string name="no_tasks_completed">You have no completed TO-DOs!</string>
-    <string name="no_tasks_add">Add a TO-DO item +</string>
-    <string name="refresh">Refresh</string>
-    <string name="title_home">上一篇</string>
-    <string name="title_notifications">下一篇</string>
-    <string name="toast_press_to_exit">再按一次退出</string>
-    <string name="this_is_the_first">这是第一篇</string>
-    <string name="this_is_the_last">这是最后一篇</string>
-    <string name="translate">语言</string>
-    <string name="use_menu_button">请从目录选择想查看的文章</string>
-    <string name="home_page">主页</string>
-    <string name="nav_about">笔记</string>
-    <string name="nav_more_app">应用</string>
-    <string name="catalog">目\n录</string>
-    <string name="language_en">EN</string>
-    <string name="language_zh_ch">简</string>
-    <string name="language_zh_tw">繁</string>
     <string name="dialog_new_version">发现新版本</string>
     <string name="dialog_update">是否更新?</string>
     <string name="dialog_ok">确定</string>
     <string name="dialog_cancel">取消</string>
     <string name="dialog_downloading">正在下载</string>
     <string name="dialog_try_again">没有找到下载文件,请重新下载</string>
-    <string name="doc_note_back">返回</string>
-    <string name="doc_note_add">编辑</string>
-    <string name="doc_note_add_cancle">取消</string>
-    <string name="doc_note_add_send">发送</string>
-    <string name="note_input_text">请输入笔记内容</string>
-    <string name="note_text_too_long">请输入字数少于</string>
-    <string name="note_send_success">发送成功</string>
     <string name="note_check_net_connect">请检查网络</string>
-
-    <string name="errcode_success">发送成功</string>
-    <string name="errcode_cancel">发送取消</string>
-    <string name="errcode_deny">发送被拒绝</string>
-    <string name="errcode_unsupported">不支持错误</string>
-    <string name="errcode_unknown">发送返回</string>
-
-    <string name="info_rank">等级</string>
-    <string name="info_exp">Exp</string>
-
-    <string name="rank_now">最新排名</string>
-    <string name="rank_history">历史排名</string>
-    <string name="rank_day">日</string>
-    <string name="rank_week">周</string>
-    <string name="rank_month">月</string>
-    <string name="rank_all">全部</string>
-
-    <string name="rank_today">今日</string>
-    <string name="rank_yesterday">昨日</string>
-    <string name="rank_this_week">本周</string>
-    <string name="rank_last_week">上周</string>
-    <string name="rank_this_month">本月</string>
-    <string name="rank_last_month">上月</string>
-
-    <string name="can_not_add_note">只有目录列表中的页面才可以添加或者查看笔记.</string>
-    <string name="exp_add_1">Exp +1 当前经验 : </string>
+    <string name="please_give_me_storage_permission">为了程序正常运行，请开启权限。</string>
+    <string name="local_index_name">index.html</string>
 </resources>

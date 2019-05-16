@@ -2,37 +2,27 @@ package com.panda_doc.python;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.panda_doc.python.conf.Conf;
 import com.panda_doc.python.conf.Constants;
-import com.panda_doc.python.uikit.NetworkUtil;
 import com.panda_doc.python.view_model.UserInfoViewModel;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class DocActivity extends FragmentActivity {
 
     private UserInfoViewModel userInfoViewModel;
     private WebView mWebView;
+
+    public static final int WEB_VIEW_STATE_LOAD_LOACAL_INDEX = 1;
+    public static final int WEB_VIEW_STATE_LOAD_WEB_CONTENT = 2;
+    public static final int WEB_VIEW_STATE_NORMAL = 3;
+    public static int web_view_state = WEB_VIEW_STATE_LOAD_LOACAL_INDEX;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,7 +37,7 @@ public class DocActivity extends FragmentActivity {
         String sex = intent.getStringExtra(Constants.KEY_SEX);
         String province = intent.getStringExtra(Constants.KEY_PROVINCE);
         String city = intent.getStringExtra(Constants.KEY_CITY);
-        byte[] imgdata = intent.getByteArrayExtra(Constants.KEY_HEAD_IMG_DATA);
+//        byte[] imgdata = intent.getByteArrayExtra(Constants.KEY_HEAD_IMG_DATA);
         int loginType = (int) intent.getIntExtra(Constants.KEY_LOGIN_TYPE, 0);
 
         userInfoViewModel = ViewModelProviders.of(this).get(UserInfoViewModel.class);
@@ -59,36 +49,29 @@ public class DocActivity extends FragmentActivity {
 
         mWebView = (WebView) findViewById(R.id.task_web_view);
         /** 统一初始化WebView设置*/
-        NetworkUtil.initWebView(mWebView);
-        /** 修复加载外部css和js不生效的问题 重置当前页面的信息和锚点信息*/
+        initWebView(mWebView);
+        /** i18n可以通过修改文件名对应不同的文件*/
+        mWebView.loadUrl("file:///android_asset/" + getString(R.string.local_index_name));
         mWebView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                if (web_view_state == WEB_VIEW_STATE_LOAD_LOACAL_INDEX) {
+                    web_view_state = WEB_VIEW_STATE_LOAD_WEB_CONTENT;
+                    /** 加载本地index.html成功后再启动，登陆线程，解决白屏问题*/
+                    FirstWebPageThread firstWebPageThread = new FirstWebPageThread(DocActivity.this, userInfoViewModel, mWebView);
+                    new Thread(firstWebPageThread).start();
+                } else if (web_view_state == WEB_VIEW_STATE_LOAD_WEB_CONTENT) {
+                    /**
+                     * 清除本地index.html记录，防止goBack()，需要加成web内容成功后执行clearHistory()才生效，
+                     * 后续的网页历史不清除, 切换为NORMAL状态
+                     */
+                    web_view_state = WEB_VIEW_STATE_NORMAL;
+                    mWebView.clearHistory();
+                }
+            }
         });
 
-//        /** 首次开启应用 注册 名字和头像变化事件 */
-//        userInfoViewModel.getNickname().addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
-//            @Override
-//            public void onPropertyChanged(Observable sender, int propertyId) {
-//                String nameStr = ((ObservableField<String>) sender).get();
-//                Log.i(Conf.DOMAIN, " " + propertyId);
-//            }
-//        });
-
-//        userInfoViewModel.getUserId().addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
-//            @Override
-//            public void onPropertyChanged(Observable sender, int propertyId) {
-//                /** userLogin 完成后 设置userInfoViewModel.setUserId(), 这里触发事件, post到catalog.php网页中，记录session */
-//                String urlCatalog = Conf.URL_DOC_CONTENT_PRE + Constants.LAN_ZH_CN + "/" + Conf.URL_CATALOG;
-//                String postData = Constants.KEY_OPENID + "=" + userInfoViewModel.getOpenId()
-//                        + "&" + Constants.KEY_HEADIMGURL + "=" + userInfoViewModel.getHeadimgurl().get()
-//                        + "&" + Constants.KEY_NICKNAME + "=" + userInfoViewModel.getNickname().get()
-//                        + "&" + Constants.KEY_USERID + "=" + userInfoViewModel.getUserId().get();
-//                Log.d(Conf.DOC_TAG, postData);
-//                mWebView.postUrl(urlCatalog, postData.getBytes());
-//            }
-//        });
-
-        /** 登陆*/
-        userLogin();
     }
 
     /**
@@ -103,62 +86,16 @@ public class DocActivity extends FragmentActivity {
     }
 
     /**
-     * 本地数据初始化
+     * 初始化WebView设置，修正在本页打开页面，不调用外部浏览器
      */
-    private void userLogin() {
-        RequestQueue queue = Volley.newRequestQueue(this);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Conf.URL_USER_LOGIN,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            String userId = jsonObject.getString("user_id");
-                            boolean isNew = jsonObject.getBoolean("is_new");
-                            int exp = jsonObject.getInt("exp");
-                            userInfoViewModel.setUserId(userId);
-
-                            /** userLogin 完成后 设置userInfoViewModel.setUserId(), 这里触发事件, post到catalog.php网页中，记录session */
-                            String urlCatalog = Conf.URL_DOC_CONTENT_PRE + Constants.LAN_ZH_CN + "/" + Conf.URL_CATALOG;
-                            String postData = Constants.KEY_OPENID + "=" + userInfoViewModel.getOpenId()
-                                    + "&" + Constants.KEY_HEADIMGURL + "=" + userInfoViewModel.getHeadimgurl().get()
-                                    + "&" + Constants.KEY_NICKNAME + "=" + userInfoViewModel.getNickname().get()
-                                    + "&" + Constants.KEY_USERID + "=" + userInfoViewModel.getUserId().get();
-                            Log.d(Conf.DOC_TAG, postData);
-                            mWebView.postUrl(urlCatalog, postData.getBytes());
-
-
-                            Log.i(Conf.DOMAIN, "userLogin success userId " + userId + " isNew " + isNew);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(DocActivity.this, getString(R.string.note_check_net_connect), Toast.LENGTH_LONG).show();
-                Log.e(Conf.DOMAIN, error.fillInStackTrace().toString());
-            }
-        }) {
-            /**
-             * 加入post参数 除图像外其他的数据
-             */
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> map = new HashMap<>();
-                map.put(Constants.KEY_OPENID, userInfoViewModel.getOpenId());
-                map.put(Constants.KEY_ACCESS_TOKEN, userInfoViewModel.getOpenId());
-                map.put(Constants.KEY_REFRESH_TOKEN, userInfoViewModel.getOpenId());
-                map.put(Constants.KEY_SCOPE, userInfoViewModel.getOpenId());
-
-                map.put(Constants.KEY_HEADIMGURL, userInfoViewModel.getHeadimgurl().get());
-                map.put(Constants.KEY_NICKNAME, userInfoViewModel.getNickname().get());
-                map.put(Constants.KEY_LOGIN_TYPE, userInfoViewModel.getLoginType() + "");
-
-                map.put(Constants.KEY_CHANNEL, Constants.CHANNEL_APP_PYTHON);
-                return map;
-            }
-        };
-        queue.add(stringRequest);
+    private static void initWebView(WebView webView) {
+        /** 设置webview不缓存*/
+        webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+        /** 修复webview 加载的网页中包含的js不生效*/
+        webView.setWebChromeClient(new WebChromeClient());
+        /** 修复加载外部css和js不生效的问题*/
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setDomStorageEnabled(true);
     }
 }

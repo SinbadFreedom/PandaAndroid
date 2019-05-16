@@ -128,24 +128,32 @@ public class MainActivity extends FragmentActivity {
     }
 
     private void checkPermission() {
-        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+        int permissionCheck_0 = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (permissionCheck_0 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     Constants.PERMISSIONS_REQUEST_STORAGE);
         }
+//        int permissionCheck_1 = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
+//        if (permissionCheck_1 != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(this,
+//                    new String[]{Manifest.permission.READ_PHONE_STATE},
+//                    Constants.PERMISSIONS_REQUEST_PHONE_STATE);
+//        }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case Constants.PERMISSIONS_REQUEST_STORAGE:
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                } else {
-                    Toast.makeText(MainActivity.this, "Please give me storage permission!", Toast.LENGTH_LONG).show();
-                }
-                break;
+        if (requestCode == Constants.PERMISSIONS_REQUEST_STORAGE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            } else {
+                Toast.makeText(MainActivity.this, getString(R.string.please_give_me_storage_permission), Toast.LENGTH_LONG).show();
+            }
+        } else if (requestCode == Constants.PERMISSIONS_REQUEST_PHONE_STATE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            } else {
+                Toast.makeText(MainActivity.this, getString(R.string.please_give_me_storage_permission), Toast.LENGTH_LONG).show();
+            }
         }
     }
 
