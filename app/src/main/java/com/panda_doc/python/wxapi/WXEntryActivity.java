@@ -51,10 +51,6 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     private String city;
     private String headimgurl;
 
-//    private byte[] imgdata;
-//    private boolean infoReady;
-//    private boolean headerImgReady;
-
     private class MyHandler extends Handler {
         private final WeakReference<WXEntryActivity> wxEntryActivityWeakReference;
 
@@ -122,13 +118,11 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                     try {
                         json = new JSONObject(data.getString("result"));
                         headimgurl = json.getString(Constants.KEY_HEADIMGURL);
-//                        NetworkUtil.getImage(handler, headimgurl, NetworkUtil.GET_IMG);
                         String encode = getcode(json.getString(Constants.KEY_NICKNAME));
                         nickname = new String(json.getString(Constants.KEY_NICKNAME).getBytes(encode), "utf-8");
                         sex = json.getString(Constants.KEY_SEX);
                         province = json.getString(Constants.KEY_PROVINCE);
                         city = json.getString(Constants.KEY_CITY);
-//                        infoReady = true;
                         updateWXLoginState();
                     } catch (JSONException e) {
                         Log.e(TAG, e.getMessage());
@@ -137,17 +131,10 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                     }
                     break;
                 }
-//                case NetworkUtil.GET_IMG: {
-//                    imgdata = data.getByteArray(Constants.KEY_HEAD_IMG_DATA);
-//                    headerImgReady = true;
-//                    updateWXLoginState();
-//                    break;
-//                }
             }
         }
 
         private void updateWXLoginState() {
-//            if (infoReady && headerImgReady) {
             /** 传递用户数据到Doc应用*/
             Intent intent = new Intent(wxEntryActivityWeakReference.get(), DocActivity.class);
             intent.putExtra(Constants.KEY_OPENID, openId);
@@ -160,10 +147,8 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
             intent.putExtra(Constants.KEY_SEX, sex);
             intent.putExtra(Constants.KEY_PROVINCE, province);
             intent.putExtra(Constants.KEY_CITY, city);
-//                intent.putExtra(Constants.KEY_HEAD_IMG_DATA, imgdata);
             intent.putExtra(Constants.KEY_LOGIN_TYPE, UserInfoViewModel.LOGIN_WECHAT);
             wxEntryActivityWeakReference.get().startActivity(intent);
-//            }
         }
     }
 
@@ -192,40 +177,12 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 
     @Override
     public void onReq(BaseReq req) {
-//        switch (req.getType()) {
-//            case ConstantsAPI.COMMAND_GETMESSAGE_FROM_WX:
-//                goToGetMsg();
-//                break;
-//            case ConstantsAPI.COMMAND_SHOWMESSAGE_FROM_WX:
-//                goToShowMsg((ShowMessageFromWX.Req) req);
-//                break;
-//            default:
-//                break;
-//        }
         finish();
     }
 
     @Override
     public void onResp(BaseResp resp) {
         int result = resp.errCode;
-//        switch (resp.errCode) {
-//            case BaseResp.ErrCode.ERR_OK:
-//                result = R.string.errcode_success;
-//                break;
-//            case BaseResp.ErrCode.ERR_USER_CANCEL:
-//                result = R.string.errcode_cancel;
-//                break;
-//            case BaseResp.ErrCode.ERR_AUTH_DENIED:
-//                result = R.string.errcode_deny;
-//                break;
-//            case BaseResp.ErrCode.ERR_UNSUPPORT:
-//                result = R.string.errcode_unsupported;
-//                break;
-//            default:
-//                result = R.string.errcode_unknown;
-//                break;
-//        }
-
         Log.i(TAG, "onResp " + result);
 
         if (resp.getType() == ConstantsAPI.COMMAND_SUBSCRIBE_MESSAGE) {
@@ -268,35 +225,6 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
         }
         finish();
     }
-
-//    private void goToGetMsg() {
-//        Intent intent = new Intent(this, GetFromWXActivity.class);
-//        intent.putExtras(getIntent());
-//        startActivity(intent);
-//        finish();
-//    }
-//
-//    private void goToShowMsg(ShowMessageFromWX.Req showReq) {
-//        WXMediaMessage wxMsg = showReq.message;
-//        WXAppExtendObject obj = (WXAppExtendObject) wxMsg.mediaObject;
-//
-//        StringBuffer msg = new StringBuffer();
-//        msg.append("description: ");
-//        msg.append(wxMsg.description);
-//        msg.append("\n");
-//        msg.append("extInfo: ");
-//        msg.append(obj.extInfo);
-//        msg.append("\n");
-//        msg.append("filePath: ");
-//        msg.append(obj.filePath);
-//
-//        Intent intent = new Intent(this, ShowFromWXActivity.class);
-//        intent.putExtra(Constants.ShowMsgActivity.STitle, wxMsg.title);
-//        intent.putExtra(Constants.ShowMsgActivity.SMessage, msg.toString());
-//        intent.putExtra(Constants.ShowMsgActivity.BAThumbData, wxMsg.thumbData);
-//        startActivity(intent);
-//        finish();
-//    }
 
     private String getcode(String str) {
         String[] encodelist = {"GB2312", "ISO-8859-1", "UTF-8", "GBK", "Big5", "UTF-16LE", "Shift_JIS", "EUC-JP"};

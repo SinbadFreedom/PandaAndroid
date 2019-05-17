@@ -37,7 +37,6 @@ public class DocActivity extends FragmentActivity {
         String sex = intent.getStringExtra(Constants.KEY_SEX);
         String province = intent.getStringExtra(Constants.KEY_PROVINCE);
         String city = intent.getStringExtra(Constants.KEY_CITY);
-//        byte[] imgdata = intent.getByteArrayExtra(Constants.KEY_HEAD_IMG_DATA);
         int loginType = (int) intent.getIntExtra(Constants.KEY_LOGIN_TYPE, 0);
 
         userInfoViewModel = ViewModelProviders.of(this).get(UserInfoViewModel.class);

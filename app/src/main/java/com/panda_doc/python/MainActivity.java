@@ -134,12 +134,6 @@ public class MainActivity extends FragmentActivity {
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     Constants.PERMISSIONS_REQUEST_STORAGE);
         }
-//        int permissionCheck_1 = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
-//        if (permissionCheck_1 != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(this,
-//                    new String[]{Manifest.permission.READ_PHONE_STATE},
-//                    Constants.PERMISSIONS_REQUEST_PHONE_STATE);
-//        }
     }
 
     @Override

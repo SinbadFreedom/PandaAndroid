@@ -10,16 +10,15 @@ public class Constants {
     public static final String KEY_ACCESS_TOKEN = "access_token";
     public static final String KEY_REFRESH_TOKEN = "refresh_token";
     public static final String KEY_SCOPE = "scope";
-
     public static final String KEY_HEADIMGURL = "headimgurl";
     public static final String KEY_NICKNAME = "nickname";
     public static final String KEY_SEX = "sex";
     public static final String KEY_PROVINCE = "province";
     public static final String KEY_CITY = "city";
-    //    public static final String KEY_HEAD_IMG_DATA = "imgdata";
     public static final String KEY_LOGIN_TYPE = "logintype";
 
     public static final String KEY_CHANNEL = "channel";
+
     public static final String CHANNEL_APP_PYTHON = "app_python";
 
     public static final int PERMISSIONS_REQUEST_STORAGE = 1;
