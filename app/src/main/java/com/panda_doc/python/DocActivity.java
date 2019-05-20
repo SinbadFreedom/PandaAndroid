@@ -31,20 +31,20 @@ public class DocActivity extends FragmentActivity {
 
         Intent intent = getIntent();
         String openId = intent.getStringExtra(Constants.KEY_OPENID);
+        String unionId = intent.getStringExtra(Constants.KEY_UNIONID);
         String headimgurl = intent.getStringExtra(Constants.KEY_HEADIMGURL);
         String nickname = intent.getStringExtra(Constants.KEY_NICKNAME);
         String accessToken = intent.getStringExtra(Constants.KEY_ACCESS_TOKEN);
         String sex = intent.getStringExtra(Constants.KEY_SEX);
         String province = intent.getStringExtra(Constants.KEY_PROVINCE);
         String city = intent.getStringExtra(Constants.KEY_CITY);
-        int loginType = (int) intent.getIntExtra(Constants.KEY_LOGIN_TYPE, 0);
 
         userInfoViewModel = ViewModelProviders.of(this).get(UserInfoViewModel.class);
 
         userInfoViewModel.setOpenId(openId);
+        userInfoViewModel.setUnionId(unionId);
         userInfoViewModel.setHeadimgurl(headimgurl);
         userInfoViewModel.setNickname(nickname);
-        userInfoViewModel.setLoginType(loginType);
 
         mWebView = (WebView) findViewById(R.id.task_web_view);
         /** 统一初始化WebView设置*/
@@ -70,7 +70,6 @@ public class DocActivity extends FragmentActivity {
                 }
             }
         });
-
     }
 
     /**

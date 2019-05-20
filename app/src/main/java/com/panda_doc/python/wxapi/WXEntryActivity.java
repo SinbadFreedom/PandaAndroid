@@ -45,6 +45,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     /**
      * user info
      */
+    private String unionid;
     private String nickname;
     private String sex;
     private String province;
@@ -117,12 +118,14 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                 case NetworkUtil.GET_INFO: {
                     try {
                         json = new JSONObject(data.getString("result"));
+                        unionid = json.getString(Constants.KEY_UNIONID);
                         headimgurl = json.getString(Constants.KEY_HEADIMGURL);
                         String encode = getcode(json.getString(Constants.KEY_NICKNAME));
                         nickname = new String(json.getString(Constants.KEY_NICKNAME).getBytes(encode), "utf-8");
                         sex = json.getString(Constants.KEY_SEX);
                         province = json.getString(Constants.KEY_PROVINCE);
                         city = json.getString(Constants.KEY_CITY);
+
                         updateWXLoginState();
                     } catch (JSONException e) {
                         Log.e(TAG, e.getMessage());
@@ -142,12 +145,12 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
             intent.putExtra(Constants.KEY_REFRESH_TOKEN, refreshToken);
             intent.putExtra(Constants.KEY_SCOPE, scope);
 
+            intent.putExtra(Constants.KEY_UNIONID, unionid);
             intent.putExtra(Constants.KEY_HEADIMGURL, headimgurl);
             intent.putExtra(Constants.KEY_NICKNAME, nickname);
             intent.putExtra(Constants.KEY_SEX, sex);
             intent.putExtra(Constants.KEY_PROVINCE, province);
             intent.putExtra(Constants.KEY_CITY, city);
-            intent.putExtra(Constants.KEY_LOGIN_TYPE, UserInfoViewModel.LOGIN_WECHAT);
             wxEntryActivityWeakReference.get().startActivity(intent);
         }
     }

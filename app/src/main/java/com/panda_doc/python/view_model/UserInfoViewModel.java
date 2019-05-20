@@ -6,16 +6,10 @@ import androidx.lifecycle.ViewModel;
 public class UserInfoViewModel extends ViewModel {
 
     private String openId;
+    private String unionId;
     private ObservableField<String> userId = new ObservableField<>();
     private final ObservableField<String> nickname = new ObservableField<>();
     private final ObservableField<String> headimgurl = new ObservableField<>();
-
-    /**
-     * 用户登录方式
-     */
-    public static final int LOGIN_WECHAT = 1;
-    public static final int LOGIN_QQ = 2;
-    private int loginType = 0;
 
     public ObservableField<String> getNickname() {
         return nickname;
@@ -37,6 +31,14 @@ public class UserInfoViewModel extends ViewModel {
         this.openId = openId;
     }
 
+    public String getUnionId() {
+        return unionId;
+    }
+
+    public void setUnionId(String unionId) {
+        this.unionId = unionId;
+    }
+
     public ObservableField<String> getHeadimgurl() {
         return headimgurl;
     }
@@ -48,13 +50,4 @@ public class UserInfoViewModel extends ViewModel {
     public void setUserId(String userId) {
         this.userId.set(userId);
     }
-
-    public int getLoginType() {
-        return loginType;
-    }
-
-    public void setLoginType(int loginType) {
-        this.loginType = loginType;
-    }
-
 }

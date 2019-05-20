@@ -51,19 +51,18 @@ public class FirstWebPageThread implements Runnable {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             String userId = jsonObject.getString("user_id");
-                            boolean isNew = jsonObject.getBoolean("is_new");
-                            int exp = jsonObject.getInt("exp");
+//                            boolean isNew = jsonObject.getBoolean("is_new");
+//                            int exp = jsonObject.getInt("exp");
                             userInfoViewModel.setUserId(userId);
 
                             /** userLogin 完成后 设置userInfoViewModel.setUserId(), 这里触发事件, post到catalog.php网页中，记录session */
                             String urlCatalog = Conf.URL_DOC_CONTENT_PRE + Constants.LAN_ZH_CN + "/" + Conf.URL_CATALOG;
-                            String postData = Constants.KEY_OPENID + "=" + userInfoViewModel.getOpenId()
-                                    + "&" + Constants.KEY_HEADIMGURL + "=" + userInfoViewModel.getHeadimgurl().get()
+                            String postData = Constants.KEY_HEADIMGURL + "=" + userInfoViewModel.getHeadimgurl().get()
                                     + "&" + Constants.KEY_NICKNAME + "=" + userInfoViewModel.getNickname().get()
                                     + "&" + Constants.KEY_USERID + "=" + userInfoViewModel.getUserId().get();
                             Log.d(Conf.DOC_TAG, postData);
                             webView.postUrl(urlCatalog, postData.getBytes());
-                            Log.i(Conf.DOMAIN, "userLogin success userId " + userId + " isNew " + isNew);
+                            Log.i(Conf.DOMAIN, "userLogin success userId " + userId);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -82,15 +81,16 @@ public class FirstWebPageThread implements Runnable {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
                 map.put(Constants.KEY_OPENID, userInfoViewModel.getOpenId());
-                map.put(Constants.KEY_ACCESS_TOKEN, userInfoViewModel.getOpenId());
-                map.put(Constants.KEY_REFRESH_TOKEN, userInfoViewModel.getOpenId());
-                map.put(Constants.KEY_SCOPE, userInfoViewModel.getOpenId());
+                map.put(Constants.KEY_UNIONID, userInfoViewModel.getUnionId());
+//                map.put(Constants.KEY_ACCESS_TOKEN, userInfoViewModel.getOpenId());
+//                map.put(Constants.KEY_REFRESH_TOKEN, userInfoViewModel.getOpenId());
+//                map.put(Constants.KEY_SCOPE, userInfoViewModel.getOpenId());
 
                 map.put(Constants.KEY_HEADIMGURL, userInfoViewModel.getHeadimgurl().get());
                 map.put(Constants.KEY_NICKNAME, userInfoViewModel.getNickname().get());
-                map.put(Constants.KEY_LOGIN_TYPE, userInfoViewModel.getLoginType() + "");
+//                map.put(Constants.KEY_LOGIN_TYPE, userInfoViewModel.getLoginType() + "");
 
-                map.put(Constants.KEY_CHANNEL, Constants.CHANNEL_APP_PYTHON);
+//                map.put(Constants.KEY_CHANNEL, Constants.CHANNEL_APP_PYTHON);
                 return map;
             }
         };
