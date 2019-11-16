@@ -1,7 +1,7 @@
 -dontoptimize
 
 # Some methods are only called from tests, so make sure the shrinker keeps them.
--keep class com.panda_doc.python.** { *; }
+-keep class com.panda_doc.main.** { *; }
 
 -keep class androidx.drawerlayout.widget.DrawerLayout { *; }
 -keep class androidx.test.espresso.**

@@ -9,4 +9,6 @@
     <string name="note_check_net_connect">Please check your net connection</string>
     <string name="please_give_me_storage_permission">Please give me permission to run the app</string>
     <string name="local_index_name">index.html</string>
+    <string name="label_index">Programme Documents</string>
+    <string name="label_panda_doc">Panda_Doc Present</string>
 </resources>

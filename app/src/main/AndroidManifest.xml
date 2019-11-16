@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.panda_doc.python">
+    package="com.panda_doc.main">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -15,13 +15,13 @@
 
     <application
         android:allowBackup="false"
-        android:icon="@mipmap/icon_python"
+        android:icon="@mipmap/bian_cheng_wen_dang_he_ji"
         android:supportsRtl="true">
 
         <activity
             android:theme="@style/AppTheme"
             android:launchMode="singleTask"
-            android:name="com.panda_doc.python.MainActivity"
+            android:name="com.panda_doc.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,17 +31,17 @@
 
         <activity
             android:theme="@style/AppTheme"
-            android:name="com.panda_doc.python.DocActivity"
+            android:name="com.panda_doc.DocActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTask" />
 
         <activity
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
-            android:name=".wxapi.WXEntryActivity"
+            android:name="com.panda_doc.wxapi.WXEntryActivity"
             android:exported="true"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:taskAffinity="com.panda_doc.python" />
+            android:taskAffinity="com.panda_doc.main" />
 
         <activity
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"

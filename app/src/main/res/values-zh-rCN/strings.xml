@@ -9,4 +9,6 @@
     <string name="note_check_net_connect">请检查网络</string>
     <string name="please_give_me_storage_permission">为了程序正常运行，请开启权限。</string>
     <string name="local_index_name">index.html</string>
+    <string name="label_index">编 程 文 档 合 集</string>
+    <string name="label_panda_doc">熊猫文档出品</string>
 </resources>
