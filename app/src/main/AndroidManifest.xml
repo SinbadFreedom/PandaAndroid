@@ -16,6 +16,7 @@
     <application
         android:allowBackup="false"
         android:icon="@mipmap/bian_cheng_wen_dang_he_ji"
+        android:label="@string/label_app_name"
         android:supportsRtl="true">
 
         <activity

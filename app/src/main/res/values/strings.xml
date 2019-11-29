@@ -11,4 +11,5 @@
     <string name="local_index_name">index.html</string>
     <string name="label_index">Programme Documents</string>
     <string name="label_panda_doc">Panda_Doc Present</string>
+    <string name="label_app_name">Panda Doc</string>
 </resources>

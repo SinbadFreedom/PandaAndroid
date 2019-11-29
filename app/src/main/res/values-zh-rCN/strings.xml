@@ -11,4 +11,5 @@
     <string name="local_index_name">index.html</string>
     <string name="label_index">编 程 文 档 合 集</string>
     <string name="label_panda_doc">熊猫文档出品</string>
+    <string name="label_app_name">熊猫文档</string>
 </resources>

@@ -31,5 +31,7 @@ public class Constants {
     public static final String LAN_ZH_CN = "zh_cn";
     public static final String LAN_EN = "en";
 
+    public static final String URL_RELOAD = "url_reload";
+
 }
 

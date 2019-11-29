@@ -18,6 +18,7 @@ import com.panda_doc.view_model.UserInfoViewModel;
 public class DocActivity extends FragmentActivity {
 
     private UserInfoViewModel userInfoViewModel;
+    private FirstWebPageThread firstWebPageThread;
     private WebView mWebView;
 
     public static final int WEB_VIEW_STATE_LOAD_LOACAL_INDEX = 1;
@@ -52,6 +53,7 @@ public class DocActivity extends FragmentActivity {
         initWebView(mWebView);
         /** i18n可以通过修改文件名对应不同的文件*/
         mWebView.loadUrl("file:///android_asset/" + getString(R.string.local_index_name));
+        firstWebPageThread = new FirstWebPageThread(DocActivity.this, userInfoViewModel, mWebView);
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
@@ -59,8 +61,7 @@ public class DocActivity extends FragmentActivity {
                 if (web_view_state == WEB_VIEW_STATE_LOAD_LOACAL_INDEX) {
                     web_view_state = WEB_VIEW_STATE_LOAD_WEB_CONTENT;
                     /** 加载本地index.html成功后再启动，登陆线程，解决白屏问题*/
-                    FirstWebPageThread firstWebPageThread = new FirstWebPageThread(DocActivity.this, userInfoViewModel, mWebView);
-                    new Thread(firstWebPageThread).start();
+                    firstWebPageThread.userLogin();
                 } else if (web_view_state == WEB_VIEW_STATE_LOAD_WEB_CONTENT) {
                     /**
                      * 清除本地index.html记录，防止goBack()，需要加成web内容成功后执行clearHistory()才生效，

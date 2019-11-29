@@ -78,7 +78,7 @@ public class MainActivity extends FragmentActivity {
         });
 
         checkPermission();
-        versionCheck();
+//        versionCheck();
     }
 
     /**
