@@ -36,10 +36,10 @@ public class MainActivity extends FragmentActivity {
     private static String TAG_DIALOG = "TASK_FRAGE";
 
     private static final String TAG = MainActivity.class.getName();
-    /**
-     * wechat
-     */
-    private ImageButton wechatLogin;
+//    /**
+//     * wechat
+//     */
+//    private ImageButton wechatLogin;
     WeChatSdk weChatSdk;
     /**
      * QQ
@@ -53,18 +53,18 @@ public class MainActivity extends FragmentActivity {
 
         setContentView(R.layout.login);
 
-        /** 微信登陆*/
-        wechatLogin = (ImageButton) findViewById(R.id.login_wechat);
-        wechatLogin.setImageResource(R.drawable.icon48_wx_button);
-        wechatLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                weChatSdk = new WeChatSdk(MainActivity.this);
-                /** 微信登陆*/
-
-                weChatSdk.loginWeChat();
-            }
-        });
+//        /** 微信登陆*/
+//        wechatLogin = (ImageButton) findViewById(R.id.login_wechat);
+//        wechatLogin.setImageResource(R.drawable.icon48_wx_button);
+//        wechatLogin.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                weChatSdk = new WeChatSdk(MainActivity.this);
+//                /** 微信登陆*/
+//
+//                weChatSdk.loginWeChat();
+//            }
+//        });
 
         /** QQ登录*/
         qqLogin = (ImageButton) findViewById(R.id.login_qq);

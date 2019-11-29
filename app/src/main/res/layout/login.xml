@@ -10,25 +10,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginTop="408dp"
         android:layout_marginBottom="8dp"
         android:contentDescription="QQ Login"
         android:src="@drawable/connect_logo_5"
-        app:layout_constraintBottom_toTopOf="@+id/login_wechat"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageButton
-        android:id="@+id/login_wechat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="36dp"
-        android:contentDescription="WeChat Login"
-        android:src="@drawable/icon48_wx_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.361" />
+
+    <!--<ImageButton-->
+        <!--android:id="@+id/login_wechat"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:layout_marginBottom="36dp"-->
+        <!--android:contentDescription="WeChat Login"-->
+        <!--android:src="@drawable/icon48_wx_button"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent" />-->
 
     <TextView
         android:id="@+id/textView3"
