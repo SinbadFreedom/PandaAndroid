@@ -37,7 +37,7 @@
             android:launchMode="singleTask" />
 
         <activity
-            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+            android:theme="@android:style/Theme.Translucent"
             android:name="com.panda_doc.wxapi.WXEntryActivity"
             android:exported="true"
             android:launchMode="singleTask"
@@ -45,7 +45,7 @@
             android:taskAffinity="com.panda_doc.main" />
 
         <activity
-            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+            android:theme="@android:style/Theme.Translucent"
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
@@ -61,7 +61,7 @@
         </activity>
 
         <activity
-            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+            android:theme="@android:style/Theme.Translucent"
             android:name="com.tencent.connect.common.AssistActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />

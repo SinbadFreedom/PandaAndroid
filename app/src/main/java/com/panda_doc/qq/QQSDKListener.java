@@ -42,12 +42,13 @@ public class QQSDKListener implements IUiListener {
     private String unionid;
 
     @Override
-    public void onComplete(Object response) {        if (null == response) {
+    public void onComplete(Object response) {
+        if (null == response) {
             Log.e(Conf.DOC_TAG, "返回为空 登录失败 null == response");
             return;
         }
         JSONObject jsonResponse = (JSONObject) response;
-        if (null != jsonResponse && jsonResponse.length() == 0) {
+        if (jsonResponse.length() == 0) {
             Log.e(Conf.DOC_TAG, "返回为空 登录失败 jsonResponse.length() == 0");
             return;
         }
