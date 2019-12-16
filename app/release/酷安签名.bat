@@ -1,0 +1,1 @@
+jarsigner -verbose -keystore D:\workplace\git\PythonDocAndroid\key\key.jks -signedjar PythonDocAndroid_1.0.5.apk CoolApkDevVerify_no_sign.apk D:\workplace\git\PythonDocAndroid\key\key.jks -signedjar
